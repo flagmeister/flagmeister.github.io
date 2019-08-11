@@ -1,0 +1,1444 @@
+<head>
+    <!-- I wacked this demo page together without much attention for optimization -->
+    <script src=elements.flagmeister.js></script>
+
+    <script>
+        customElements.define('flagmeister-list', class extends HTMLElement {
+            constructor() {
+                super();
+            }
+            connectedCallback() {
+                let img = (iso, char = false) => `<img is=flag-${iso} char=${char} title="ISO:${iso}">`;
+                let header = x => `<h3>${x}</h3>`;
+                this.innerHTML = header("ISO country code flags") + Object.keys(window.flagmeister).map(iso => {
+                    let counter = (items, title) => ['<h3>', 0, title, "</h3>", ...items]
+                        .reduceRight((reducer, char, idx, redarr) =>
+                            (
+                                idx > 3
+                                    ? (redarr[1]++ , img(iso, char))
+                                    : char
+                            ) + reducer
+                            , '');
+
+                    if (iso == 'signal') {
+                        if (this.hasAttribute('signals'))
+                            return counter("abcdefghijklmnopqrstuvwxyz0123456789".split``, " NATO/OTAN signal flags");
+                        else return '';
+                    } else if (iso == 'ics') {
+                        if (this.hasAttribute('signals'))
+                            return counter("0123456789".split``, ' ICS signal flags')
+                        else return '';
+                    } else
+                        return (iso == 'eu' ? header("non country flags") : '') + img(iso)
+                }).join``;
+            }
+        });
+    </script>
+    <style id=theme_greenwhite>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            visibility: hidden;
+            color: whitesmoke;
+            --theme_pre_size: 1.2em;
+
+            --textstroke: 1px black;
+            --defaultmargin: .5em;
+        }
+
+        p {
+            margin-left: var(--theme_pre_size)
+        }
+
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+            color: lightskyblue;
+        }
+
+        preOLD {
+            --size: var(--theme_pre_size);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: var(--size);
+            font-weight: bold;
+            margin-left: var(--size);
+        }
+
+        .footnote,
+        .warning,
+        h1,
+        h2,
+        h3 {
+            text-shadow: 2px 2px 1px black;
+        }
+
+        .warning,
+        .section_text,
+        h3 {
+            text-shadow: 1px 1px 1px black;
+        }
+
+        .section_text {
+            font-size: 1.2em;
+        }
+
+        h1 a,
+        h2 a {
+            text-shadow: .3px .3px 0 lightgrey;
+        }
+
+        h3 a {
+            text-shadow: 0 0;
+        }
+
+        .greencloth {
+            /* saves loading an image, looks better than a solid darkgreen background */
+            background-image: url('data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAAAwBACdASoeAB4APikSh0KhoQoCAAwBQllYz41AABFV/n8AItOaJepDavAA/vkKUe5BGtPR5aeKP/4hd7G2///gzv/f1X/gzv/BmUX9cJtST/Z9T/XsQq/MQV+1v8m2uukhu3nFYS/A5iTPpyXsMLAwk6xasWWFDPdx7OkWouLHKfqaoozRIW3R5D5MAA==');
+            background-size: cover;
+        }
+
+        section {
+            border-top: 5px solid lightgreen;
+            margin: 1em;
+            padding: 1em;
+
+            scroll-snap-align: start;
+        }
+
+        .htmlcode {
+            color: lightgray;
+        }
+
+        .htmlcode b {
+            color: gold;
+        }
+
+        .docgrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto;
+            overflow: hidden;
+        }
+
+        .warning {
+            color: orangered;
+        }
+    </style>
+    <style>
+        section {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .flaggrid {
+            display: grid;
+            grid-template-columns: repeat(var(--flagProvidersCount), 1fr);
+            grid-template-rows: 10fr;
+            grid-gap: 0.2vw;
+            /* margin: 5px; */
+            background: grey;
+            color: black;
+
+            font-family: Arial, Helvetica, sans-serif;
+            --bordersize: 3px;
+        }
+
+        .flaggrid img {
+            object-fit: cover;
+            width: 100%;
+            max-height: 100%;
+            border: var(--bordersize) solid transparent;
+        }
+
+        section:not(:first-of-type) {
+            /* display: none; */
+        }
+
+        .attribute_name {
+            color: yellow;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px black;
+        }
+
+        .attribute_value {
+            color: white;
+            text-shadow: 2px 2px 1px black;
+        }
+
+        .docgrid img {
+            --flagmeisterdetail: 9999;
+            max-width: 24%;
+        }
+
+        .flagwidthList img {
+            width: 41px;
+        }
+
+        .textarea_html {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            width: 100%;
+            background: lightgoldenrodyellow;
+            padding: .5em 1em 0 1em;
+            overflow: hidden;
+            margin: 1em 0;
+        }
+
+        .highlightText {
+            font-weight: bold;
+            color: gold;
+        }
+
+        .horizontalFlags_5 {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 1vw;
+            --flagmeisterdetail: 9999;
+            margin: 1em 0;
+        }
+
+        .clipexamples img {
+            filter: drop-shadow(8px 8px 4px black);
+            border: 2px dashed lightcoral;
+        }
+    </style>
+    <style>
+        #FlagMeisterAnalyzeFlags flagmeister-text {
+            /* do not load details!! */
+            --flagmeisterdetail: 9999;
+            --flagmeisterletterheight: 3vw;
+        }
+    </style>
+    <style>
+        #FlagTable {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 15px;
+        }
+
+        #FlagTable {
+            white-space: nowrap;
+            border-collapse: collapse;
+        }
+
+        #FlagTable td {
+            border: 1px solid black;
+            text-align: center;
+            padding: .2em;
+        }
+
+        #FlagTable td a:first-of-type {
+            font-size: 130%;
+        }
+
+        #FlagTable th {
+            color: black;
+            background: grey
+        }
+    </style>
+    <style>
+        #FlagMeisterAnalyzeFlags {
+            margin-bottom: 50vh;
+        }
+
+        #FlagMeisterAnalyzeFlags flagmeister-list {
+            --flagmeisterdetail: 9999;
+            --NOflagmeistersource: //raw.githubusercontent.com/kent1D/svg-flags/master/flags/;
+        }
+
+        #FlagMeisterAnalyzeFlags flagmeister-list img {
+            max-width: 50px;
+        }
+
+        #LipisColors {
+            display: none;
+        }
+    </style>
+    <style id=button_DimNoDetail onload="this.disabled=true">
+        #FlagMeisterAnalyzeFlagsSelector img:not([src*="detail"]) {
+            opacity: .2;
+        }
+
+        button[onclick*="DimNoDetail"] {
+            background: green;
+            color: white;
+        }
+    </style>
+    <style id=button_FlagsKB onload="this.disabled=true">
+        #FlagMeisterAnalyzeFlagsSelector img:not([flagkb]) {
+            opacity: .2;
+            border: 2px solid transparent;
+        }
+
+        [flagkb="1000"] {
+            border: 2px dashed lightcoral;
+        }
+
+        [flagkb="2000"] {
+            border: 2px dashed red;
+
+        }
+
+        button[onclick*="FlagsKB"] {
+            background: orange;
+            color: black;
+        }
+    </style>
+    <style id=button_NeedWork onload="this.disabled=true">
+        #FlagMeisterAnalyzeFlagsSelector img {
+            opacity: .2;
+        }
+
+        #FlagMeisterAnalyzeFlagsSelector img[iso="eu"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="zw"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="zm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="wf"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="vu"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="vi"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="vg"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="va"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="uy"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ug"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="tn"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="tm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="tc"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="sz"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="sx"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="sv"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="sm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="sh"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="py"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pn"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pf"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pe"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="om"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ni"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="nf"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mz"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mx"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ms"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mp"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="me"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="md"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="lk"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="li"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="kz"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ky"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="kr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ki"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="kh"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="je"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="iq"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="io"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="im"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="hr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ht"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="fj"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="fk"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gd"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gd"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ge"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gi"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gq"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gs"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gu"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="es"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="er"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="eg"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ec"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="do"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="dm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="cx"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="cr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bn"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bo"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="by"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bz"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="as"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ar"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="al"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ai"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="af"] {
+            opacity: 1;
+        }
+    </style>
+    <style id=button_IncorrectFlags onload="this.disabled=true">
+        #LipisColors {
+            display: block;
+        }
+
+        #FlagMeisterAnalyzeFlagsSelector img {
+            opacity: .2;
+        }
+
+        #FlagMeisterAnalyzeFlagsSelector img[iso="lgbt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="tn"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="aq"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="as"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bg"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bl"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bq"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="by"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="cr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="cu"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="dm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ec"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gp"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="gs"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="jm"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="kz"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="md"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pa"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pn"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="pe"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ps"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mr"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="mq"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="rs"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="se"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="sa"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="yt"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="wf"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="vi"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="va"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="bw"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="za"],
+        #FlagMeisterAnalyzeFlagsSelector img[iso="ug"] {
+            opacity: 1;
+        }
+
+        button[onclick*="IncorrectFlags"] {
+            background: lightcoral;
+            color: black;
+        }
+    </style>
+    <style>
+        #FlagDetailAnalyzer {
+            display: grid;
+            grid-template-columns: 6fr;
+            grid-template-rows: 1fr;
+            /* grid-gap: 0.2vw; */
+            max-width: 90vw;
+        }
+
+        #FlagAnalyzer {
+            max-height: 300px;
+
+            height: 270px;
+            /* overflow: scroll; */
+            cursor: pointer;
+            --flagmeisterdetail: 1;
+        }
+
+
+        #FlagAnalyzer img:nth-child(1) {
+            /* prevent any detail loading */
+            --flagmeisterdetail: 99999;
+            opacity: 1;
+        }
+
+        #FlagAnalyzer img:nth-child(2) {
+            /* unset CSS variable so detail from FlagMeister flag definition is used */
+            --flagmeisterdetail: initial;
+            opacity: .1;
+        }
+
+        #FlagAnalyzer img:nth-child(2)[detail],
+        #FlagAnalyzer img:nth-child(2)[source] {
+            opacity: 1;
+        }
+
+        #FlagAnalysis {
+            max-height: 200px;
+        }
+
+        .flaginfo {
+            font-size: .9em;
+            color: blue;
+        }
+
+        .infolabel {
+            color: black;
+        }
+
+        .flagmeisterCodeSize {
+            color: greenyellow;
+        }
+
+        .provider {
+            max-width: calc(100vw/var(--flagProvidersCount));
+        }
+
+        .providerDescription {
+            font-size: .7em;
+        }
+
+        #FlagMeisterCodeString {
+            max-width: 90vw;
+            overflow-wrap: break-word;
+            margin-bottom: 5em;
+        }
+    </style>
+</head>
+
+<body class=greencloth>
+
+    <template id=flaginfo>
+        <div class=flaginfo>
+            <div class=flagimage>
+                <!-- img src -->
+            </div>
+            <div class=flagdata>
+                <div class=countryname></div>
+                <div class=flagsize></div>
+            </div>
+        </div>
+    </template>
+
+    <section id=sectionHeader>
+        <div>
+            <style>
+                #sectionHeader flagmeister-text {
+                    /* do not load details!! */
+                    --flagmeisterdetail: 9999;
+                    --flagmeisterletterheight: 11vw;
+                }
+
+                #sectionHeader [iso="cn"] {
+                    --flagmeisterletterheight: 4vw;
+                }
+            </style>
+            <br>
+            <flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"> </flagmeister-text>
+        </div>
+
+
+        <h1><i><span class=highlightText>One flag</span> to rule them all</i></h1>
+        <h3><span class=highlightText>No</span> <i>static</i> SVG files! &nbsp;&nbsp; <span
+                class=highlightText>No</span> Image Sprite! &nbsp;&nbsp; <span class=highlightText>No</span>
+            Frameworks!&nbsp;&nbsp; <span class=highlightText>No</span>
+            Dependencies!&nbsp;&nbsp;
+        </h3>
+    </section>
+
+
+    <section>
+        <div class=docgrid>
+            <div>
+                <h1>All <span class=highlightText>HTML</span> required to display flags is:</h1>
+                <p>
+                    <textarea class=textarea_html style="width:300px">
+<img is=flag-nl>
+<img is=flag-gb>
+<img is=flag-ke>
+<img is=flag-kr>
+
+<img is=flag-tr>
+<img is=flag-aq>
+<img is=flag-nz>
+<img is=flag-zw>
+</textarea>
+                </p>
+            </div>
+            <div style="--flagmeisterdrawX:attr,70">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <img is=flag-nl>
+                <img is=flag-gb>
+                <img is=flag-ke>
+                <img is=flag-kr>
+                <img is=flag-tr>
+                <img is=flag-aq>
+                <img is=flag-nz>
+                <img is=flag-zw>
+            </div>
+        </div>
+        <p>
+            <h2>FlagMeister is one single <span class=highlightText><span class='flagmeister_size'>22</span> KB</span>
+                <sup>gzip</sup> file <br>creating <span class=highlightText>Custom Elements</span> <br>generating SVG
+                images for
+                <span class=highlightText><span class='flagmeister_flagcount'>246</span> flags</span></h2>
+
+            <textarea class=textarea_html style="overflow:hidden">
+<head>
+    <script src="elements.flagmeister.min.js"></script>
+</head>
+                            </textarea>
+            <h2><span class=highlightText>If all you want is a SVG flag you can stop reading here...</span>
+            </h2>
+
+        </p>
+    </section>
+
+
+    <section id=firstviewAllFlags>
+        <style>
+            #firstviewAllFlags {
+                /* prevent loading detail */
+                --flagmeisterdetail: 99999;
+            }
+        </style>
+        <h2><span id=FlagMeisterSVGinfo> </span></h2>
+        <flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>
+    </section>
+
+
+    <section id=focusDetailFlags>
+        <style>
+            #focusDetailFlags {
+                /* prevent loading detail */
+                --flagmeisterdetail: 99999;
+                --imgwidth: 30px;
+            }
+
+            #focusDetailFlags img {
+                display: none;
+                width: var(--imgwidth);
+            }
+
+            #focusDetailFlags img[detail*=".svg"] {
+                display: initial;
+            }
+        </style>
+        <div id=focusDetailFlagsContainer>
+
+        </div>
+        <script>
+            let injectDetailAnalyzer = () => {
+                let flags_with_detail = [...flags_with_detailList.querySelectorAll('[src*="detail"')];
+                let detailsizes = [...new Set(flags_with_detail.map(flag => ~~(flag.src).split`detail`[1]))].sort((a, b) => a - b).slice(0).reverse();
+                focusDetailFlagsContainer.innerHTML = detailsizes.map(size => {
+                    let id = `flagdetail` + size;
+                    return `<div id=${id}><h3><button onclick="focusDetailClickReset(event,${size})">reset</button><button onclick="focusDetailClick(event,${size})"> > ${size} pixels</button></h3><style>#${id} img[src*="detail${size}detail"]{display:initial}</style>`
+                        + `<flagmeister-list id=flagdetail${size}List></flagmeister-list>`
+                        + `</div>`;
+                }).join``;
+                let focusDetailClick = (event, size) => {
+                    let div = document.querySelector(`#flagdetail${size}`);
+                    div.style.setProperty('--flagmeisterdetail', size)
+                    div.style.setProperty('--imgwidth', size + 'px')
+                }
+                let focusDetailClickReset = (event, size) => {
+                    let div = document.querySelector(`#flagdetail${size}`);
+                    // div.style.setProperty('--flagmeisterdetail', size - 1)
+                    div.style.setProperty('--imgwidth', (size - 1) + 'px')
+                    let list = document.querySelectorAll(`#flagdetail${size}List img[detail*=".svg"]`);
+                    //console.log('reset', list.length);
+                    for (flag of list) flag.reset();
+                }
+            }
+            //injectDetailAnalyzer();
+        </script>
+    </section>
+
+    <section hidden>
+        <h1>FlagMeister is smart and small</h1>
+        <h3>
+            FlagMeister extends the IMG tag with Custom Element <span class=highlightText><i>is=</i></span>
+            notation, <span class=highlightText>executes JavaScript to generate SVG</span> and sets
+            the IMG src
+        </h3>
+        <p>
+            <ul>
+                <li>FlagMeister has a small JavaScript <span class=highlightText>
+                        <span class='flagmeister_size'>21</span> KB</span> footprint because flags have a lot in
+                    common:
+                    <br><br>
+                    <textarea class=textarea_html style="height:6em">
+flag-de: _ => stripes(black,red,yellow)
+flag-nl: _ => stripes(red,white,blue)
+flag-hu: _ => stripes(red,white,green)
+flag-cr: _ => stripes(blue,white,red,red,white,blue)
+</textarea>
+                    <br><br>
+                </li>
+                <li>All flags have been checked for correct Flag colors by <a
+                        href="https://www.schemecolor.com/color/country-flag"
+                        target="blank">https://www.schemecolor.com/color/country-flag</a></li>
+                <li>Flags are NOT true size but drawn on a standardized 640 by 480 grid</li>
+                <li>Flags requiring higher detail (external SVG) are only loaded when needed (if width exceeds
+                    presets)
+                </li>
+                <li>Country names included as 'country' data-attribute, no external JSON file required</li>
+                <li>Loads of extra SVG goodies</li>
+            </ul>
+        </p>
+    </section>
+    <a name="SVGGoodies"></a>
+    <section>
+        <h1>FlagMeister adds SVG goodies</h1>
+        <h2>Draw on flags</h2>
+        <p>The draw attribute/property accepts <span class=highlightText>any valid SVG string</span> or <span
+                class=highlightText>FlagMeister commands</span> and adds it on top of the
+            FlagMeister flag (a 640 x 480 grid)</p>
+        <textarea class=textarea_html>
+<img is=flag-be draw="<circle cx='320' cy='240' r='180' fill='green'/>">
+<img is=flag-fr draw="circle:320,240,180,green ; line:120,gold,0,0,640,480 ; star:red,55,30,5">
+<img is=flag-nl draw="attr:country,80;attr:data-not,80,120" data-not="Not Holland!"> 
+<img is=flag-eu draw="flag:gb,3,220,160">
+<img is=flag-us draw='text:{"str":"USA","fill":"gold","size":220,"stroke":"5,black"}'>
+</textarea>
+        <br>
+        <div class=horizontalFlags_5>
+            <img is=flag-be draw="<circle cx='320' cy='240' r='180' fill='green'/>">
+            <img is=flag-fr draw="c:320,240,180,green;line:120,gold,0,0,640,480;star:red,55,30,5">
+            <img is=flag-nl data-not="Not Holland!" draw='attr:country,80;attr:data-not,80,120'>
+            <img is=flag-eu draw="flag:gb,3,220,160">
+            <img is=flag-us country="USA"
+                draw='text:{"str":"USA","font":"Arial","fill":"gold","size":220,"width":5,"stroke":"black"}'>
+        </div>
+        <h3>FlagMeister commands and parameters</h3>
+        <style>
+            .commandCode {
+                display: table;
+                clear: both;
+                background: lightyellow;
+                color: black;
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+        </style>
+        <ul>
+            <li> backgroundcolor
+                <span class=commandCode>b: [color = #fff]</span>
+            </li>
+            <li> circle
+                <span class=commandCode>c: cx , cy , radius , color [, stroke width , strokecolor]</span>
+            </li>
+            <li> rect: x , y , width , height , color , [stroke width , strokecolor] </li>
+            <li> line: width , color , x1 , y1 , x2 , y2 , [stroke width , strokecolor] </li>
+            <li> flag: iso , [stroke width , strokecolor] </li>
+            <li> background: color </li>
+            <li> attr: attribute , fontsize , y OR attr: text-JSON </li>
+            <li> text: JSON Object: (showing default values):
+                <br>
+                &nbsp;&nbsp;{ str = 'fm' , size = 520 , x = 320 , y = 430 , fill = false , stroke = '' , s =
+                stroke.split`,` , font
+                =
+                'Bookman Old Style' , weight = 'bold' , anchor = 'middle'} </li>
+
+        </ul>
+        <h3>Notes on drawing</h3>
+        <ul>
+            <li>FlagMeister is not meant to be a SVG drawing tool, <a href="//inkscape.org">use InkScape</a> for SVG
+                drawing</li>
+            <li>FlagMeister does no error checking, pay attention to single and double quote usage</li>
+            <li><span class=highlightText>SVG strings</span> can only contain <span class=highlightText>single
+                    quotes</span>
+            </li>
+            <li>The FlagMeister text method takes one parameter, <span class=highlightText>a valid JSON string</span>
+                with <span class=highlightText>double quotes</span>
+            </li>
+            <li>Before you do anything with the US flag be sure to read
+                what you are <span class=highlightText>NOT allowed</span> to do with the US flag <a
+                    href="//www.huffpost.com/entry/american-flag-disrespect-tru_n_59c7140be4b06ddf45f867a0">by
+                    US
+                    Federal code 36</a></li>
+        </ul>
+    </section>
+    <section>
+        <h2>Apply CSS on IMGs</h2>
+        <p>
+            FlagMeister generates SVG used as Data-URI in IMG tags. Examples below use <span
+                class=highlightText>standard CSS on the IMG tag</span>:
+        </p>
+        <textarea class=textarea_html>
+img {
+    filter: drop-shadow(8px 8px 4px black);
+    border: 2px dashed lightcoral;
+}
+            </textarea>
+        <p>
+            The FlagMeister flag is an IMG taking up 100% of available width, in these examples the 5 column CSS grid
+            sets the width
+        </p>
+    </section>
+    <section>
+        <h2>Clip flags</h2>
+        <textarea class=textarea_html>
+<img is=flag-gd clip="bigstar">
+<img is=flag-gr clip="heart">
+<img is=flag-zw clip="circle:240,240,240">
+
+<!-- if you know SVG: -->
+<img is=flag-us clip="<path id='outline' fill='none' d='  ..SVG path in 640x480 grid..  ' />"
+                draw="<use href='#outline' stroke-width='6' stroke='#000'/>"  >
+
+<!-- if you have a path in a 640x480 grid: -->
+<img is=flag-nl draw="border:6px,grey"
+                clip="outline:  ..SVG path in 640x480 grid..  "
+                box="0 0 400 480">
+</textarea>
+        <br>
+        <div class="horizontalFlags_5 clipexamples">
+            <img is=flag-gd clip="bigstar">
+            <img is=flag-gr clip="heart">
+            <img is=flag-zw clip="circle:240,240,240">
+            <img is=flag-us
+                clip="<path id='usa' fill='none' 
+                    d='M67 83h2l2-4 1-4 3-8 1-3 2-3 1-2 2-2 3-1 3-1 1 2 1 4v3c1 2 2 1 3 2l2 2h10l4 1 3 1h7l3 1h3l3 1 4 1h4l3 1h4l4 1 4 1h9l3 1 4 1h3l4 1h3l5 1h8l5 1 6 1 4 1h6l3 1h4l4 1h6l4 1h6l4 1h3l4 1h8l3 1h6l5 1 5 1h8l2 1 4 1h10l4 1 3 1h8-4c-1-1 0-2 1-3l3-2 3-1c1-1 2-2 3-1l2 3 2 1 2 4 2 3 3 2 3 1 2 1 2 2 3 1 2 1 3 1h3l3-1h3l2-1h3l2-2 3-1 3-1 4-1h15l3 2 3 2 2 2 2 1 3 4 2 2 3 2 4 3 2 2 3 1 4 2 3 1 4 2 2 1 2 2 1 4 1 4 1 3v3l1 2 2 1 1 2 1 2 1 3 1 3 1 3v22l-2 2-1 2-1 2v3l2 1h5l3-1 2-1 3-1 2-2 2-2 2-3 3-2 2-2 3-2 3-1 1-2 2-1 1-3 1-2v-4l-2-1v-4l2-2 2-1h6l3-1 2-1 3-1 3-2 2-1 1-2 1-3 1-5 1-2 2-2 2-1 3-2 3-2 2-2 3-1 3-1 3-1 3-1 3-1h3l2-1 2-1 2-1 2-1 2-1 1-3 2-2v-3-4-3-4-4l2-3 1-4 1-2 1-4c0-2 2-2 3-3l3-1c2-1 3-2 5-1l3 3 2 4 2 3 1 3 1 5 1 3 1 3 2 2 1 2 1 3 2 1v3l1 3v4l-1 3-2 2-3 1-2 2h-3l-3-1c0-1-1-1-1 1v3l-2 2-3 2-3 2v15 7 3l3 2 3 3h1v-3l3 2 2 2 2 3v3l-2 1-4 1h-3l-2-3-2-1-3 1-2 2-3 1-4 1-3 1-2 3-2 2-2 2v2l3-1 3-2 4-2c2-1 2 1 2 2v3l-3 1-2 2h-3l-3 1-2 1-3 1h-3v3l2 3 1 3v8l-2 2-1 4c-1 1 0 3-2 4h-3l-2-2-1-2-2-3-1-2 2 2 1 3 2 4 1 2v3l1 3v14l-2 2-2-2-2-3-1-4-2-3-1-4-1-3c-1-2 0-1 0 0v4l-2 3-2 2-2 2v3l2 2 2 2 2 1 3 2 1 3v4h3l3 3 2 4v7l-2 2-2 3-1 3 2 4 1 3-2 2c-2 3-2 4-5 5l-2 1-3 2-3 2-3 1-1 4-2 2-1 2-3 1-2 3-1 2-1 2-2 2-1 4-1 3-2 4-1 4-2 4-1 4v3l-1 4-2 2-1 3-1 3v4l1 3 1 3 2 3 1 3 1 2 1 3 1 2 2 3 1 5 2 4 2 5 2 3 1 4 2 5 1 3 2 5 1 3 1 4v11l-3 1-2 1h-6l-2-2-2-3-1-2-2-1-3-2-3-3-2-2-3-3-1-2c-2-1-2-2-2-3l-3-3-1-3-1-2-1-3-1-3v-5-3-3-3l-1-2-2-3-1-2h-5l-3-1c-1 0-3 1-4-1l-3-1-2-2h-4l-4 1h-6l-3-2-4-1-5-2h-19l-4 1h-7l-3 1-3 2-3 3 2 1 1 2 3 1 3 2 1 4 1 2-1 3-4 1-4-1-1-2-3-2h-3l-3 1-4 2h-3l-3-4-3-1-2-1h-3l-4-1-5 1-4 1h-10l-2 1-3 2-2 2-3 1-3 1-2 2-2 2-2 3-3 3-4 1-3 1-3 1-3 1-1 3-1 3v4l-2 3v4l-1 5v10c0 2 0 3-2 3h-4l-4-2-6-1-3-2-4-3v-3-3l-1-6-3-7-2-4-3-4-2-4-2-3-2-3-1-4-1-2-2-3-2-3h-4l-3-2-3-1h-3l-3 3-3 4c-1 2-3 1-4 2l-2 2-4-2-2-2c-1-2-2-2-3-2l-3-2-2-3-1-3-1-4-1-4-2-4-1-3-2-2-2-3-2-3-3-2-2-3h-3l-3-1-2-1h-6l-3-1h-6l-1 3-2 2h-4l-5-1h-4l-6-1-5-1-4-1-6-2-3-1-4-2-5-3-8-4-6-4-4-1-3-1-1-3v-6l-1-3-4-1h-9l-5-1h-4l-4-5-2-2-1-3-1-2-2-4-1-3-2-4-2-3-1-2-2-3-3-3h-3l-3-2h-3l-2-2v-4l-1-5-1-3-1-5-2-6-2-5-1-3-1-3 2-4v-3-4-4l1-3v-5l-2-5-3-6-4-5-1-5 1-2 1-4v-5-4l1-5 6-6 2-5v-6l1-6 1-4 1-4 1-7a122 122 0 0 1 3-11l2-4 2-3 1-3 1-3 2-4 3-4 1-4 2-3 2-6v-4-4l1-4v-4-5-4-3c1-1 7 4 14 10l4 2 3 1h2-1' />"
+                draw="<use href='#usa' stroke='#000' stroke-width='6'/>">
+            <img is=flag-nl draw="border:6,grey" box="0 0 400 480"
+                clip="outline:m300 0c-7 3-15 0-20 4-1 10 0 4 6 3 7 0 10-6 17-6zm-66 7c-8 4 0 11 4 7 4-4 11 0 17-3 7-1 14-4 3-3-8 1-17-1-24-1zm105 0-18 6c-4 1-10 0-15 3-7 4-10 1-17 1-7-1 6 6-3 1-2 2 2 4 6 7-3 1 0 6-4 1-3-3-1 6-4 0-3-4 3-13-3-8-6-1-10 0-17 1-7 3-7-1-13 4l-21 10c-6 3-6 8-11 10-4 3-7 10-7 13 0 7-6 10-3 14l-3 1 4 10v14c-3 4-7 8 0 11 6 0 10 1 15 4 3-6 7-4 13-3 6 1-7 3-7 8-4 7-3 14-3 21 4 6 8 10 15 8 11-4 7 6 8 6 3 4 4 10 2 14l1-4c0-7-5-11-11-11-7-1-11-6-18-1-4 6-11 6-13 10 0 7-7 7-11 11l-15 10c-7 3-3 10-3 13 7-4 15 0 20 6 4 6 8 7 15 4 6-3 7-10 4-14l14-8c6-3 14-8 17-15 2 4-9 13-13 16-1 3-10 4-11 7-1 3-6 6-6 11-4 3-10 6-15 4-4-3-10-4-11-8-4-4-11 4-14-3-3-4-11 0-10-4-3 1-8-3-6-4-4-3 6 3 6-4 8-4 1-4 3-10-4 0 3-4 1-8-3-4-6-11-6-15 0-7 6-6 10-3 4 1 11-3 11-8 6-1 8-7 3-11-6-3-11 6-14-3-4-3 3-13-3-17-3-4-4-11-10-10-4 1-7 11-14 6-7 0-3-11-7-10-4-6-7 7-6 11l-8 27-4 35c-7 7 4 4-1 7 1-1-3 1-3 7-6 17-14 32-25 46-6 4-3 4-8 10-6 4-7 10-13 13-8-4-8 4-10 8-6 6 11-1 4 6 1 6 3 10 8 11 0 1 8 3 11 7-1 1 6 6 10 7 6 3 10 6 17 6 4 4 10-3 14-3-3 6-10 7-15 7-7-6-10 1-14 6-6-1-10 4-14 1-4-1-15-4-10 1 7 3 7 4-1 4-3-3-13 1-11 3 4 1 6 10 11 10 7-1 6 3 11 6 3 10-4 8-8 8-7-1-7-8-10-11-3-6-11-1-11-6l-15-1c-7-1-4 10-8 3-4-6-4-11-11-11l-14 8c0 6 8 7 8 13 6 6 7 3 11 3 3 0 6-6 6-1 1 4 4 8 8 8 1 4 13 4 14 0 0-4 3-11 8-7 4 3 6 7 11 8 6 3 11-4 14 3l13 4c11 0-3-8 3-11-4-6 7-7 13-8 3 3-3 13 8 8 7 4 4-3 11-6 3-6 4-7 10-4 4 3-1 7 1 11l11 1c7-3 4-8 10-11 1 1 10 8 3 15 7 1 4 14 10 13 10-7 3 10 10 7 7 1 11 0 17-1 4-6 10-4 13 3-3 8 8 6 10 13 3 0 15-3 11 3 1 6 6-4 8 3-6 3 0 8-4 8l-4 8c3 4-1 10-4 14 7-3 0 8-3 8-1 4-8 6-4 11 3 3 7 6 3 11 4 4 8-4 10-1 4 3 7 3 11 0 1 6 7-1 11 3 8-1-6-8 0-8 6 0 0-8 6-8 6 1 0-6 4-8-3-3-11-4-8-10-1-4-8-1-13-1 4-3-6-10 0-11 3-7 6 7 8 0 0-6 7-8 10-11 1-4 11-4 10-7-3-3 3-8-6-1-7 0-3-10-3-13 3-4 7-8 8-14 7 0 6-10 4-13v-15l-10-14c-7-3 4-11-4-11-10 0-1-7-6-10-8-3-6-3-4-8 0-3-7-6-1-8 6 3 8-7 13-3 8 3 7-3 3-7-6-1 10-1 7 3 4 4 8-3 11 4 3-1 11 6 10 1-3-6 0-6 4-3 4 1 8-6 13-6 4 0 10-6 13-3 3 4 10-3 10-8 7-3 0-7-4-10-4-3-13-7-3-10 1-7 7-6 13-8 0-7 8-6 10-11-1-8 14-1 7-10-4-4 0-8 3-14 3-6-3-8-7-13 0-11-3-3-7-1-8-1-8-6-17-4-8-1-4-8-8-14 4-1 11-1 4-7-1-6 1-10 8-10 6-1 11 3 17 1 6 4 8-3 7-10 1-7-1-15 3-21-1-7 7-11 8-17 1-7 4-13 1-20 1-8-4-11 0-18 3 1 1-11-4-11-3 0-11-3-7-8 1-3-10 1-13-4-4 1-7-4-7-10m0 0c-5-13-2-9-14-13m-307 301c1 4 10 3 7 8 1 0 8-4 13-3 6 4 10-3 4-7-4-1-10-1-14 1-7-3 0-4-10 0zm179-255c1-1-1 1 0 0zm11-42c-11 1-20 7-31 7-6 1-7 13-3 8l13-4c4-3 10-6 15-6-3-1 0-3 6-3 1-3 3-1 0-3zm-45 22c-8 3-14 10-21 14-1 6 8-1 11-4-1-4 8-6 13-8zm-22 20c-6 6 0 7-6 8-4 7-8 15-7 24l8-4c4-4 8-7 10-13 1-6 0-13-6-15zm55 22c1 0-1 3 0 0zm-29 92c-5 9 3 7 0 0zm-125 104c0 10 3 3 8 3 4-4 10 6 7 7 3 6 4 10 10 8l13 8c6 1 14-3 13-6 10-3-4 0-7-4-4-1-7-7-11-10l-14-7c-1-7-8-3-18 0zm-18 20c0 7 8 4 11 1 3-3 8 1 10 6 0 4 7 4 11 6 3-1 11-3 8-7-3-4-8-3-11-10-3-3-8-3-14-3-8 0-15 1-15 7zm-20 46-13 4c3 6-3 10 0 13 1 4 4 8 10 8 10 3 1-10 8-7 3-3 6 0 11 0 3 4 8 3 13 6-3 6 1 11 8 6 1 6 3 0 7 1 3-1 7-6 11-4 7-4 13-10 18-17-1-1-7-7-4-1l-3 3h-3c0-1-8-4-10-7 0-4-10-6-8 1-3 0-8 7-13 6-1 0-8-1-7-3-6 0-10-4-15-6-4 0-6-4-11-3z">
+
+        </div>
+    </section>
+    <section>
+        <h2>Change SVG viewBox = " x y width height " </h2>
+        <h3> <span class=highlightText>The flag is still drawn in a 640 by 480 grid !</span> </h3>
+        <textarea class=textarea_html>
+<img is=flag-gd>
+<img is=flag-gd clip="bigstar" box="left">      =   0 0 480 480
+<img is=flag-gd clip="bigstar" box="center">    =  80 0 480 480
+<img is=flag-gd clip="bigstar" box="right">     = 160 0 480 480
+<img is=flag-zw clip="circle:240,240,240" box="-80 100 640 280">
+</textarea>
+        <br>
+        <div class="horizontalFlags_5 clipexamples">
+            <img is=flag-gd>
+            <img is=flag-gd clip="bigstar" box="left">
+            <img is=flag-gd clip="bigstar" box="center">
+            <img is=flag-gd clip="bigstar" box="right">
+            <img is=flag-zw clip="circle:240,240,240" box="-80 100 640 280">
+
+        </div>
+    </section>
+    <section id=sectionFilter>
+        <style>
+            #sectionFilter .clipexamples img {
+                border: initial;
+            }
+        </style>
+        <h2>Apply the FlagMeister <span class=highlightText>light</span> filter</h2>
+        <p class="section_text">
+            This predefined SVG filter creates a <span class=highlightText>3D lighting effect</span> and an optional
+            <span class=highlightText>spotlight</span> defaulting to the center of the flag
+        </p>
+        <textarea class=textarea_html>
+<img is=flag-us clip="heart">
+<img is=flag-us clip="heart" filter="light">
+<img is=flag-us>
+<img is=flag-us filter="light">
+<img is=flag-us filter='light:{"spot":"royalblue","x":160,"y":120}'>
+</textarea>
+        <div class="horizontalFlags_5 clipexamples">
+            <img is=flag-gb clip="heart" box="center">
+            <img is=flag-gb clip="heart" box="center" filter="light">
+            <img is=flag-us>
+            <img is=flag-us filter="light">
+            <img is=flag-us filter='light:{"spot":"royalblue","x":160,"y":120}'>
+        </div>
+        <p class="section_text">
+            The FlagMeister <span class=highlightText>light</span> function takes optional parameters as a
+            JSON-formatted string in the filter attribute:
+        </p>
+        <textarea class=textarea_html>
+light: ({
+      "color1":"#ddd" , "color2":"#333" , "offset":4, "blur":4
+    , "x":320 , "y":240 , "z":70 , "spot":"transparent" , "focus":15
+}) => { ... }
+        </textarea>
+        <p class="section_text">
+            <span class=highlightText>or</span>, after deep-learning SVG filters, paste any <span
+                class=highlightText>valid
+                SVG filter definition</span> in the filter attribute.
+        </p>
+    </section>
+
+
+
+
+    <a name="CSSproperties"></a>
+    <section>
+        <h2>CSS custom properties/variables can style multiple flags</h2>
+        <p class=section_text>
+        </p>
+        <textarea class=textarea_html>
+<style>
+    .rating {
+        --flagmeisterclip: heart;
+        --flagmeisterbox: center;
+        --flagmeisterfilter: light;
+    }
+    .rating img:not([selected]) {
+        --flagmeisterfilter: none;
+        filter: grayscale();
+    }
+</style>
+<div class=rating>
+    <img is=flag-lgbt selected>
+    <img is=flag-lgbt selected>
+    <img is=flag-lgbt selected>
+    <img is=flag-lgbt>
+    <img is=flag-lgbt>
+</div>
+</textarea>
+        <style>
+            .rating {
+                --flagmeisterclip: heart;
+                --flagmeisterbox: center;
+                --flagmeisterfilter: light;
+                --color1: hotpink;
+            }
+
+            .rating img:not([selected]) {
+                --flagmeisterfilter: none;
+                filter: grayscale();
+            }
+        </style>
+        <div id=FlagMeisterRating class="horizontalFlags_5 clipexamples rating">
+            <img is=flag-lgbt selected>
+            <img is=flag-lgbt selected>
+            <img is=flag-lgbt selected>
+            <img is=flag-lgbt>
+            <img is=flag-lgbt>
+        </div>
+        <script>
+            // in this example the light filter is not applied/reset on mouseover, add a x.load() event to redraw the image
+            FlagMeisterRating.onmouseover = evt => {
+                let elements = [...FlagMeisterRating.children];
+                elements.map((x, i) => x[
+                    (
+                        i > elements.indexOf(evt.path[0])
+                            ? 'remove'
+                            : 'set'
+                    ) + 'Attribute'
+                ]('selected', ''));
+            }
+        </script>
+        <p class=section_text>
+            FlagMeister flags redraw on <span class=highlightText>attributes changes</span> (observedAttributes): <span
+                class=highlightText>iso , draw , clip , box ,
+                filter , selected</span>
+            <br>
+            <br>
+            Flags are <span class=highlightText>not updated</span> when CSS variables change!
+            <br>
+            When you hover over the 4th and 5th heart, the filter is <span class=highlightText>not</span> applied!
+            <br>
+            <br>
+            Use the flag.load() method to redraw a flag OR trigger an attribute change.
+        </p>
+    </section>
+    <section id=sectionCreateBanner>
+        <div>
+            <style>
+                #FlagMeisterCreateBanner {
+                    /* do not load details!! */
+                    --flagmeisterdetail: 9999;
+                    --flagmeisterletterheight: 100px;
+                    min-height: var(--flagmeisterletterheight);
+                }
+            </style>
+            <br>
+            <div id=FlagMeisterCreateBanner>
+                <flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="FlagMeister">
+                </flagmeister-text>
+            </div>
+        </div>
+        <h1>You can now <span class=highlightText>re-create</span> the banner:</h1>
+        <ul class=section_text>
+            <li>Word: <input name=bannertext value=FlagMeister />
+                <span style=font-size:.8em><span class=highlightText>yes!</span> this is a live INPUT field (use a _
+                    underscore
+                    for spaces)</span>
+            </li>
+            <li>an IMG is= for every letter</li>
+            <li>Clipped with a SVG text-character</li>
+            <li>FlagMeister Light filter</li>
+            <li>CSS highlighting and drop shadow</li>
+        </ul>
+        <h2>But that is <span class=highlightText>too much work...</span>
+            <br><br>
+            ... the FlagMeister <span class=highlightText>added 361 BYTES!</span>
+            <br></br>
+            <span class=highlightText>... Now...</span> you create the banner with a <span class=highlightText>
+                Autonomous
+                Custom Element</span>:
+        </h2>
+        <textarea class=textarea_html>
+<flagmeister-text word="FlagMeister" iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki"></flagmeister-text>
+</textarea>
+        <p class=section_text>
+            <span class=highlightText>
+                flagmeister-text
+            </span> creates all child DOM elements.<br>There is no shadowDOM so you can customize all elements with
+            <span class=highlightText>CSS specificity</span>
+            <br>
+            <br>
+            <img src="flagmeister-text-dom.jpg" style="width:initial">
+
+        </p>
+    </section>
+
+    <a name="DetailFlags"></a>
+    <section>
+        <h2>Ofcourse it is <span class=highlightText>impossible</span> to store all flag details in <span
+                class='flagmeister_size'>22</span> KB</h2>
+        <p><span class=highlightText><b>IF</b> flags require more detail </span>
+            <br>FlagMeister loads flags asynchronously when the width (observed by the <a
+                href="https://caniuse.com/#feat=resizeobserver">ResizeObserver
+                API</a>) gets past a number of pixels
+        </p>
+        <div>
+            <style>
+                img[sourcevar="kent"] {
+                    --flagmeistersource: //raw.githubusercontent.com/kent1D/svg-flags/master/flags/;
+                }
+
+                img[sourcevar="nilson"] {
+                    --flagmeistersource: //raw.githubusercontent.com/hjnilsson/country-flags/master/svg/;
+                }
+
+                img[sourcevar="lipis"] {
+                    --flagmeistersource: //raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/;
+                }
+
+                #FlagMeisterDetailTable {
+                    background-color: darkslategray;
+                }
+
+                #FlagMeisterDetailTable TH {
+                    font-weight: normal;
+                }
+
+                #FlagMeisterDetailTable th:nth-child(n+7) {
+                    color: white;
+                }
+            </style>
+            <table id=FlagMeisterDetailTable>
+                <tr>
+                    <th colspan></th>
+                    <th colspan></th>
+                    <th colspan></th>
+                    <th colspan></th>
+                    <th colspan></th>
+                    <th colspan></th>
+                    <th colspan=4 align=left>SVG flag repositories:</th>
+                </tr>
+                <tr>
+                    <th>country</th>
+                    <th>20px</th>
+                    <th>40px</th>
+                    <th>60px</th>
+                    <th>100px</th>
+                    <th>No detail<br>detail=9999</th>
+                    <th>countries API<br>(default)</th>
+                    <th>Kent1D</th>
+                    <th>Nillson</th>
+                    <th>Lipis</th>
+                </tr>
+                <tr>
+                    <td>Bolivia</td>
+                    <td><img is=flag-bo style=width:20 /></td>
+                    <td><img is=flag-bo style=width:40 /></td>
+                    <td><img is=flag-bo style=width:60 /></td>
+                    <td><img is=flag-bo style=width:100 /></td>
+                    <td><img is=flag-bo style=width:100 detail=9999 /></td>
+                    <td><img is=flag-bo style=width:100 /></td>
+                    <td><img is=flag-bo style=width:100 sourcevar=kent /></td>
+                    <td><img is=flag-bo style=width:100 sourcevar=nilson /></td>
+                    <td><img is=flag-bo style=width:100 sourcevar=lipis /></td>
+                </tr>
+                <tr>
+                    <td>Spain</td>
+                    <td><img is=flag-es style=width:20 /></td>
+                    <td><img is=flag-es style=width:40 /></td>
+                    <td><img is=flag-es style=width:60 /></td>
+                    <td><img is=flag-es style=width:100 /></td>
+                    <td><img is=flag-es style=width:100 detail=9999 /></td>
+                    <td><img is=flag-es style=width:100 /></td>
+                    <td><img is=flag-es style=width:100 sourcevar=kent /></td>
+                    <td><img is=flag-es style=width:100 sourcevar=nilson /></td>
+                    <td><img is=flag-es style=width:100 sourcevar=lipis /></td>
+                </tr>
+                <tr>
+                    <td>Belarus</td>
+                    <td><img is=flag-by style=width:20 /></td>
+                    <td><img is=flag-by style=width:40 /></td>
+                    <td><img is=flag-by style=width:60 /></td>
+                    <td><img is=flag-by style=width:100 /></td>
+                    <td><img is=flag-by style=width:100 detail=9999 /></td>
+                    <td><img is=flag-by style=width:100 /></td>
+                    <td><img is=flag-by style=width:100 sourcevar=kent /></td>
+                    <td><img is=flag-by style=width:100 sourcevar=nilson /></td>
+                    <td><img is=flag-by style=width:100 sourcevar=lipis /></td>
+                </tr>
+                <tr>
+                    <td>Kazachstan</td>
+                    <td><img is=flag-kz style=width:20 /></td>
+                    <td><img is=flag-kz style=width:40 /></td>
+                    <td><img is=flag-kz style=width:60 /></td>
+                    <td><img is=flag-kz style=width:100 /></td>
+                    <td><img is=flag-kz style=width:100 detail=9999 /></td>
+                    <td><img is=flag-kz style=width:100 /></td>
+                    <td><img is=flag-kz style=width:100 sourcevar=kent /></td>
+                    <td><img is=flag-kz style=width:100 sourcevar=nilson /></td>
+                    <td><img is=flag-kz style=width:100 sourcevar=lipis /></td>
+                </tr>
+            </table>
+            <h3>Observations</h3>
+            <ul>
+                <li>The countries API (used by default) does not have a detailed Bolivian flag</li>
+                <li>Most repos use the true size (not 640:480) flagsize (you can ofcourse force height with CSS)</li>
+                <li>The very popular Lipis repo has incorrect colors</li>
+            </ul>
+            <h3>detail and source parameters</h3>
+            Detail loading (n pixels) and the source repo can be configured with an element attribute/property OR CSS
+            variable
+        </div>
+
+    </section>
+
+    <a name="FlagAnalyzer"></a>
+    <!-- 
+
+
+        The code below was never meant to go public, I used it to analyze all flags out there
+
+        But it is a fun tool, so why not make a public ... your mileage may vary!
+
+
+     -->
+    <section id=FlagMeisterAnalyzeFlags style="max-width:unset" hidden>
+        <h1>Flag Analyzer</h1>
+        <p class=section_text style=clear:both>
+            I built this tool for my flag selection phase, never meant it to be part of this demo page, but
+            it is too cool to go to waste... <span class=highlightText>But don't move the mouse too fast!</span>
+            <br>
+            <br>
+            <table id=FlagTable>
+                <tr>
+                    <td>Repo</td>
+                    <td>GitHub<br>used / stars / fork</td>
+                    <td>Flags</td>
+                    <td>Requests</td>
+                    <td>GZip size</td>
+                </tr>
+                <tr>
+                    <td><a href="https://flags.dsgn.it/">https://flags.dsgn.it/</a>
+                        <br>Great UI!<br>
+                        But I can't load them<br>with 2-letter ISO reference</a>
+                    </td>
+                    <td>0 / 3 / 0</td>
+                    <td>250+<br>Also regional flags</td>
+                    <td>1 per SVG flag file<br></td>
+                    <td>> 660 KB</td>
+                </tr>
+                <tr>
+                    <td><a href="http://restcountries.eu/">RestCountries API</a>
+                    </td>
+                    <td>579 / 4439 / 968</td>
+                    <td>251</td>
+                    <td>2 per SVG flag file<br>Requires first call to API,<br>returns the flag URI</td>
+                    <td>> 660 KB</td>
+                </tr>
+                <tr>
+                    <td><a href="http://flag-icon-css.lip.is">Lipis Flag-Icon-CSS</a><br>Popular,
+                        <br>But...
+                        <br>most flags have wrong colors</td>
+                    <td>9161 / 5920 / 832</td>
+                    <td>247</td>
+                    <td>1 per SVG flag file</td>
+                    <td>687 KB</td>
+                </tr>
+                <tr>
+                    <td><a href="http://hjnilsson.github.io/country-flags">Nillson</a></td>
+                    <td>175 / 1440 / 281</td>
+                    <td>257</td>
+                    <td>1 per SVG flag file</td>
+                    <td>1100 KB</td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/kent1D/svg-flags">Kent1D</a>
+                        <br>Flags in true proportions (not 4:3)</td>
+                    <td>0 / 8 / 1</td>
+                    <td>254<br>+ regional, org. <br>and historical flags</td>
+                    <td>1 per SVG flag file</td>
+                    <td>est. 600 KB</td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.phoca.cz/cssflags/">Phocas</a><br>
+                        <span class=FlagTable_description>SVG as CSS background</span></td>
+                    <td>No Github Repo</td>
+                    <td>253</td>
+                    <td>1 CSS file</td>
+                    <td>1297 KB</td>
+                </tr>
+                <tr>
+                    <td><a href="https://flagmeister.github.io/">FlagMeister</a><br>
+                        <span class=FlagTable_description>JavaScript generated SVG</span></td>
+                    <td>1 / 1 / 1</td>
+                    <td class=highlightText><span class='flagmeister_flagcount'>246</span> flags</td>
+                    <td class=highlightText>1 JavaScript file</td>
+                    <td class=highlightText><span class='flagmeister_size'>21</span> KB</td>
+                </tr>
+            </table>
+            <p>
+                <button onclick="buttonSelect(this,'All')">All</button>
+                <button onclick="buttonSelect(this,'NeedWork')">FlagMeister flags needing work</button>
+                <button onclick="buttonSelect(this,'DimNoDetail')">Flags with detail</button>
+                <button onclick="buttonSelect(this,'IncorrectFlags')">Mismatching flags</button>
+                <button onclick="buttonSelect(this,'FlagsKB')">> 1 KB flags</button>
+            </p>
+            <p id=LipisColors>Almost all colors in the Lipis Repo are incorrect, these are just the obvious ones.
+            </p>
+            <p id=FlagAnalyzerFlagMeisterList>
+                <!-- LIST ALL FLAGS -->
+            </p>
+            <div>
+                <span id=FlagAnalyzerISO></span>
+            </div>
+            <div id=FlagDetailAnalyzer>
+                <div id=FlagAnalyzerHeader class=flaggrid>
+                </div>
+                <div id=FlagAnalyzer class=flaggrid>
+                    <!-- dispaying flags from all providers-->
+                </div>
+                <div spacer id=FlagMeisterCodeString></div>
+            </div>
+        </p>
+    </section>
+    <script>
+        function buttonSelect(evt, name) {
+            [...document.querySelectorAll('[id*="button_"]')].map(style => style.disabled = 1);
+            document.querySelector(`[id*="${name}"]`).disabled = false;
+            if (name == 'FlagsKB') {
+
+            }
+        }
+        window.onload = () => {
+            document.body.style.visibility = 'initial';
+            //return;
+
+            let flags = [...firstviewAllFlags.querySelectorAll('img')];
+            let codeSize = flag => {
+                return flag && flag.data && flag.data[1].toString().length;
+            }
+            let totalcodesize = 0;
+            FlagMeisterSVGinfo.append(
+                ['FlagMeister created ',
+                    flags.length,
+                    ' SVG flags, totalling ',
+                    flags.reduce((totalsvg, flag) => {
+                        totalcodesize += codeSize(flag);
+                        return totalsvg + flag.src.length;
+                    }, 0),
+                    ` hydrated bytes`
+                    //, ` with ${totalcodesize} bytes of Code`,
+                ].join``
+            );
+
+            setTimeout(initAnalysisFlags, 2000);
+            function initAnalysisFlags() {
+                FlagMeisterAnalyzeFlags.style.display = 'initial';
+                FlagAnalyzerFlagMeisterList.innerHTML = `<flagmeister-list id=FlagMeisterAnalyzeFlagsSelector></flagmeister-list>`;
+                //let flags = [...FlagMeisterAnalyzeFlagsSelector.children];
+                //let flags = [...FlagMeisterAnalyzeFlagsSelector.querySelectorAll('img')];
+                flags.forEach(flag => {
+                    let codesize = codeSize(flag);
+                    if (codesize > 1000) flag.setAttribute('flagkb', 1000);
+                    if (codesize > 1500) flag.setAttribute('flagkb', 1500);
+                    if (codesize > 2000) flag.setAttribute('flagkb', 2000);
+                })
+
+                let template = document.getElementById('flaginfo');
+                let flagProviders = [
+                    {
+                        name: 'FlagMeister',
+                        site: 'https://flagmeister.github.io',
+                        description: '',
+                        source: false
+                    },
+                    {
+                        name: 'FlagMeister - detail',
+                        site: 'https://flagmeister.github.io',
+                        description: 'Auto loading detail if flag has detail AND flag is displayed over N (configurable) pixels wide<br>(configurable) Default source: Restcountries',
+                        source: false
+                    },
+                    {
+                        name: 'Restcountries API',
+                        site: 'https://restcountries.eu',
+                        description: 'API for highly detailed country info, flags and also info on languages and border information, etc',
+                        source: false
+                    },
+                    // {
+                    //     name: 'CedMax',
+                    //     site: 'https://flags.dsgn.it',
+                    //     description: 'Great UI!',
+                    //     source: 'https://flags.dsgn.it/assets/'
+                    // },
+                    {
+                        name: 'Nillson',
+                        site: 'https://github.com/hjnilsson/country-flags',
+                        description: 'SVG and PNGs in multiple sizes.<br>source:wikipedia',
+                        source: 'https://raw.githubusercontent.com/hjnilsson/country-flags/master/svg/'
+                    },
+                    {
+                        name: 'Kent1D',
+                        site: 'https://github.com/kent1D/svg-flags',
+                        description: '"flags are not 4:3!"',
+                        source: 'https://raw.githubusercontent.com/kent1D/svg-flags/master/flags/'
+                    },
+                    {
+                        name: 'FlagKit 2.0',
+                        site: 'https://github.com/madebybowtie/FlagKit',
+                        description: 'Maybe a bit too abstract.. see the US flag',
+                        source: 'https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/SVG/'
+                    },
+                    {
+                        name: 'Lipis 4:3',
+                        site: 'http://flag-icon-css.lip.is/',
+                        description: 'Most popular.. <br><span style=color:darkred>Alas, most flag colors are wrong!</span>',
+                        source: 'https://raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/'
+                    },
+                    // {
+                    //     name: 'Lipis 1:1',
+                    //     site: 'http://flag-icon-css.lip.is/',
+                    //     description: 'Square shaped,<br>but brutally clipped',
+                    //     detail: 1,
+                    //     source: 'https://raw.githubusercontent.com/lipis/flag-icon-css/master/flags/1x1/'
+                    // }
+                ];
+                document.body.style.setProperty('--flagProvidersCount', flagProviders.length);
+
+                FlagAnalyzerHeader.innerHTML = flagProviders.reduce((html, provider) => {
+                    return html + `<div class='provider'>
+                    <div class='providerName'><a href="${provider.site}" target="blank">${provider.name}</a></div>
+                    <div class='flagInfo'><!--information for flag is inserted here--></div>
+                    <div class='providerDescription'>${provider.description}</div>
+                    </div>`;
+                }, '');
+
+                let providerFlags = iso => {
+                    let loadstatus = [0, 0, 0, 0, 0, 0];
+                    let codesize = 0;
+                    return flagProviders.map((provider, idx) => {
+                        let flag = document.createElement('img', {
+                            is: 'flag-' + iso
+                        });
+                        let reportSizes = () => {
+                            if (!loadstatus[0] && loadstatus.filter(x => x).length == 5) {
+                                setTimeout(() => {
+                                    [...FlagAnalyzerHeader.children].forEach(flag => flag.style.background = 'initial');
+                                    loadstatus[0] = 1;//execute once
+                                    let size = x => x.src.length;
+                                    let sortedFlagSize = [...FlagAnalysis]
+                                        .filter((x, idx) => x.detail && x.detail.includes('.svg'))
+                                        .sort((a, b) => size(a) - size(b));
+                                    let smallest = sortedFlagSize.shift();
+                                    let largest = sortedFlagSize.pop();
+                                    let headercolor = (x, color) => FlagAnalyzerHeader.children[x.getAttribute('idx')].style.background = color;
+                                    smallest && headercolor(smallest, 'lightgreen');
+                                    largest && headercolor(largest, 'lightcoral');
+                                    if (codesize > size(smallest)) headercolor(FlagAnalysis[0], 'orange');
+                                }, 100);
+                            }
+                        }
+                        let setSize = (idx, x) => {
+                            FlagAnalyzerHeader.children[idx].querySelector('.flagInfo').innerHTML = x
+                                ? x + ' bytes'
+                                : `<b>missing</b>`;
+                        }
+                        flag.id = 'FlagAnalysis';
+                        flag.setAttribute('idx', idx);
+                        if (flag.detail > 0) flag.detail = provider.detail;
+                        if (provider.source && provider.source.includes('FlagKit'))
+                            flag.setAttribute('source', provider.source + iso.toUpperCase() + '.svg');
+                        else
+                            flag.source = provider.source;
+                        flag.onerror = () => {
+                            loadstatus[idx] = 1;
+                            setSize(idx, 0);
+                            flag.detail = 'missing';
+                            reportSizes(idx);
+                        }
+                        flag.onload = () => {
+                            if (flag.detail && flag.detail.includes('.svg')) {
+                                loadstatus[idx] = 1;
+                                reportSizes(idx);
+                            }
+                            if (idx == 0) {
+                                FlagMeisterCodeString.innerHTML = flag.data.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/#/g, '#');
+                                codesize = flag.data.length;
+                                setSize(idx, '<span class=flagmeisterCodeSize>Code: <b>' + codesize + '</b></span>');
+                                FlagAnalyzerHeader.children[0].querySelector('.providerDescription').innerHTML = 'generated SVG:' + flag.src.length + ' bytes;'
+                                    + '<br><br>Note: Just an indication. Only single-file GZip size is important!'
+                            }
+                            if (idx > 0) {
+                                //console.log(flag.detail);
+                                setSize(idx, 'SVG: <b>' + flag.src.length + '</b>');
+                            }
+                            if (idx == 2) {
+                                let data = flag.info;// restcountries API flag
+                                if (data) {
+                                    FlagAnalyzerISO.innerHTML = `<h2>${iso} : ${data.name}</h2>
+                                                    <p><span class=infolabel>capital:</span> ${data.capital}
+                                                    <span class=infolabel>region:</span> ${data.region} - ${data.subregion}
+                                                    <span class=infolabel>population:</span> ${data.population}
+                                                    <span class=infolabel>languages:</span> ${data.languages && data.languages.map(ln => ln.name).join`, `}</p>`;
+                                } else {
+                                    FlagAnalyzerISO.innerHTML = `<h2>${iso} : no country</h2>`;
+                                }
+                            }
+                        }
+                        return flag;
+                    });
+                };
+
+                let resetAnalysisFlags = iso => {
+                    FlagAnalyzer.innerHTML = '';
+                    FlagAnalyzer.append(...providerFlags(iso));
+                }
+                resetAnalysisFlags('cu');
+
+                let selectableFlags = document.querySelector('#FlagMeisterAnalyzeFlagsSelector').children;
+                [...selectableFlags].forEach(flag => {
+                    flag.addEventListener('mouseover', evt => resetAnalysisFlags(flag.getAttribute('iso')));
+                });
+
+                [...document.querySelectorAll('.flagmeister_flagcount')].map(count => count.innerHTML = flags.length);
+                [...document.querySelectorAll('.flagmeister_size')].map(count => count.innerHTML = 22);
+                [...document.querySelectorAll('textarea')].map(o => o.style.height = o.scrollHeight + "px");
+            };
+
+            //editable input box
+            document.querySelector('[name="bannertext"]').addEventListener('keyup', event => {
+                FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
+            });
+
+        }
+    </script>
+    <!-- <a style="position:fixed;top:0;right:0" href="https://github.com/flagmeister"><img width="160" height="160" -->
+    <!-- src="https://github.blog/wp-content/uploads/2008/12/forkme_right_red_aa0000.png?resize=160%2C160"></a> -->
+
+
+    <!-- TODO -->
+    <script>
+        let waving = 20;
+        let wavedirection = 1;
+        setInterval(() => {
+            //                document.getElementById('wave').filter = `<filter id='fF'><feTurbulence type='fractalNoise' baseFrequency='0.01'/><feDisplacementMap in='SourceGraphic' scale='${waving += wavedirection * 5}'/></filter>`;
+            if (waving > 30) wavedirection = -1;
+            if (waving < -30) wavedirection = 1;
+        }, 99)
+    </script>
+
+    https://jsfiddle.net/dannye/fuxhjd0k/
+
+
+</body>
