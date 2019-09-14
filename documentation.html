@@ -835,7 +835,6 @@ light: ({
     <img is=flag-lgbt>
     <img is=flag-lgbt>
 </div>
-<script>..onmouseover Event sets selected attribute..</script>
 </textarea>
         <style>
             .rating {
@@ -858,17 +857,17 @@ light: ({
             <img is=flag-lgbt>
         </div>
         <script>
-                // in this example the light filter is not applied/reset on mouseover, add a x.load() event to redraw the image
-                FlagMeisterRating.onmouseover = evt => {
-                    let elements = [...FlagMeisterRating.children];
-                    elements.map((x, i) => x[
-                        (
-                            i > elements.indexOf(evt.path[0])
-                                ? 'remove'
-                                : 'set'
-                        ) + 'Attribute'
-                    ]('selected', 'true'));
-                }
+            // in this example the light filter is not applied/reset on mouseover, add a x.load() event to redraw the image
+            FlagMeisterRating.onmouseover = evt => {
+                let elements = [...FlagMeisterRating.children];
+                elements.map((x, i) => x[
+                    (
+                        i > elements.indexOf(evt.path[0])
+                            ? 'remove'
+                            : 'set'
+                    ) + 'Attribute'
+                ]('selected', 'true'));
+            }
         </script>
         <p class=section_text>
             FlagMeister flags redraw on <span class=highlightText>attributes changes</span> (observedAttributes): <span
