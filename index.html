@@ -169,8 +169,10 @@
 <body class=greencloth>
 
     <section id=sectionHeader>
-        <flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister">
-        </flagmeister-text>
+        <div id=injectFlagMeisterBanner>
+            <!-- <flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister">
+        </flagmeister-text> -->
+        </div>
         <h3><span class=highlightText>No</span> <i>static</i> SVG files! &nbsp;&nbsp; <span
                 class=highlightText>No</span> Image Sprite! &nbsp;&nbsp; <span class=highlightText>No</span>
             Frameworks!&nbsp;&nbsp; <span class=highlightText>No</span>
@@ -269,6 +271,8 @@
             document.body.style.visibility = 'initial';
 
             window.setTimeout(() => {
+                // inject FlagMeister Banner
+                injectFlagMeisterBanner.innerHTML = '<flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
                 // inject all flags
                 injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
                 // process all injected flag
@@ -307,4 +311,4 @@
 
 
 </body>
-Published: 2019-09-14 13:07 
+Published: 2019-09-14 13:12 
