@@ -199,15 +199,16 @@
 <img is=flag-jollyroger>
 </textarea>
             </div>
-            <div id=EightExamples hidden>
-                <img is=flag-nl>
-                <img is=flag-nl loading="zw">
-                <img is=flag-nl loading="ke">
-                <img is=flag-nl loading="kr">
-                <img is=flag-nl loading="tr">
-                <img is=flag-nl loading="aq">
-                <img is=flag-nl loading="nz">
-                <img is=flag-nl loading="jollyroger">
+            <!-- can't lazy load these IMGs?  -->
+            <div convert2HTMLonload>
+                <!-- <img id=f1 is=flag-nl>
+                <img id=f2 is=flag-zw>
+                <img id=f3 is=flag-ke>
+                <img id=f4 is=flag-kr>
+                <img id=f5 is=flag-tr>
+                <img id=f6 is=flag-aq>
+                <img id=f7 is=flag-nz>
+                <img id=f8 is=flag-jollyroger> -->
             </div>
         </div>
         <div>
@@ -240,17 +241,15 @@
         </h2>
     </section>
 
-    <section>
-        <h2>If you want FlagMeister to create:</h2>
-
-        <!-- FlagMeister Examples -->
+    <section convert2HTMLonload>
+        <!-- <h2>If you want FlagMeister to create:</h2>
         <div class=horizontalFlags_5>
             <img is=flag-nl filter=light data-not="Not Holland!" draw='attr:country,80;attr:data-not,80,120'>
-            <img is=flag-nl loading="eu" filter=light draw="flag:gb,3,215,160">
-            <img is=flag-nl loading="lgbt" clip="heart" box="center" filter="light">
-            <img is=flag-nl loading="us" filter='light:{"spot":"royalblue","x":160,"y":120}'
+            <img is=flag-eu filter=light draw="flag:gb,3,215,160">
+            <img is=flag-lgbt clip="heart" box="center" filter="light">
+            <img is=flag-us filter='light:{"spot":"royalblue","x":160,"y":120}'
                 draw='text:{"str":"VOTE!","font":"Arial","fill":"gold","size":170,"width":8,"stroke":"black"}'>
-            <img is=flag-nl loading="gb" draw="border:5px,#000" box="270 0 390 480"
+            <img is=flag-gb draw="border:5px,#000" box="270 0 390 480"
                 clip="outline:m290 457s16 1 16 11c0 0 7-4 8-10 2-7 10 0 10 0l4-8 35 17c2 0 14-25 14-25s47 14 49 13c2 0 1-7 1-7l24 1-3-10 21 15 24-1 12 7 23-10 2 4 7-8 12-1 3-17-19 3-3-10s-13-1-12-2l17-1 5-10-7-2h12l6-4-5-6 8 2s25-23 18-39c-6-16-28-24-39-23-10 1-8 10-8 10s-7-1-9-7c0 0 1-5 9-8 7-3-1-20-5-27-3-6 1-4 4-6 4-1-4-13-8-20s2-7 5-10-6-9-10-12c-4-4-6-20-21-20-14-1-8-48-6-55s-7-1-12-20c-5-20-14-13-19-13-4-1-18 5-20 0-2-6 8-5 12-4 4 0 2-2 4-5s14 10 14-1c-1-10-7-9-7-9l3-4s31-28 31-40 10-7 10-15-31-14-36-13-11-7-15-4c-3 2-10 6-12 5s-14 2-14-2c1-3 6-8 8-6 3 2 6 1 6 1l5-6c1-1-4-2-6-2s-3-1-2-2l33-23c1-2 6-8 7-13 0-4-39-5-40-3 0 2-4 6-4 6s0-5-2-8c-1-3-10-14-12-7l-4 11c-2 0-12 4 2 10 0 0-2 6-7 1-5-4-6-5-5 1l1 6-7-4s-3 4 1 8c0 0 5 3 2 5-2 2-3 0-7-3-3-4-4 3-2 7s-2 2-3 0c-2-3-4-7-6-4-1 3 2 13 6 18 3 4 1 17 1 17-1 1-11-1-10 2s11 6 8 8c-3 3-7 4-11 1-3-4-11 2-6 8s2 6-2 4c-5-1-11-3-10 1v5s-7-1-5 2c1 3 7 1 9 4 1 3-3 8-6 8-4 0-12-1-7 4 4 5 18 2 22-3 3-6 5-7 6-8l5-4 6-3 1 3-9 6-3 6-6 6-1 13-9 6 8-1-6 7 3 3s-7 4-8 11c0 6-5 12-7 12-1 1-2 5 2 6 4 0 8-3 8-3l3-7 1-4 3-8 5-4 1-6-2-6 18-10s-1 9 1 14c2 4 9 5 9 5l-11-1-4 12 6 12-9 9-9 13-1 7-5 1 9 8 3-3 9 13 3-4v-9l9 11 6-1s7-7 10-4 7-3 7-3l5 2h6l-1 3s-10-2-11 2l-11 15 5 10c2 6-1 10-1 10l2 2 4-2v8l5 2 6-8 1 4-4 7 2 3-1 2-9-1-1 6 6 4-1 3-8 6 1 7 11 8-4 4-7-10-4 3 4 5-4 4-3-8s-6-3-8 0-5 3-7 1l-4-5-4 4h-7l2-5-9-11-7 6 6 12-8 10-8 4 4 8 11-9 7 9v16l-19 16-9-1-6 8-17-3-2 15 5 2 3 7 10 1 5-6 9 1 1 13h7l4-4 4 2 4 11 8 7 7-1 8-8 5 1 4 2-9 7-3 7v1l-11 3-14-9h-14c-1-1-7 10-7 10h-5l-3-5-5 5 3 9-13 9-4-1-4 6-7 3-2 6h-15l-6 1zm-24-257 18 22h9l2-10 9-2 1 11 7 5-3 6 8 2 2-4 8 6 5-1 4-8 14-1 1-19-9 2-4-2 9-8v-5l-6-3-1-6 1-9-10-6h-7l-3 3-8-3-4 8-5-1-4-3-9 15-10-1 4 7z">
         </div>
 
@@ -268,7 +267,7 @@
             <li><a href="documentation.html#CSSproperties">CSS Custom properties/variables</a></li>
             <li><a href="documentation.html#DetailFlags">Flags loading more details</a></li>
             <li><a href="documentation.html#FlagMeisterAnalyzeFlags">Flag Analyzer</a></li>
-        </ul>
+        </ul> -->
     </section>
 
     <script>
@@ -277,8 +276,7 @@
             document.body.style.visibility = 'initial';
 
             window.setTimeout(() => {
-                // inject FlagMeister Banner
-                injectFlagMeisterBanner.innerHTML = '<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
+
                 // inject all flags
                 injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
                 // process all injected flag
@@ -305,20 +303,23 @@
                 // resize height of all (code documentation) textareas
                 [...document.querySelectorAll('textarea')].map(o => o.style.height = o.scrollHeight + "px");
 
+                // lazy load flagmeister flags
+                document.querySelectorAll('[loading]').forEach(flag => flag.iso = flag.getAttribute('loading'));
+
+                //convert comments to HTML
+                document.querySelectorAll('[convert2HTMLonload]').forEach(el => {
+                    el.innerHTML = el.innerHTML.replace("<!--", "").replace("-->", "");
+                });
+
                 // init the interactive banner
                 document.querySelector('[name="bannertext"]').addEventListener('keyup', event => {
                     FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
                 });
-
-                EightExamples.hidden = false;
-
-                document.querySelectorAll('[loading]').forEach(flag => flag.iso = flag.getAttribute('loading'));
 
             }, 10);
 
         }
     </script>
 
-
 </body>
-Published: 2019-09-14 16:01 
+Published: 2019-09-14 18:27 
