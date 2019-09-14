@@ -1,6 +1,6 @@
 <head>
     <!-- I wacked this demo page together without much attention for HTMLoptimization -->
-    <script src=elements.flagmeister.js onload="console.log('loaded MIN')"></script>
+    <script src=elements.flagmeister.js onload="console.log('loaded FlagMeister')"></script>
     <script>
         //make sure my custom element is defined first, 
         //because the flags MUST be there for later code to count/sum codesize
@@ -163,6 +163,12 @@
         #FlagMeisterICSFlags img {
             margin: 0 5px 5px 0;
         }
+
+        #injectFlagMeisterBanner {
+            --height: 12vw;
+            --flagmeisterletterheight: var(--height);
+            min-height: var(--height);
+        }
     </style>
 </head>
 
@@ -170,7 +176,7 @@
 
     <section id=sectionHeader>
         <div id=injectFlagMeisterBanner>
-            <!-- <flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister">
+            <!-- <flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister">
         </flagmeister-text> -->
         </div>
         <h3><span class=highlightText>No</span> <i>static</i> SVG files! &nbsp;&nbsp; <span
@@ -193,7 +199,7 @@
 <img is=flag-jollyroger>
 </textarea>
             </div>
-            <div>
+            <div id=EightExamples hidden>
                 <img is=flag-nl loading="lazy">
                 <img is=flag-zw loading="lazy">
                 <img is=flag-ke loading="lazy">
@@ -275,7 +281,7 @@
 
             //            window.setTimeout(() => {
             // inject FlagMeister Banner
-            injectFlagMeisterBanner.innerHTML = '<flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
+            injectFlagMeisterBanner.innerHTML = '<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
             // inject all flags
             injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
             // process all injected flag
@@ -307,6 +313,10 @@
                 FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
             });
 
+            EightExamples.hidden = false;
+
+            document.querySelectorAll('[loadis]').forEach(flag => flag.iso = flag.getAttribute('loadis').split`-`[1]);
+
             //            }, 1)
 
         }
@@ -314,4 +324,4 @@
 
 
 </body>
-Published: 2019-09-14 13:21 
+Published: 2019-09-14 15:24 
