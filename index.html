@@ -221,7 +221,9 @@
             }
         </style>
         <h2><span id=FlagMeisterSVGinfo> </span></h2>
-        <!-- <flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list> -->
+        <div id=injectFlagMeisterList>
+            <!-- <flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list> -->
+        </div>
         <br>
         <br>
         <br>
@@ -288,9 +290,13 @@
                 FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
             });
 
+            window.setTimeout(() => {
+                injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
+            }, 10)
+
         }
     </script>
 
 
 </body>
-Published: 2019-09-14 12:55 
+Published: 2019-09-14 12:58 
