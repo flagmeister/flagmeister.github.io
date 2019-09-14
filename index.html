@@ -276,6 +276,13 @@
             document.body.style.visibility = 'initial';
 
             window.setTimeout(() => {
+                // inject FlagMeister Banner
+                let headerTitle = 'FlagMeister';
+                let letterNr = 0;
+                let headerInjector = setInterval(() => {
+                    injectFlagMeisterBanner.innerHTML = `<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="${headerTitle.slice(0, letterNr++)}"</flagmeister-text>`;
+                    if (letterNr > headerTitle.length) clearInterval(headerInjector);
+                }, 200);
 
                 // inject all flags
                 injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
@@ -321,5 +328,6 @@
         }
     </script>
 
+
 </body>
-Published: 2019-09-14 18:27 
+Published: 2019-09-14 18:34 
