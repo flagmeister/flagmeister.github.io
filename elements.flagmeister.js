@@ -19,8 +19,6 @@
 //usetransfrom:(transform,id)=><use transform='${transform}' href='${id}'/>
 
 
-//add flags:netherlands antiles,signalflags
-
 //learnings:
 //find colors with capitals regexp:#(?:^|[^A-Z])[A-Z](?![A-Z])
 
@@ -235,8 +233,19 @@
             , stroke
         ) => $nTimes(times).map(n => $Circle(x, y, gap + n * gap, fill, strokewidth, stroke)).join``
 
-        // ! todo create patchwork flag
         , flag: (isoref, scale = 1, x = 0, y = 0) => `<g id='${isoref}' transform='translate(${x} ${y})'><g transform='scale(${1 / scale})'>${flagparser(flags[isoref])}</g></g>`
+
+        // ! todo create patchwork flag
+        // , flags: (str, n = Math.sqrt(str.length), x = 0, y = 0) => {
+        //     let fl = str.map((iso, idx) => commands.flag(
+        //         iso,
+        //         n,
+        //         x++ * (640 / n),
+        //         (x > n ? (x = 0, y++) : y) * (480 / n)
+        //     )).join``;
+        //     console.warn(fl);
+        //     return fl;
+        // }
 
         , rect: $Rect
 
@@ -340,10 +349,10 @@
 
     let stringIncludesSVG = x => x.includes(".svg");
 
-    let abbreviations = "detail=a,bgcolor=b,circle=c,diagonal=d,circles=e,flag=f,doublecross=g,stripes=h,outline=i,line=l,southerncross=m,bar=n,rotate=o,path=p,pathstroke=q,rect=r,star=s,stripe=t,use=u,bars=v,striangle=w,crossx=x,country=y,triangle=z".split`,`;
+    let abbreviations = "detail:a,bgcolor:b,circle:c,diagonal:d,circles:e,flag:f,doublecross:g,stripes:h,outline:i,line:l,southerncross:m,bar:n,rotate:o,path:p,pathstroke:q,rect:r,star:s,stripe:t,use:u,bars:v,striangle:w,crossx:x,country:y,triangle:z".split`,`;
 
     abbreviations.map(def => {
-        def = def.split`=`;
+        def = def.split`:`;
         commands[def[0]] = commands[def[0]] || commands[def[1]];
     });
 
@@ -1054,7 +1063,7 @@ circle:195,180,13,#c60b1e,2,orange
         zw: "country:Zimbabwe;detail:80;stripes:#006400|#ffd200|#d40000|#000|#d40000|#ffd200|#006400;pathstroke:M-30-30v540L340 240z,#fff,14,#000;star:#d40000,4,8,8",//end cty
 
         //Discontinued flags
-        //an:Netherlands Antilles,discontinued in 2010,5 islands got their own flags:https://en.wikipedia.org/wiki/ISO_3166-2:AN
+        //an:Netherlands Antilles,discontinued in 2010,5 islands got their own flag  https://en.wikipedia.org/wiki/ISO_3166-2:AN
 
         // SPECIAL FLAGS
         eu: "country:European Union;bgcolor:#039;star:#fc0,148,20,2;use:148,180,2;use:68,100,2;use:228,100,2;use:78,60,2;use:108,30,2;use:218,60,2;use:188,30,2;use:218,140,2;use:188,170,2;use:78,140,2;use:108,170,2",//end cty
@@ -1070,6 +1079,8 @@ circle:195,180,13,#c60b1e,2,orange
         redcrescent: "country:Red Crescent;bgcolor:;circle:320,240,160,#f00;circle:360,240,130,#fff",//end cty
 
         jollyroger: "country:Jolly Roger;bgcolor:#000;path:#fff,M372 253c-3 6-33 28-46 28s-46-23-49-28c-4-7-8-18-7-24 0-3 9-6 10-3 11 23 26 27 46 27 19 0 32 0 43-26 2-5 9-1 10 2 4 10 0 0 0 0s-2 17-7 24zm-46 77c25-11 64-27 90-31 8-16 47-48 39 1 22 15 13 41-28 18-21 2-58 17-76 25 17 8 50 28 64 36 86 7 48 34 27 36 0 11-36 33-45-16-10-10-60-40-73-43-17 7-57 31-73 45-5 35-23 32-41 12-34 0-46-36 28-37l62-33c-27-10-57-20-78-25-31 22-52 3-28-18-3-10 2-42 46-4 17 6 66 24 86 34zm0-148c-4 7-17 17-17 21-1 11 10 11 17 6 7 4 17 6 17-6-1-5-12-13-17-21zm35 41c-4 2-2 11-6 12-18 7-40 6-58 1-5-1-5-12-7-13-12-7-30-8-40-16-5-4-2-29-10-34-7-4-10-20-12-33-3-14-5-40 10-58 16-18 44-33 88-33s73 14 88 33c14 19 11 45 8 58-2 13-9 28-15 33s-4 31-6 34c-5 5-29 9-40 16zm-103-63c0 19 19 28 34 22 18-6 20-37 1-43-16-4-34 2-35 21zm114 23c21-2 27-34 9-43-14-7-36-1-38 18-2 23 14 27 29 25",//end cty
+
+        // xx: "flags:zw|zw|zw|zw|zw|zw|zw|zw|zw",
 
         //!todo detailH make with code
         //savebytes?
@@ -1114,15 +1125,18 @@ circle:195,180,13,#c60b1e,2,orange
     Object.keys(flags)
         .map(iso => {
             customElements.define('flag-' + iso, class extends HTMLImageElement {
+
+                // Used by the FlagAnalyzer
                 get data() {
                     return flags[iso];
                 }
+
                 constructor() {
                     super();
                     if (trace) console.element(this);
 
                     // public attributes/properties getter/setter
-                    // all data is processed by the flag parser!
+                    // ALL ARE PROCESSED BY THE FLAGPARSER!!!
                     [
                         ['iso', "lgbt"]       // because used more often shaves extra 3 bytes off GZipped size
                         , ['detail', false]   // disable detail by assigning a huge number of width-pixels
@@ -1171,12 +1185,12 @@ circle:195,180,13,#c60b1e,2,orange
                     });
                 }
                 svg(// todo create as getter
-                    svg = flagparser(flags[iso], this)
+                    newiso = iso
+                    , svg = flagparser(flags[newiso], this)
                     , filter = this.filter
                     , clip = this.clip
                     //, log = console.log(svg, commands)
                 ) {
-                    if (iso == 'earth') console.warn(21, iso, svg, '\n', flags[iso]);
                     return `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='${this.box}'><defs><clipPath id='clip'>${clip === '0' ? '' : clip}</clipPath></defs>`
                         + (filter || '')
                         //additional filter can be wrapped in extra <g>
@@ -1187,16 +1201,15 @@ circle:195,180,13,#c60b1e,2,orange
                 }
                 connectedCallback() {
                     if (trace) console.element(this);
-
-                    this.iso = iso;
-
+                    //this.iso = iso;
+                    this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
+                    // this.setAttribute('title',iso + ' :' + flag[0]);
                     if (
                         !this.detail                    //if no detail specified,
                         &&
                         flags[iso].includes('detail:')  //and flag has detail: specification
                     )
                         this.detail = flags[iso].split`detail:`[1].split`;`[0];
-
                     this.load();            // always load/set our FlagMeister svg first
                 }
                 reset() {
@@ -1205,16 +1218,11 @@ circle:195,180,13,#c60b1e,2,orange
                     this.connectedCallback();
                 }
                 static get observedAttributes() {
-                    return ['iso', 'source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
+                    return ['source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
                 }
                 attributeChangedCallback(name, oldValue, newValue) {
                     //console["warn"](name, oldValue, newValue);
                     if (name == 'selected') console.element(this, name, oldValue, newValue);
-                    if (name == 'iso') {
-                        iso = newValue;
-                        this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
-                        // this.setAttribute('title',iso + ' :' + flag[0]);
-                    }
                     if (oldValue && oldValue !== newValue) this.load();
                 }
                 load(
@@ -1270,7 +1278,9 @@ circle:195,180,13,#c60b1e,2,orange
                         //console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
                         //Observe image resize,also called on first load! width is immediatly checked
                         this.O = new ResizeObserver(entries => {
-                            if (this.detail && !stringIncludesSVG(this.detail) && entries[0].contentRect.width >= this.detail) {
+                            if (this.detail
+                                && !stringIncludesSVG(this.detail)
+                                && entries[0].contentRect.width >= this.detail) {
                                 this.O.disconnect(this);//unobserve(this);//!?? difference .disconnect(this)
                                 //console.log(iso,'Observe detail:' + this.detail,entries[0].contentRect.width,this.source);
                                 this.detail = '.svg';//! prevent failed restcountries fetch from running again
