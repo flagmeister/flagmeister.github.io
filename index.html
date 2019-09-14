@@ -267,48 +267,48 @@
 
     <script>
         //window.onload after whole page loaded
-        window.onload = () => {
-            document.body.style.visibility = 'initial';
+        // window.onload = () => {
+        document.body.style.visibility = 'initial';
 
-            window.setTimeout(() => {
-                // inject FlagMeister Banner
-                injectFlagMeisterBanner.innerHTML = '<flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
-                // inject all flags
-                injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
-                // process all injected flag
-                let flags = [...firstviewAllFlags.querySelectorAll('img')];
+        window.setTimeout(() => {
+            // inject FlagMeister Banner
+            injectFlagMeisterBanner.innerHTML = '<flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
+            // inject all flags
+            injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
+            // process all injected flag
+            let flags = [...firstviewAllFlags.querySelectorAll('img')];
 
-                FlagMeisterSVGinfo.innerHTML =
-                    ['FlagMeister created '
-                        , '<span class= highlightText >'
-                        , flags.length,
-                        , ' SVG flags'
-                        , '</span>'
-                        , ', totalling '
-                        , flags.reduce((totalsvg, flag) => {
-                            return totalsvg + flag.src.length;
-                        }, 0)
-                        , ` hydrated bytes`
-                    ].join``;
+            FlagMeisterSVGinfo.innerHTML =
+                ['FlagMeister created '
+                    , '<span class= highlightText >'
+                    , flags.length,
+                    , ' SVG flags'
+                    , '</span>'
+                    , ', totalling '
+                    , flags.reduce((totalsvg, flag) => {
+                        return totalsvg + flag.src.length;
+                    }, 0)
+                    , ` hydrated bytes`
+                ].join``;
 
-                // set the correct flagcount and filesize in all text elements
-                let replaceHTML = (sel, x) => [...document.querySelectorAll(sel)].map(el => el.innerHTML = x);
-                replaceHTML('.flagmeister_flagcount', flags.length);
-                replaceHTML('.flagmeister_size', 23);
+            // set the correct flagcount and filesize in all text elements
+            let replaceHTML = (sel, x) => [...document.querySelectorAll(sel)].map(el => el.innerHTML = x);
+            replaceHTML('.flagmeister_flagcount', flags.length);
+            replaceHTML('.flagmeister_size', 23);
 
-                // resize height of all (code documentation) textareas
-                [...document.querySelectorAll('textarea')].map(o => o.style.height = o.scrollHeight + "px");
+            // resize height of all (code documentation) textareas
+            [...document.querySelectorAll('textarea')].map(o => o.style.height = o.scrollHeight + "px");
 
-                // init the interactive banner
-                document.querySelector('[name="bannertext"]').addEventListener('keyup', event => {
-                    FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
-                });
+            // init the interactive banner
+            document.querySelector('[name="bannertext"]').addEventListener('keyup', event => {
+                FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
+            });
 
-            }, 1)
+            // }, 1)
 
         }
     </script>
 
 
 </body>
-Published: 2019-09-14 13:15 
+Published: 2019-09-14 13:17 
