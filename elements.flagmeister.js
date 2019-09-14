@@ -1208,7 +1208,7 @@ circle:195,180,13,#c60b1e,2,orange
                     return ['iso', 'source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
                 }
                 attributeChangedCallback(name, oldValue, newValue) {
-                    console["warn"](name, oldValue, newValue);
+                    //console["warn"](name, oldValue, newValue);
                     if (name == 'selected') console.element(this, name, oldValue, newValue);
                     if (name == 'iso') {
                         iso = newValue;
@@ -1267,7 +1267,7 @@ circle:195,180,13,#c60b1e,2,orange
                         //     svg=this.svg((new XMLSerializer()).serializeToString(docSVG.children[0]));
                         // }
                         this.src = 'data:image/svg+xml,' + svg.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/#/g, '%23');
-                        console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
+                        //console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
                         //Observe image resize,also called on first load! width is immediatly checked
                         this.O = new ResizeObserver(entries => {
                             if (this.detail && !stringIncludesSVG(this.detail) && entries[0].contentRect.width >= this.detail) {
@@ -1331,4 +1331,3 @@ display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:$
     });
 
 })()
-
