@@ -1,32 +1,31 @@
+// flagmeister flags custom elements : VERSIONNR
+
 // flags with less detail:argentina (face in sun),angola details in knife
-//Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
+// Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
 // replace #000 in stripes,bars with 0
 // starrotate:x,y,fill,scale=1,len=30,wid=4
 // semicircle: path:blue,M33 160 a1 1 0 0 0 124 0,,10,yellow
-//loaddetail=N form n sites
-//detail setting from CSS variable
-//make colors first parameters
-//lazy load delay
-//flagmeister-list
-//flagmeister-flag
+
+// detail setting from CSS variable
+// make colors first parameters
+// lazy load delay
 // ! todo recreate (only the detail) Detail flags in FlagMeister own Repo
 
-//replace "M  with "m
-//remove z' at path end
+// replace "M  with "m
+// remove z' at path end
 // replace [0] and [1] with destructering
-//todo use index number reference to use previous color
+// todo use index number reference to use previous color
 
-//usetransfrom:(transform,id)=><use transform='${transform}' href='${id}'/>
+// usetransfrom:(transform,id)=><use transform='${transform}' href='${id}'/>
 
+// learnings:
+// find colors with capitals regexp:#(?:^|[^A-Z])[A-Z](?![A-Z])
 
-//learnings:
-//find colors with capitals regexp:#(?:^|[^A-Z])[A-Z](?![A-Z])
+// language codes
+// ar, cs, da, de, el, en, en-gb, es, fr, fi, he, hu, it, ja, ko, nb, nl, pl, pt, pt-pt, ro, ru, sv, tr, uk, zh, zh-hant
+// https://stackoverflow.com/questions/2511076/which-iso-format-should-i-use-to-store-a-users-language-code
 
-//language codes
-//ar, cs, da, de, el, en, en-gb, es, fr, fi, he, hu, it, ja, ko, nb, nl, pl, pt, pt-pt, ro, ru, sv, tr, uk, zh, zh-hant
-//https://stackoverflow.com/questions/2511076/which-iso-format-should-i-use-to-store-a-users-language-code
-
-((trace = 0) => {
+((trace = 0, version = 'VERSIONNR') => {
 
     console.assert((() => {// removed in production code
         console.element = function () {
@@ -79,7 +78,6 @@
         };
         return true//console.assert does not output line in console
     })());
-
 
     // Helper functions creating SVG
 
