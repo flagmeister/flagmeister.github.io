@@ -1116,9 +1116,6 @@ circle:195,180,13,#c60b1e,2,orange
 
     };
 
-
-
-
     let fmPropValue = (_this, name, defaultValue = false) => getComputedStyle(_this).getPropertyValue(`--flagmeister` + name) || defaultValue;
 
     if (trace) console.time('CreateElement');
