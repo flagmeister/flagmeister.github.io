@@ -267,10 +267,10 @@
 
     <script>
         //window.onload after whole page loaded
-        // window.onload = () => {
-        document.body.style.visibility = 'initial';
+        window.onload = () => {
+            document.body.style.visibility = 'initial';
 
-        window.setTimeout(() => {
+            //            window.setTimeout(() => {
             // inject FlagMeister Banner
             injectFlagMeisterBanner.innerHTML = '<flagmeister-text height=12vw iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"</flagmeister-text>';
             // inject all flags
@@ -304,11 +304,11 @@
                 FlagMeisterCreateBanner.innerHTML = `<flagmeister-text id=bannertext iso="ba,bi,kr,ax,gb,us,is,tr,nl,zw,ki" word="${event.target.value}"></flagmeister-text>`
             });
 
-            // }, 1)
+            //            }, 1)
 
         }
     </script>
 
 
 </body>
-Published: 2019-09-14 13:17 
+Published: 2019-09-14 13:18 
