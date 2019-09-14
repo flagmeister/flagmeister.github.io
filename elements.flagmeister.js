@@ -1174,9 +1174,9 @@ circle:195,180,13,#c60b1e,2,orange
                     svg = flagparser(flags[iso], this)
                     , filter = this.filter
                     , clip = this.clip
-                    // , log = console.log(svg, commands)
+                    //, log = console.log(svg, commands)
                 ) {
-                    if (iso == 'earth') console.warn(iso, svg, '\n', flags[iso]);
+                    if (iso == 'earth') console.warn(21, iso, svg, '\n', flags[iso]);
                     return `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='${this.box}'><defs><clipPath id='clip'>${clip === '0' ? '' : clip}</clipPath></defs>`
                         + (filter || '')
                         //additional filter can be wrapped in extra <g>
@@ -1189,8 +1189,6 @@ circle:195,180,13,#c60b1e,2,orange
                     if (trace) console.element(this);
 
                     this.iso = iso;
-                    this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
-                    // this.setAttribute('title',iso + ' :' + flag[0]);
 
                     if (
                         !this.detail                    //if no detail specified,
@@ -1210,13 +1208,19 @@ circle:195,180,13,#c60b1e,2,orange
                     return ['iso', 'source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
                 }
                 attributeChangedCallback(name, oldValue, newValue) {
+                    console["warn"](name, oldValue, newValue);
                     if (name == 'selected') console.element(this, name, oldValue, newValue);
+                    if (name == 'iso') {
+                        iso = newValue;
+                        this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
+                        // this.setAttribute('title',iso + ' :' + flag[0]);
+                    }
                     if (oldValue && oldValue !== newValue) this.load();
                 }
                 load(
                     load_svg = this.svg()
                 ) {
-                    if (trace) console.element(this);
+                    if (trace) console.element(this, 22);
                     let fetchdata = async (uri) => {
                         //async/await is nice sugar, but 11 GZip bytes longer
                         this.detail = uri;              // prevent detailed flag from reloading again
@@ -1263,7 +1267,7 @@ circle:195,180,13,#c60b1e,2,orange
                         //     svg=this.svg((new XMLSerializer()).serializeToString(docSVG.children[0]));
                         // }
                         this.src = 'data:image/svg+xml,' + svg.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/#/g, '%23');
-                        //console.log(iso,'src=',this.src.length,'bytes ',load_svg ? 'NO' :load_svg.slice(0,20));
+                        console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
                         //Observe image resize,also called on first load! width is immediatly checked
                         this.O = new ResizeObserver(entries => {
                             if (this.detail && !stringIncludesSVG(this.detail) && entries[0].contentRect.width >= this.detail) {
@@ -1288,8 +1292,8 @@ circle:195,180,13,#c60b1e,2,orange
                         load_img(load_svg);
                 }//load
             }, {
-                    extends: 'img'
-                });
+                extends: 'img'
+            });
             //created Custom Element
 
             //return flag;// ! todo create flatMap?
