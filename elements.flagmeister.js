@@ -1,4 +1,4 @@
-// flagmeister flags custom elements : VERSIONNR
+// flagmeister flags custom elements : 2019-09-14 19:09
 
 // flags with less detail:argentina (face in sun),angola details in knife
 // Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
@@ -25,7 +25,7 @@
 // ar, cs, da, de, el, en, en-gb, es, fr, fi, he, hu, it, ja, ko, nb, nl, pl, pt, pt-pt, ro, ru, sv, tr, uk, zh, zh-hant
 // https://stackoverflow.com/questions/2511076/which-iso-format-should-i-use-to-store-a-users-language-code
 
-((trace = 0, version = 'VERSIONNR') => {
+((trace = 0, version = '2019-09-14 19:09') => {
 
     console.assert((() => {// removed in production code
         console.element = function () {
