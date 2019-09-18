@@ -1,4 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <script src="script.js"></script>
+    <link id=favicon rel="shortcut icon" href="http://bit.ly/ghfavicon" width=32px>
+
+    <title>FlagMeister</title>
     <!-- I wacked this demo page together without much attention for HTMLoptimization -->
     <script src=elements.flagmeister.js onload="console.log('loaded FlagMeister')"></script>
     <script>
@@ -278,11 +286,11 @@
             window.setTimeout(() => {
                 // inject FlagMeister Banner
                 let headerTitle = 'FlagMeister';
-                let letterNr = 0;
-                let headerInjector = setInterval(() => {
-                    injectFlagMeisterBanner.innerHTML = `<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="${headerTitle.slice(0, letterNr++)}"</flagmeister-text>`;
-                    if (letterNr > headerTitle.length) clearInterval(headerInjector);
-                }, 200);
+                let letterNr = 11;
+                //let headerInjector = setInterval(() => {
+                injectFlagMeisterBanner.innerHTML = `<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="${headerTitle.slice(0, letterNr++)}"</flagmeister-text>`;
+                //  if (letterNr > headerTitle.length) clearInterval(headerInjector);
+                //}, 0);
 
                 // inject all flags
                 injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
@@ -330,4 +338,4 @@
 
 
 </body>
-Published: 2019-09-14 19:26 
+Published: 2019-09-18 19:34 
