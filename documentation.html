@@ -360,7 +360,7 @@
             opacity: 1;
         }
     </style>
-    <style id=button_IncorrectFlags onload="this.disabled=true">
+    <style id=button_IncorrectFlags onload="this.disabled=false">
         #LipisColors {
             display: block;
         }
@@ -1392,9 +1392,10 @@ img[is*="flag-"] {
                 }
                 resetAnalysisFlags('cu');
 
-                let selectableFlags = document.querySelector('#FlagMeisterAnalyzeFlagsSelector').children;
-                [...selectableFlags].forEach(flag => {
-                    flag.addEventListener('mouseover', evt => resetAnalysisFlags(flag.getAttribute('iso')));
+                document.querySelectorAll('#FlagMeisterAnalyzeFlagsSelector img').forEach(flag => {
+                    console.log(flag);
+                    let iso = flag.getAttribute('is').split`-`[1];
+                    flag.addEventListener('mouseover', evt => resetAnalysisFlags(iso));
                 });
 
                 let replaceHTML = (sel, x) => [...document.querySelectorAll(sel)].map(el => el.innerHTML = x);
