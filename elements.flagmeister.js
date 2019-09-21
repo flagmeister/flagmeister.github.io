@@ -631,7 +631,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         bf: "country:Burkina Faso;stripes:#ef2b2d|#009e49;star:#fcd116,35,13,7",//end cty
         bg: "country:Bulgaria;stripes:#fff|#00966e|#d62612",//end cty
 
-        bh: "country:Bahrein;bgcolor:#e10011;path:#fff,m114 480l-146 1V0h180l94 48-99 48 99 48-99 48 99 48-99 48 99 48-99 48 99 48-99 48 99",//end cty
+        bh: "country:Bahrein;bgcolor:#ce1126;path:#fff,m114 480l-146 1V0h180l94 48-99 48 99 48-99 48 99 48-99 48 99 48-99 48 99 48-99 48 99",//end cty
         bi: "country:Burundi;bgcolor:#ce1126;pathstroke:M-70 0L710 480h70v-480h-70L-70 480,#1eb53a,70,#fff;circle:320,240,140,#fff;path:#ce1126,M350 180l-19.2.4-10 16-10-16-19-0 9-17-9-17 19-0 10-16 10 16 19.2.4-9 17zm-65 112,s,4,#1eb53a;use:-60,110;use:60,110",//end cty
         bj: "country:Benin;stripes:#fcd116|#e8112d;bar:0,260,#008751",//end cty
         bl: "country:Saint Barthelemy;flag:fr",//end cty
