@@ -1,9 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- FlagMeister Beta -->
+
+<!-- I wacked this demo page together without much attention for CSS/HTML optimization -->
+
 <head>
-
-    <!-- FlagMeister Beta -->
-
-    <!-- I wacked this demo page together without much attention for optimization -->
-
     <script src=elements.flagmeister.js></script>
 
     <script>
@@ -358,7 +359,7 @@
             opacity: 1;
         }
     </style>
-    <style id=button_IncorrectFlags onload="this.disabled=false">
+    <style id=button_IncorrectFlags onload="this.disabled=true">
         #LipisColors {
             display: block;
         }
@@ -509,7 +510,7 @@
             <br>
             <flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister"> </flagmeister-text>
         </div>
-        <h3 class=highlightText>Beta version: VERSIONNR</h3>
+        <h3 class=highlightText>Beta version</h3>
         <h3><span class=highlightText>No</span> <i>static</i> SVG files! &nbsp;&nbsp; <span
                 class=highlightText>No</span> Image Sprite! &nbsp;&nbsp; <span class=highlightText>No</span>
             Frameworks!&nbsp;&nbsp; <span class=highlightText>No</span>
@@ -531,7 +532,7 @@
         <h1>All <span class=highlightText>HTML</span> required to display flags is:</h1>
         <div class=docgrid>
             <div>
-                <textarea class=textarea_html style="width:320px;height:200px">
+                <textarea class=textarea_html style="width:320px;height:209px">
 <img is=flag-nl>
 <img is=flag-zw>
 <img is=flag-ke>
@@ -544,6 +545,7 @@
             </textarea>
             </div>
             <div>
+                <p></p>
                 <img is=flag-nl>
                 <img is=flag-zw>
                 <img is=flag-ke>
@@ -1205,18 +1207,19 @@ img[is*="flag-"] {
                 return flag && flag.data && flag.data[1].toString().length;
             }
             let totalcodesize = 0;
-            FlagMeisterSVGinfo.append(
-                ['FlagMeister created ',
-                    flags.length,
-                    ' SVG flags, totalling ',
-                    flags.reduce((totalsvg, flag) => {
+            FlagMeisterSVGinfo.innerHTML =
+                ['FlagMeister created '
+                    , '<span class= highlightText >'
+                    , flags.length,
+                    , '</span>'
+                    , ' SVG flags, totalling '
+                    , flags.reduce((totalsvg, flag) => {
                         totalcodesize += codeSize(flag);
                         return totalsvg + flag.src.length;
-                    }, 0),
-                    ` hydrated bytes`
+                    }, 0)
+                    , ` hydrated bytes`
                     //, ` with ${totalcodesize} bytes of Code`,
-                ].join``
-            );
+                ].join``;
 
             setTimeout(initAnalysisFlags, 2000);
             function initAnalysisFlags() {
