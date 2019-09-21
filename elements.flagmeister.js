@@ -617,7 +617,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         at: "country:Austria;stripes:#ed2939|#fff|#ed2939",//end cty
 
         //todo star7 fat
-        au: "country:Australia;bgcolor:#012169;gb;path:#fff,m0 0-18 1 2 18-12-13-12 13 2-18-18-1 15-9-10-15 17 6 5-17 5 17 17-6-10 15,s;use:110,185,2;use:500,80;use:500,390;use:410,210;use:590,190;use:500,240",//end cty
+        au: "country:Australia;bgcolor:#012169;gb;path:#fff,m0 0-18 1 2 18-12-13-12 13 2-18-18-1 15-9-10-15 17 6 5-17 5 17 17-6-10 15,s;use:110,185,2;use:500,80;use:500,390;use:410,210;use:590,190;use:1050,500,.5",//end cty
         //todo star 4 points
         aw: "country:Aruba;bgcolor:#418fd1;pathstroke:M60 130l79-20l20-79l20 79l79 20l-79 20l-20 79l-20-79z,#ef3340,5,#fff;stripe:270,30,#ffd100;stripe:330,30,#ffd100",//end cty
         ax: "country:Alland_Islands;bgcolor:#0053a5;doublecross:-80,0,#ffce00,#d21034,130,50",//end cty
