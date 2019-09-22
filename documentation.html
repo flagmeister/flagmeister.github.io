@@ -1181,6 +1181,7 @@ img[is*="flag-"] {
             </div>
             <div id=FlagDetailAnalyzer>
                 <div id=FlagAnalyzerHeader class=flaggrid>
+                    <h1>Loading FlagAnalyzer...</h1>
                 </div>
                 <div id=FlagAnalyzer class=flaggrid>
                     <!-- dispaying flags from all providers-->
@@ -1348,9 +1349,17 @@ img[is*="flag-"] {
                                     reportSizes(idx);
                                 }
                                 flag.onload = () => {
+                                    flag.title = `${iso} - open (raw) SVG`;
                                     if (flag.detail && flag.detail.includes('.svg')) {
                                         loadstatus[idx] = 1;
                                         reportSizes(idx);
+                                        flag.onclick = () => {
+                                            window.open(
+                                                flag.detail,
+                                                flag.detail,
+                                                "resizable,scrollbars,status"
+                                            );
+                                        }
                                     }
                                     if (idx == 0) {
                                         FlagMeisterCodeString.innerHTML = flag.data.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/#/g, '#');
@@ -1366,11 +1375,8 @@ img[is*="flag-"] {
                                     if (idx == 2) {
                                         let data = flag.info;// restcountries API flag
                                         if (data) {
-                                            FlagAnalyzerISO.innerHTML = `<h2>${iso} : ${data.name}</h2>
-                                                    <p><span class=infolabel>capital:</span> ${data.capital}
-                                                    <span class=infolabel>region:</span> ${data.region} - ${data.subregion}
-                                                    <span class=infolabel>population:</span> ${data.population}
-                                                    <span class=infolabel>languages:</span> ${data.languages && data.languages.map(ln => ln.name).join`, `}</p>`;
+                                            displayFlagInfo(iso, data);
+                                            FlagInfoMap.set(iso, data);
                                         } else {
                                             FlagAnalyzerISO.innerHTML = `<h2>${iso} : no country</h2>`;
                                         }
@@ -1386,16 +1392,25 @@ img[is*="flag-"] {
                     }
                 };
 
+                let FlagInfoMap = new Map();
+
+                let displayFlagInfo = (iso, data = FlagInfoMap.get(iso)) => {
+                    if (data) FlagAnalyzerISO.innerHTML = `<h2>${iso} : ${data.name}</h2>`
+                        + `<p><span class=infolabel>capital:</span> ${data.capital}`
+                        + ` <span class=infolabel>region:</span> ${data.region} - ${data.subregion}`
+                        + ` <span class=infolabel>pop:</span> ${data.population}`
+                        + ` <span class=infolabel>languages:</span> ${data.languages && data.languages.map(ln => ln.name).join`, `}</p>`;
+                }
                 let resetAnalysisFlags = iso => {
                     if (iso) {
                         FlagAnalyzer.innerHTML = '';
                         FlagAnalyzer.append(...providerFlags(iso));
+                        displayFlagInfo(iso);
                     }
                 }
                 resetAnalysisFlags('cu');
 
                 document.querySelectorAll('#FlagMeisterAnalyzeFlagsSelector img').forEach(flag => {
-                    console.log(flag);
                     let iso = flag.getAttribute('is').split`-`[1];
                     flag.addEventListener('mouseover', evt => resetAnalysisFlags(iso));
                     flag.addEventListener('mouseout', evt => resetAnalysisFlags(analyzeThisFlag));
