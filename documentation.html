@@ -1398,6 +1398,8 @@ img[is*="flag-"] {
                     console.log(flag);
                     let iso = flag.getAttribute('is').split`-`[1];
                     flag.addEventListener('mouseover', evt => resetAnalysisFlags(iso));
+                    flag.addEventListener('mouseout', evt => resetAnalysisFlags(analyzeThisFlag));
+                    flag.addEventListener('click', evt => analyzeThisFlag = iso);
                 });
 
                 let replaceHTML = (sel, x) => [...document.querySelectorAll(sel)].map(el => el.innerHTML = x);
