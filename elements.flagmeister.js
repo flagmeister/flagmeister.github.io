@@ -329,6 +329,9 @@
             , scale
         )
 
+        , sun: (repeat, x = 320, y = 240, scale = 1) => {
+
+        }
         , rotate: (
             N
             , part
@@ -615,8 +618,16 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         aq: "country:Antarctica;bgcolor:#072b5f;<defs><g id='c' fill='none'>;circle:134,134,50;circle:134,134,93;circle:134,134,133;path:#000,M-100 134h467M134-100v467,a;<use transform='rotate(30 134 133)' href='#a'/><use transform='rotate(60 133 133)' href='#a'/></g><clipPath id='d'>;path:#fff,M164 220c-12 7-21-12-10-18 2-13-15-11-24-14-13-2-27 3-40-2-10-2-23-8-23-19 0-9-1-19-11-16-10-6 3-19 1-28 1-6 2-14-6-12-13 0-2-16-13-20-5-4-11-19-3-18 2 9 11 9 18 14 9 6 18 15 30 12 14-1 23-13 22-26 2-13 11-24 23-29 12-2 24 1 36 3 11 5 19 14 31 15 9 3 21 3 28 11 1 13 4 25 4 38 3 8 22 10 13 22 0 10 10 20-1 28-4 12-10 21-16 31-7 10-11 21-24 24-11 2-22 7-33 5,b;</clipPath></defs><g transform='scale(1.8) translate(45)'>;path:#072b5f,h267v267z;<use width='267' height='267' href='#c' stroke-width='3' stroke='#fff'/><use width='267' height='267' href='#b'/><use width='267' height='267' href='#c' clip-path='url(#d)' stroke-width='3' stroke='#072b5f'/></g>",//end cty
 
         //starrotate 18
-        //sun
+        //sun:
         ar: "country:Argentina;stripes:#75aadb|#fff|#75aadb;rotate:18,<path fill='#fcbf49' d='M0 0l28 62s.5 1 1.3.9c.8-.4.3-1.5.3-1l-24-64m-1 24c-1 9 5 15 5 23-1 8 4 13 5 16 1 3-1 5-.3 6s3-2 2-7c-.7-5-4-6-3-16.3.8-10-4-13-3-22' stroke='#843511'/>;circle:320,240,20,#fcbf49",//end cty
+        //todo detailM face in sun uruguay
+        // uy: "country:Uruguay;detail:80;stripes:#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff;rect:0,0,266,266,#fff;rotate:16,<path fill='#fcd116' d='m0 28l-95-28l95-28' stroke-width='2' stroke='#000'/>,130,135;circle:130,135,40,#fcd116",//end cty
+        //todo detailM face in sun uruguay
+        uy: "country:Uruguay;detail:80;stripes:#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff;rect:0,0,266,266,#fff;rotate:16,<path fill='#fcbf49' d='M0 0l28 62s.5 1 1.3.9c.8-.4.3-1.5.3-1l-24-64m-1 24c-1 9 5 15 5 23-1 8 4 13 5 16 1 3-1 5-.3 6s3-2 2-7c-.7-5-4-6-3-16.3.8-10-4-13-3-22' stroke='#843511'/>,130,135;circle:130,135,30,#fcd116",//end cty
+
+
+
+
         as: "country:American Samoa;detail:40;bgcolor:#002b7f;pathstroke:m660 10v470L30 240z,#fff,25,#ce1126",//end cty
         at: "country:Austria;stripes:#ed2939|#fff|#ed2939",//end cty
 
@@ -1033,8 +1044,6 @@ circle:195,180,13,#c60b1e,2,orange
         um: "country:United States minor islands;us",//end cty
         us: "country:United States of America;us",//end cty
 
-        //todo detailM face in sun uruguay
-        uy: "country:Uruguay;detail:80;stripes:#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff;rect:0,0,266,266,#fff;rotate:16,<path fill='#fcd116' d='m0 28l-95-28l95-28' stroke-width='2' stroke='#000'/>,130,135;circle:130,135,40,#fcd116",//end cty
         uz: "country:Uzbekistan;stripes:#0099b5|#fff|#1eb53a;circle:134,77,58,#fff;circle:154,77,58,#0099b5;star:#fff,230,10;use:270,10;use:310,10;use:190,55;use:230,55;use:270,55;use:310,55;use:150,100;use:190,100;use:230,100;use:270,100;use:310,100;stripe:160,10,#ce1126;stripe:320,10,#ce1126",//end cty
 
         //detail holy moly graphics
