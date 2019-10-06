@@ -1,15 +1,17 @@
-// flagmeister flags custom elements : 2019-09-14 19:09
+//-----------------------------------------------------------
+// FlagMeister.github.io - One Custom Element for 300+ flags
+// license: UNlicense
+// This file is optimized for best GZip dowload/performance
+//------------------------------------------------------------
 
-// flags with less detail:argentina (face in sun),angola details in knife
+
+// TODO:
 // Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
-// replace #000 in stripes,bars with 0 (illegal color)
-// starrotate:x,y,fill,scale=1,len=30,wid=4
-// semicircle: path:blue,M33 160 a1 1 0 0 0 124 0,,10,yellow
+// flags with less detail:argentina (face in sun),angola details in knife
+// replace #000 in stripes,bars with 0 (illegal color) - saves 35 Bytes
 
-// detail setting from CSS variable
 // make colors first parameters
 // lazy load delay
-// ! todo recreate (only the detail) Detail flags in FlagMeister own Repo
 
 // replace "M  with "m
 // replace [0] and [1] with destructering
@@ -24,8 +26,20 @@
 // ar, cs, da, de, el, en, en-gb, es, fr, fi, he, hu, it, ja, ko, nb, nl, pl, pt, pt-pt, ro, ru, sv, tr, uk, zh, zh-hant
 // https://stackoverflow.com/questions/2511076/which-iso-format-should-i-use-to-store-a-users-language-code
 
+// Syntax
+// starrotate:x,y,fill,scale=1,len=30,wid=4
+// semicircle: path:blue,M33 160 a1 1 0 0 0 124 0,,10,yellow
+
+// Probably Not todo
+// recreate (only the detail) Detail flags in FlagMeister own Repo
+
 ((trace = 0, version = '2019-09-14 19:09') => {
 
+    let Allah =
+        //'لَا إِلٰهَ إِلَّا الله مُحَمَّدٌ رَسُولُ الله'    //  100 bytes-A god but Allah,Muhammad is the Messenger of Allah
+        //'لَمُحَمَّدٌ رَسُولُ الله'              //  77 bytes-The Messenger of Allah
+        'الله'                          //  18 bytes-Allah
+        ;
     console.assert((() => {// removed in production code
         console.element = function () {
             let errorstack = new Error().stack.split('\n');
@@ -623,7 +637,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         //todo detailM face in sun uruguay
         // uy: "country:Uruguay;detail:80;stripes:#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff;rect:0,0,266,266,#fff;rotate:16,<path fill='#fcd116' d='m0 28l-95-28l95-28' stroke-width='2' stroke='#000'/>,130,135;circle:130,135,40,#fcd116",//end cty
         //todo detailM face in sun uruguay
-        uy: "country:Uruguay;detail:80;stripes:#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff;rect:0,0,266,266,#fff;rotate:16,<path fill='#fcbf49' d='M0 0l28 62s.5 1 1.3.9c.8-.4.3-1.5.3-1l-24-64m-1 24c-1 9 5 15 5 23-1 8 4 13 5 16 1 3-1 5-.3 6s3-2 2-7c-.7-5-4-6-3-16.3.8-10-4-13-3-22' stroke='#843511'/>,130,135;circle:130,135,30,#fcd116",//end cty
+        uy: "country:Uruguay;detail:80;stripes:#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff|#0038a8|#fff;rect:0,0,266,266,#fff;rotate:16,<path fill='#fcbf49' d='M0 0l28 62s.5 1 1.3.9c.8-.4.3-1.5.3-1l-24-64m-1 24c-1 9 5 15 5 23-1 8 4 13 5 16 1 3-1 5-.3 6s3-2 2-7c-.7-5-4-6-3-16.3.8-10-4-13-3-22' stroke='#843511'/>,130,135,1.3;circle:130,135,30,#fcd116",//end cty
 
 
 
@@ -731,20 +745,131 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         // , stroke
         // , id = ''
 
-        es: `country:Spain;
-detail:60;
-stripes:#c60b1e|#ffc400|#ffc400|#c60b1e;
-pathstroke:m70 200v100m160 0v-100,#fff,15,#ddd;
-line:10,#c60b1e,60,240,240,240;
-shield:#c60b1e,35,100,200,2,#333;shield:#ed72aa,35,150,200,2,#333;
-shield:#c60b1e,35,100,250,2,#333;shield:#c60b1e,35,150,250,2,#333;
-circle:150,250,15,#0039f0,5,#c60b1e;
+        es: "country:Spain;detail:900;stripes:#c60b1e|#ffc400|#ffc400|#c60b1e;"
+            + `<g id='c'>;`
+            // <!-- red in crown -->
+            + `pathstroke:M206 175l16 2a32 32 0 0 0 15 2l10 2a27 27 0 0 1 7 5l-2 1v4l-4 5-2 2-5 4h-3l-1 2-32-4-32 4-1-2h-2l-5-4-2-2-4-4-1-4-1-2a28 28 0 0 1 7-4 26 26 0 0 1 10-3h7a30 30 0 0 0 8-2l15-2M177 213 c30 5 30 5 60 0c-30 -5 -30 -5 -60 0,#aa151b,.3,#000;`
+            // <!-- left arches -->
+            + `<g id='a' stroke='#000' stroke-width='.4'>;`
+            // <!-- curved rim -->//todo move into arches below
+            + `pathstroke:M206 192s1 9-6 8l-4-2c-2 4-8 4-11 1-1 2-4 3-6 3l-3-1-3 3-4-1-6-6s7 6 10 5c2-1 2-5 2-5s2 4 4 4c3 0 5-9 5-9 0 3 4 7 6 7 3 0 5-6 5-6s3 5 5 5c3 0 6-3 5-6,#f1bf00,.4,#000;`
+            // <!-- golden flowers --> <!-- arches -->
+            + `path:#f1bf00,M183 184l2 3v-1h1v4l-1 1-4-1-1-3h2l1-3m-2 8l-3-1v1l-3 2 4 1v1h1l2-1m4-2l-1-2 2-1 3-1v1l3 1-3 2 1 1h-3l-2-1m20-12v8h-2v-1l-2-4 2 1 2-4m-1 11l-1-1v-2l-5-2v1l1 1-4 2 4 1-1 1v1h1l5-2m-39 6l-1-1h-2l-2-3h-4c0-2 1-3 3-3l3 1v-1l2 2v2l3-2 1 1 4 1-3 2h1l1 1h-6M182 184c2 2 4-3 1-3-2-3-3-8 0-10 4-4 10-4 15-2 1 1 5 0 3-1-2-2-4-1-6-2-5 0-10 1-14 4-3 3-3 9 0 12v3m1-1c-4-2-5-9-2-12 0-1 3-3 2-1-3 3-2 9 1 12l-1 2m-22 2c-4-4-2-11 3-14 4-3 10-3 16-3 1-1 2 2 0 1-5 0-10 0-15 3-2 1-4 4-4 7s4 4 2 7c0 1-4 3-3 0l2-2m2-13c-4 2-7 8-4 12 2 2-1 6-2 3-2-4-1-11 4-13l1-1;`
+            // <!-- red circles in flower -->
+            + `circle:183,192,2,#aa151b;circle:163,197,2,#aa151b;`
+            // <!-- diamond red jewel -->
+            + `path:#aa151b,M174 209l2-2 3.3.4-3 2-2-1;`
+            // <!-- green jewels -->
+            + `path:#058e6e,M187 207l2-2 3.3.4-3 2-2-1;`
+            // <!-- red jewels -->
+            + `circle:206,205,3,#aa151b;`
+            // <!-- white jewels -->
+            + `<circle id='s' cx='155' cy='186' r='1.3' fill='#fff'/>;`
+            + `use:1,4;use:0,-4;use:1,-8;use:3,-12;use:6,-15;use:10,-17;use:14,-18;use:19,-18;use:23,-18;`
+            + `use:26,-2;use:24,-6;use:23,-10;use:24,-14;use:28,-20;use:32,-22;use:37,-22;use:42,-22;use:20,10;use:40,8;`
+            + `use:28,20;use:42,19;`
+            // <!-- end crown jewels -->
+            // <!-- blue circle --> <!-- yellow cross -->
+            + `circle:206,161,5,#005bbf;path:#f1bf00,M205 151v2h-2v2h2v4h-4v2h10v-2h-4v-4h2v-2h-2v-2z;`
+            // <!-- center arch -->
+            + `pathstroke:m209.5 166 1.5 13 -5 5 -5-5 1.5-13,#f1bf00,.4,#000;`
+            // <!-- center white jewels -->
+            + `use:-17.5,-70,1.5;`
+            + `</g>`// end left crown
+            // <!-- right arches -->
+            + `<use href='#a' x='-412' transform='scale(-1 1)'/>`
+            + `</g>;`//<!-- end big crown -->
+            // <!-- start left pillar -->
+            + `<g id='p'>;`
+            // <!-- gold in pillar -->
+            + `pathstroke:M124 223h21v-5h-21v5m2 4a1 1 0 0 1 1 0h16a1 1 0 0 1-1-1l1-2a2 2 0 0 1 0 0h-16a1 1 0 0 1-1 0l1 2a1 1 0 0 1-1 1m1 0h16l1 1h-18l1-1m0-4h16l1 1h-18l1-1m-1 85v1l-2 2h22a3 3 0 0 1-3-2v-1a1 1 0 0 1 0 0h-16a1 1 0 0 1-1 0m1-1h17l-1 1h-16l-1-1 1-1m-3 11h22v-6h-22v6,#f1bf00,.4,#000;`
+            // <!-- waves --> // todo waves in other flags
+            + `rect:120,318,30,9,#ccc;`
+            + `<path id='w' fill='#0039f0' stroke='#000' stroke-width='.4' d='M149 322a7 7 0 01-4-.8 8 8 0 00-4-.7c-1 0-2.7.2-3.7.7-1 .6-2.3.9-3.8.9s-2.8-.4-3.7-.9a8 8 0 00-3.7-1 8 8 0 00-3.7.8c-1 .5-2.3.9-3.8.9v2.3c1 0 3-.3 4-1a10 10 0 017 0 7 7 0 003.7.9 8 8 0 004-.8c1-.5 2-1 4-1 2 0 2.8.3 3.8.8s2.2.8 3.7.8'/>`
+            + `<use href='#w' x='0' y='-5'/><use href='#w' x='0' y='5'/>;`
+            // <!-- white pillar -->
+            + `pathstroke:M138 229v76m1.7-76v76m-13 0h16v-76h-16v77,#ccc,.4,#000;`
+            // <!-- red banner -->
+            // + `pathstroke:M158 258a50 50 0 00-23-2c-9 1.6-16.5 5-16 8v.2l-3.5-8c-.6-3 7-7.5 17.6-9a43 43 0 019-.7c6.6 0 12.4.8 16 2v9.4M127 267c-4-.3-7-1.4-7.6-3-.3-1.5 1.2-3 4-4.5 1.2.1 2.5.3 3.8.3v7M142 261.5c2.7.4 4.7 1 6 2l.1.2c.5 1-2 3-6 5.4v-7.5M117 282c-.4-1 4-3.6 10-6l8-3c8-3.7 14.4-8 13.6-9.4v-.2c.4.4 1 8 1 8 1 1-5 5.5-12.4 9.1-2.5 1-7.6 3-10 4-4.4 1.4-8.7 4-8 5l-1.5-7.7M122 286.7c-2 1-3.7 2.5-3.4 3 0 .6.8 1 2 1.6 1.5 1.1 2.5 3 1.7 4a5.5 5.5 0 00-.1-9,#aa151b,.4,#000;`
+            + `pathstroke:m158 258c-7-2-26-7-39 6v0l-3-8c-1-3 7-7 18-9 15-2 21 0 25 1v9m-31 9c-4 0-7-1-8-3 0-1-4-8 7-4m15 2c3 0 5 1 6 2l0 0c1 1-2 3-6 5v-7m-25 20c0-1 5-4 10-6 0 0 11-3 22-12l1 8c1 1-8 6-12 9-12 3-19 8-18 9l-1-8m4 5c-2 1-4 3-3 3 0 1 5 1 4 7 3-2 3-8 0-10,#aa151b,.4,#000;`
+            // <!-- yellow text -->
+            // + `path:#f1bf00,M125.8 254c1.9-.6 3.1-1.5 2.5-3-.4-1-1.4-1-2.8-.6l-2.6 1 2.3 5.8.8-.3.8-.3-1-2.5m-1.2-2.7l.7-.3c.5-.2 1.2.1 1.4.8.2.5.2 1-.5 1.5a4.4 4.4 0 01-.6.3l-1-2.3m7.3-2.5l-.9.3h-.8l1.3 6.1 4.3-.8-.2-.4v-.4l-2.5.6-1.2-5.3m8.4 5.2c.8-2.2 1.7-4.3 2.7-6.4a5.3 5.3 0 01-1 0 54.8 54.8 0 01-1.8 4.6l-2.4-4.3-1 .1h-1a131.4 131.4 0 013.5 6h1m8.8-4.7l.4-.9a3.4 3.4 0 00-1.7-.6c-1.7-.1-2.7.6-2.8 1.7-.2 2.1 3.2 2 3 3.4 0 .6-.7.9-1.4.8-.8 0-1.4-.5-1.4-1.2h-.3a7.3 7.3 0 01-.4 1.1 4 4 0 001.8.6c1.7.2 3-.5 3.2-1.7.2-2-3.3-2.1-3.1-3.4 0-.5.4-.8 1.3-.7.7 0 1 .4 1.2.9h.2;`
 
-circle:120,180,13,#c60b1e,2,orange;
-circle:145,170,13,#c60b1e,2,orange;
-circle:170,170,13,#c60b1e,2,orange;
-circle:195,180,13,#c60b1e,2,orange
-`,//end cty
+
+            // <!-- crown on pillar -->
+            + `<use href='#c' x='330' y='650' transform='scale(.25)'/>`
+            + `</g>;`//end pillar
+            // <!-- right pillar -->
+            + `<use href='#p' x='-413' transform='scale(-1 1)'/>;`
+
+            + `text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};`
+            + `text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};`
+
+
+
+            //   <!-- big shield outline -->// todo make with arch/q/c
+            //+ `pathstroke:M207 330.6a82 82 0 01-35.5-8 23 23 0 01-13-20v-32h96v32a23 23 0 01-13 20 81 81 0 01-35 8,#ccc,.5,#000;`
+            + `shield:#ccc,66,158,217,.5,#000;`
+
+            // <!-- SHIELD bottom-left shield red shield-->
+            + `shield:#aa151b,33,158,269,.5,#000;`
+            //+ `pathstroke:M207 302c0 13-10 23-24 23s-24-10-24-23v-32h48v32,#aa151b,.4,#000;`
+            // <!-- bottom-left shield yellow stripes-->
+            + `pathstroke:m169 322 5 2v-53h-5v52m-11-20a24 24 0 0 0 6 15v-47h-6v33m21 22a27 27 0 0 0 6 0v-55h-6v56m11-2a19 19 0 0 0 6-3v-51h-6v55m11-9c2-2 5-7 5-12l1-34h-6v47,#f1bf00,.4,#000;`
+
+            // <!-- SHIELD start bottom-right red shield -->
+            //  <path fill='#aa151b' stroke='#000' stroke-width='.5' d='M254.6 270v32c0 12.6-11 23-24 23s-24-10-24-23v-32h48'/>
+            + `shield:#aa151b,33,207,269,.5,#000;`
+            + `<g id='b'>;`
+            // pattern
+            + `pathstroke:m215 277h5v-2h5v4h-5v-2m5 0h5m-15 0v6h-2v5h4v-5h-2m0 5v6m0 3v3h-2v5h4v-5h-2m1-5h3v-2h5v4h-5v-2m5 0h5m1-18v6h-2v5h2v15h-2v5h2v10m-15-41 15 18m-15 17 15-17,none,1.5,#f1bf00;`
+            + `circle:214,276,3,#f1bf00;circle:230,276,3,#f1bf00;circle:216,311,3,#f1bf00;circle:230,318,3,#f1bf00;`
+            + `circle:214.5,295,2,none,1.5,#f1bf00;`
+            // <!-- should be rects -->
+            // < !-- < circle fill='none' stroke='gold' stroke- width='1.5' cx = '223' cy = '286' r = '2' />
+            //     <circle fill='none' stroke='gold' stroke-width='1.5' cx='223' cy='304' r='2' /> -->
+            //         <circle fill='none' stroke='gold' stroke-width='1.5' cx='223' cy='316' r='2' />
+            + `</g>`
+            + `<use href='#b' x='-460' transform='scale(-1 1)'/>;`
+            + `circle:230,295,4,#058e6e;`
+            // <!-- SHIELD  top-left shield: yellow castle (overlaps bottom-left sheild)-->
+            //+ `pathstroke:M158 270h48v-54h-48v54,#aa151b,.4,#000;`//todo make rect
+            + `rect:158,217,48,54,#aa151b;`
+            //   <!-- my castle -->//todo reuse bricks in other flags
+            + `<defs><pattern id='brick' width='42' height='44' patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)'>`
+            + `<g fill='none' fill-rule='evenodd'><g fill='#000'><path d='M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22'/></g></g>`
+            + `</pattern></defs>;`
+            + `pathstroke:M168 255h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;`
+            + `pathstroke:M168 255h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;`
+            //   <!-- blue door 2 windows -->
+            + `pathstroke:M185 263v-4c0-1 0-3-3-3-2 0-3 2-3 3v4M179 250v-4c0-1 0-3-3-3-2 0-3 2-3 3v4M191 250v-4c0-1 0-3-3-3-2 0-3 2-3 3v4,#0039f0,.4,#000;`
+            // SHIELD pink lion
+            //   <path fill='#ccc' stroke='#000' stroke-width='.4' d='M206.5 270h48v-54h-48v54'/>
+            //+ `rect:207,217,49,54,#ccc;`
+            // tongue
+            + `path:#db4446,M231 230v-1h0-2a6 6 0 01-3-2l-1-1-3 1 2 1 2 1 3 1h2;`
+            // <!--pink lion  -->
+            + `pathstroke:M238 228v3l1 1h-1l-1-1 1 2 1 2v1l-2-1 1 1-1 2-1-2v4l-1-1-1-1 2 6c1 1 3 4 6 3s2-5 1-7l-1-4 1-4v-3l1-2v-3l1 3 3-3-2 4h2l-1 1-1 3-2 1v5l2 5c0 1 0 3-2 5l-3 1c-1 0-2 1-2 3l3 3 1 1-2 2v5h-2v-1h-1v1l-1-1h-1l1-1s1 0 0 0l-1-1v-1h2l1-1-2-2v1h-2l-1-1v-4h-3v3l1 2-2 1-1-1-3 1h-2v-1h-1l-1-1v-1h2v-1l-1-1h1l1-1v2h4l-1-1v-2h-1v2l-1-2 3-4h4l-5-4-2-1-2 2v-2l-1 2-1 1v-2l-1 1h-2v2h-2v-2 1l-1-1v-1h1l-1-1v-1l1-1 1 1h2l2-1 1-1-1-1-1-1h-2l-1-1v-1h-2l1-1h1l-1-1-1-1h-1l-1-1v-1h2l-2-1 2-2 1 2v-2h2l-1 3 5 3 1 1 5-2-1-1h1l2-1-3-3v-1l1-1h2l1-1h1l3 1 2 3,#ed72aa,.2,#000;`
+            // <!-- eye -->
+            + `pathstroke:M232 225h1l1 1h-1;`
+            // <!-- body stripes -->
+            + `pathstroke:M237 231a8 8 0 010-1m-9 1v-1l1 1h-1m1 0v-1l1 1h-1m0-4v1v-1m1 1h0-1m-5 6h-1v1h4l-1 1v3h1a5 5 0 001-1l1-1v1l1 2v-1h1l1-1v1l1 1v-1l1-1a4 4 0 000-1v1m-11 1l1-1 1-1h1m1 5l1-1a4 4 0 002-1,none,.2,#000;`
+            // <!-- claws -->
+            + `pathstroke:M217 227h2v-1l-1-1v1a2 2 0 01-1 1m-2 1l-1-1-2 1h2v1l1-1a7 7 0 000 0m-1 3h-1v1h2l-1-1m3 9h-2l-1 1h2l1-1m-1 3h-1l-1 2 1-1 1 1v-1-1m1 3v1l2 1-1-1 1-1h-2m16 1l2 2-1 3m-10 1l-1-1-1 1h2m-2 2l-1 1-1 1 1-1 1 1v-2m2 3v1l1 1v-1l1-1h-2m12 1h-1l-1 2 1-1h1v0-1m0 3v1l1 1v-1h1-1a16 16 0 01-1-1m3 1l1 1 1 1-1-1 1-1h-2,#db4446,.2,#000;`
+            // < !--start pink lion crown -- >
+            + `<use href='#c' x='3010' y='280' transform='scale(.1) rotate(35)' />;`
+            //   <!-- start bottom shield flower -->
+            + `circle:207,320,5,#ffd691,.4,#000;`
+            + `pathstroke:M207 324a5 5 0 0 1 0-7 5 5 0 0 1 1 3 5 5 0 0 1-1 4,#aa151b,.4,#000;`
+            + `pathstroke:M206 327l-5-3h-6l2 1 3 2h6m1 0l5-3 7 1h-2l-4 2h-7v-2h2v5h-2v-5,#058e6e,.4,#000;`
+
+            //  SHIELD <!-- shield-center Oval -->
+            + `<ellipse fill='#aa151b' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='15' ry='18'/>`
+            + `<ellipse fill='#005bbf' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='11' ry='14'/>`
+            //   <!-- 3 yellow lilys -->
+            + `<path id='f' fill='#f1bf00' stroke='#000' stroke-width='.4' d='M201 261s-1 1-1 3a6 6 0 00.6 2c-.2-.5-1-1-1-1-1 0-1.4.6-1.4 1l.2.8.5.9c.1-.3.5-1 1-1s1 1 1 1a.9.9 0 010 1h-1v1h1l-1 1.5 1-.4.8.9.8-1 1 .4-.7-1h1v-1h-1.1a.9.9 0 010-.3 1 1 0 011-1c.4 0 .7.3 1 1l.4-1 .2-1a1 1 0 00-1-1c-1 0-1.2.3-1.4.9 0 0 .6-1.2.6-2.5s-1-3-1-3'/>;`
+            + `<use href='#f' x='10'/><use href='#f' x='5' y='9'/>;`
+        ,//end cty spain
 
         et: "country:Ethiopia;stripes:#078930|#fcdd09|#da121a;circle:320,240,130,#0f47af;rotate:5,<line stroke-width='4' stroke='#fcdd09' x1='50' y1='15' x2='100' y2='30'/>,320,240;pathstroke:m321 146-56 172 145-105h-180l145 106z,#0f47af,8,#fcdd09",//end cty
         fi: "country:Finland;bgcolor:;doublecross:-80,0,#002f6c,#002f6c,120",//end cty
@@ -798,7 +923,7 @@ circle:195,180,13,#c60b1e,2,orange
         hu: "country:Hungary;stripes:#cd2a3e|#fff|#436f4d",//end cty
         id: "country:Indonesia;stripes:#f00|#fff",//end cty
         ie: "country:Ireland;bars:#169b62|#fff|#ff883e",//end cty
-        il: "country:Israel;bgcolor:;stripe:45,70,#0038b8;stripe:360,70,#0038b8;pathstroke:m340 140 100 150-200 0zm0 200-100-150 200 0z,#fff,18,#0038b8",//end cty
+        il: "country:Israel;bgcolor:;stripe:45,70,#0038b8;stripe:360,70,#0038b8;pathstroke:m320 140 100 150-200 0zm0 200-100-150 200 0z,#fff,18,#0038b8",//end cty
 
         //3 legs
         im: "country:Isle of Man;detail:80;bgcolor:#d00c27;rotate:3,<path fill='#fff' d='M-40-70l-74 29c-7-13-53-29-44-2 14 8 20 31 34 29 25-15 82-24 76 0 8 42 35 25 55 13-7-21-24-68-47-69' stroke-width='2' stroke='#000'/>",//end cty
@@ -978,10 +1103,7 @@ circle:195,180,13,#c60b1e,2,orange
         ru: "country:Russia;stripes:#fff|#0039a6|#d52b1e",//end cty
         rw: "country:Rwanda;stripes:#00a1de|#00a1de|#e5be01|#20603d;rotate:24,<path fill='#fad201' d='m0 5l-80-5l80-5'/>, 515, 125;circle:515,125,25,#fad201,3,#00a1de",//end cty
 
-        //str:'لَا إِلٰهَ إِلَّا الله مُحَمَّدٌ رَسُولُ الله'    //  100 bytes-A god but Allah,Muhammad is the Messenger of Allah
-        //str:'لَمُحَمَّدٌ رَسُولُ الله'              //  77 bytes-The Messenger of Allah
-        //str: 'الله'                          //  18 bytes-Allah
-        sa: "country:Saudi Arabia;detail:40;bgcolor:#006c35;path:#fff,M412 340l21 1 10-1c10-1 10 14 10 14 0 10-4 10-7 11-3 0-4-2-6-4a13 13 0 0 1-7 1l-10-1h-10c0 2-2 3-4 3s-4-6-4-10l1-3c-34-1-70-3-105-2l-80 2c-14 0-26-2-33-13h47l57-1 115 2c-4-1-4-7 2-9l2 3c4 0 2 5 1 6;<text x='240' y='280' font-size='240' fill='#fff'>الله</text>",//end cty
+        sa: `country:Saudi Arabia;detail:40;bgcolor:#006c35;path:#fff,M412 340l21 1 10-1c10-1 10 14 10 14 0 10-4 10-7 11-3 0-4-2-6-4a13 13 0 0 1-7 1l-10-1h-10c0 2-2 3-4 3s-4-6-4-10l1-3c-34-1-70-3-105-2l-80 2c-14 0-26-2-33-13h47l57-1 115 2c-4-1-4-7 2-9l2 3c4 0 2 5 1 6;<text x='240' y='300' font-size='240' fill='#fff'>${Allah}</text>`,//end cty
         sb: "country:Solomon Islands;bgcolor:#215b33;triangle:0,0,640,0,0,480,#0051ba;line:40,#fcd116,0,480,640,0;star:#fff,10,0,3;use:60,0,3;use:10,45,3;use:60,45,3;use:35,20,3",//end cty
         sc: "country:Seychelles;bgcolor:#d62828;path:#007a3d,M0 480l930-160v160H0;path:#fff,M0 480l930-320v160L0 480;path:#003f87,M0 480V0h310L0 480;path:#fcd856,M0 480L310 0h310L0 480",//end cty
         sd: "country:Sudan;striangle:#d21034|#fff|#000,#007229",//end cty
