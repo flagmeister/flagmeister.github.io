@@ -222,7 +222,7 @@
             </div>
         </div>
         <div>
-            <h2>FlagMeister is a single <span class=highlightText><span class='flagmeister_size'>23</span> KB</span>
+            <h2>FlagMeister is a single <span class=highlightText><span class='flagmeister_size'></span> KB</span>
                 <sup>gzip</sup> <span class=highlightText>Custom Element / Web Component</span> file</h2>
 
             <textarea class=textarea_html style="overflow:hidden">
@@ -315,7 +315,7 @@
                 // set the correct flagcount and filesize in all text elements
                 let replaceHTML = (sel, x) => [...document.querySelectorAll(sel)].map(el => el.innerHTML = x);
                 replaceHTML('.flagmeister_flagcount', flags.length);
-                replaceHTML('.flagmeister_size', 23);
+                replaceHTML('.flagmeister_size', 25);
 
                 // resize height of all (code documentation) textareas
                 [...document.querySelectorAll('textarea')].map(o => o.style.height = o.scrollHeight + "px");
@@ -340,4 +340,4 @@
 
 
 </body>
-Published: 2019-10-06 13:40 
+Published: 2019-10-06 13:41 
