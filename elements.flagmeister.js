@@ -42,7 +42,6 @@
         'الله'                          //  18 bytes-Allah
         ;
 
-
     console.assert((() => {// removed in production code
         console.element = function () {
             let errorstack = new Error().stack.split('\n');
@@ -100,7 +99,7 @@
     //replaced for 2 usages: smaller GZ file
     //let $nTimes = n => [...Array(~~n).keys()];// cast string n to integer because flag parser passes a string
 
-    let $stroke_W_Col = (w, c) => w ? ` stroke-width='${w}' stroke='${c}' ` : '';
+    let $stroke_W_Color = (w, c) => w ? ` stroke-width='${w}' stroke='${c}' ` : '';
 
     let $path = (
         color
@@ -109,7 +108,7 @@
         , strokewidth = false
         , strokeColor
     ) => svg = `<path id='${id}' fill='${color}' d='${d}' ${strokewidth
-        ? $stroke_W_Col(strokewidth, strokeColor)
+        ? $stroke_W_Color(strokewidth, strokeColor)
         : ''}/>`;
 
     let $Rect = (
@@ -120,7 +119,7 @@
         , color = "none"
         , strokewidth//todo! all usages for now are 2,BLACK
         , stroke = '#000'
-    ) => `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${color}' ${$stroke_W_Col(strokewidth, stroke)}/>`
+    ) => `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${color}' ${$stroke_W_Color(strokewidth, stroke)}/>`
 
     //todo merge next 2 functions; check for #incolor/x
     let $onestar_Col_X_Y_Size = (
@@ -170,7 +169,7 @@
         , id
         , strokewidth
         , stroke
-    ) => `<g fill='none' ${(id ? `id='${id}' ` : '')} transform='translate(${x || 0} ${y || 0}) rotate(${rot || 0}) scale(${scale || 1})' ${$stroke_W_Col(strokewidth, stroke)}>${content}</g>`;
+    ) => `<g fill='none' ${(id ? `id='${id}' ` : '')} transform='translate(${x || 0} ${y || 0}) rotate(${rot || 0}) scale(${scale || 1})' ${$stroke_W_Color(strokewidth, stroke)}>${content}</g>`;
 
     let $L_line_width_color_x1_y1_x2_y2 = (
         w
@@ -206,7 +205,7 @@
         , anchor = 'middle'// start,end,middle
         //process parameters
         , fillvalue = fill ? `fill='${fill}'` : ''
-    }) => `<text x='${x}' y='${y}' font-size='${size}' ${fillvalue} ${$stroke_W_Col(width, stroke)}font-family='${font}' font-weight='${weight}' text-anchor='${anchor}'>${str}</text>`;
+    }) => `<text x='${x}' y='${y}' font-size='${size}' ${fillvalue} ${$stroke_W_Color(width, stroke)}font-family='${font}' font-weight='${weight}' text-anchor='${anchor}'>${str}</text>`;
 
     let $Circle = (
         x = 320
@@ -217,7 +216,7 @@
         , stroke
         //process parameters
         , fillvalue = fill ? `fill='${fill}'` : ''
-    ) => `<circle cx='${x}' cy='${y}' r='${r}' ${fillvalue} ${$stroke_W_Col(strokewidth, stroke)}/>`;
+    ) => `<circle cx='${x}' cy='${y}' r='${r}' ${fillvalue} ${$stroke_W_Color(strokewidth, stroke)}/>`;
 
     let commands = {
         text: $Text
@@ -368,10 +367,7 @@
     let flagparser = (fp_input, element) => {
         //if (fp_input) {
         let presets = {
-            left: '0 0 480 480'
-            , center: '80 0 480 480'
-            , right: '160 0 480 480'
-            , attr: (
+            attr: (
                 attrname
                 , size
                 , y
@@ -391,6 +387,10 @@
                 })
 
             , country: name => (element && element.setAttribute("country", name), '')//return empty string
+
+            , left: '0 0 480 480'
+            , center: '80 0 480 480'
+            , right: '160 0 480 480'
 
             , signal: x => {
                 element.box = "0 0 480 480";
@@ -468,7 +468,7 @@
 
             , overlay: `<use href='#overlay'/>`
 
-            , border: (width, color) => `<use href='#outline' ${$stroke_W_Col(width, color)}/>`
+            , border: (width, color) => `<use href='#outline' ${$stroke_W_Color(width, color)}/>`
 
             // ,outline:() => `
             // <filter id='ff'>
