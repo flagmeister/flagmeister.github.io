@@ -35,11 +35,14 @@
 
 ((trace = 0) => {
 
+    // text for Saudi flag, longer text requires other font-settings for sa: flag
     let Allah =
         //'لَا إِلٰهَ إِلَّا الله مُحَمَّدٌ رَسُولُ الله'    //  100 bytes-A god but Allah,Muhammad is the Messenger of Allah
         //'لَمُحَمَّدٌ رَسُولُ الله'              //  77 bytes-The Messenger of Allah
         'الله'                          //  18 bytes-Allah
         ;
+
+
     console.assert((() => {// removed in production code
         console.element = function () {
             let errorstack = new Error().stack.split('\n');
@@ -92,11 +95,12 @@
         return true//console.assert does not output line in console
     })());
 
-    // Helper functions creating SVG
+    // FlagMeister Helper functions creating SVG
 
-    let $nTimes = n => [...Array(~~n).keys()];//Array(x).fill(0);// cast string N to integer because flag parser passes a string
+    //replaced for 2 usages: smaller GZ file
+    //let $nTimes = n => [...Array(~~n).keys()];// cast string n to integer because flag parser passes a string
 
-    let stroke_W_Col = (w, c) => w ? ` stroke-width='${w}' stroke='${c}' ` : '';
+    let $stroke_W_Col = (w, c) => w ? ` stroke-width='${w}' stroke='${c}' ` : '';
 
     let $path = (
         color
@@ -105,7 +109,7 @@
         , strokewidth = false
         , strokeColor
     ) => svg = `<path id='${id}' fill='${color}' d='${d}' ${strokewidth
-        ? stroke_W_Col(strokewidth, strokeColor)
+        ? $stroke_W_Col(strokewidth, strokeColor)
         : ''}/>`;
 
     let $Rect = (
@@ -116,7 +120,7 @@
         , color = "none"
         , strokewidth//todo! all usages for now are 2,BLACK
         , stroke = '#000'
-    ) => `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${color}' ${stroke_W_Col(strokewidth, stroke)}/>`
+    ) => `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${color}' ${$stroke_W_Col(strokewidth, stroke)}/>`
 
     //todo merge next 2 functions; check for #incolor/x
     let $onestar_Col_X_Y_Size = (
@@ -166,7 +170,7 @@
         , id
         , strokewidth
         , stroke
-    ) => `<g fill='none' ${(id ? `id='${id}' ` : '')} transform='translate(${x || 0} ${y || 0}) rotate(${rot || 0}) scale(${scale || 1})' ${stroke_W_Col(strokewidth, stroke)}>${content}</g>`;
+    ) => `<g fill='none' ${(id ? `id='${id}' ` : '')} transform='translate(${x || 0} ${y || 0}) rotate(${rot || 0}) scale(${scale || 1})' ${$stroke_W_Col(strokewidth, stroke)}>${content}</g>`;
 
     let $L_line_width_color_x1_y1_x2_y2 = (
         w
@@ -202,7 +206,7 @@
         , anchor = 'middle'// start,end,middle
         //process parameters
         , fillvalue = fill ? `fill='${fill}'` : ''
-    }) => `<text x='${x}' y='${y}' font-size='${size}' ${fillvalue} ${stroke_W_Col(width, stroke)}font-family='${font}' font-weight='${weight}' text-anchor='${anchor}'>${str}</text>`;
+    }) => `<text x='${x}' y='${y}' font-size='${size}' ${fillvalue} ${$stroke_W_Col(width, stroke)}font-family='${font}' font-weight='${weight}' text-anchor='${anchor}'>${str}</text>`;
 
     let $Circle = (
         x = 320
@@ -213,7 +217,7 @@
         , stroke
         //process parameters
         , fillvalue = fill ? `fill='${fill}'` : ''
-    ) => `<circle cx='${x}' cy='${y}' r='${r}' ${fillvalue} ${stroke_W_Col(strokewidth, stroke)}/>`;
+    ) => `<circle cx='${x}' cy='${y}' r='${r}' ${fillvalue} ${$stroke_W_Col(strokewidth, stroke)}/>`;
 
     let commands = {
         text: $Text
@@ -228,11 +232,41 @@
         // ,weight='bold'
         // ,anchor='middle'// start,end,middle
 
+        , circle: $Circle
+        , rect: $Rect
+        , line: $L_line_width_color_x1_y1_x2_y2
+        , stripe: $S_stripe_x_size__color
+        , triangle: $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke
+        , stripes: $F_stripes_arr
+        , bar: $H_bar_Y_Size__color
+        , cross: $X_cross_color_x_y_len__w_h
+        , star: $onestar_Col_X_Y_Size
+        , use: $Usestar_X_Y_Scale1_Rot0
+        , path: $path
+
 
         // at what pixel WIDTH image will FlagMeister lazy load a more detailed SVG:
         , detail: x => `<!--dtl:${x}dtl:-->`
 
-        , circle: $Circle
+
+        , bars: (
+            bars
+            , size = 640 / bars.length
+        ) => bars.map((color, idx) => $H_bar_Y_Size__color(size * idx, size, color)).join``
+
+        , rotate: (
+            times
+            , part
+            , x = 320
+            , y = 240
+            , scale = 1
+        ) => [...Array(~~times).keys()].map(n => g_transform_Content_X_Y_R_S_Id_SW_S_Fill(
+            part
+            , x
+            , y
+            , n * 360 / times
+            , scale
+        )).join``
 
         , circles: (
             times
@@ -242,7 +276,7 @@
             , fill
             , strokewidth
             , stroke
-        ) => $nTimes(times).map(n => $Circle(x, y, gap + n * gap, fill, strokewidth, stroke)).join``
+        ) => [...Array(~~times).keys()].map(n => $Circle(x, y, gap + n * gap, fill, strokewidth, stroke)).join``
 
         , flag: (isoref, scale = 1, x = 0, y = 0) => `<g id='${isoref}' transform='translate(${x} ${y})'><g transform='scale(${1 / scale})'>${flagparser(flags[isoref])}</g></g>`
 
@@ -258,17 +292,10 @@
         //     return fl;
         // }
 
-        , rect: $Rect
-
         , bgcolor: color => $S_stripe_x_size__color(0, 480, color)// ! todo fix anti alias with crispEdges
 
-        , line: $L_line_width_color_x1_y1_x2_y2
 
         , outline: d => $path('none', d, 'outline')
-
-        , stripe: $S_stripe_x_size__color
-
-        , triangle: $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke
 
         , striangle: (
             bars
@@ -278,17 +305,6 @@
         ) => svg = $F_stripes_arr(bars)
         + extra
         + $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke(-1, 0, x, 240, -1, 480, trianglecolor)
-
-        , stripes: $F_stripes_arr
-
-        , bars: (
-            bars
-            , size = 640 / bars.length
-        ) => bars.map((color, idx) => $H_bar_Y_Size__color(size * idx, size, color)).join``
-
-        , bar: $H_bar_Y_Size__color
-
-        , cross: $X_cross_color_x_y_len__w_h
 
         , crossx: (bgcolor, color, size = 70) => flagparser(`bgcolor:${bgcolor};pathstroke:M0 0L640 480h${size}v-480h-${size}L0 480,${bgcolor},${size},${color}`)
 
@@ -302,17 +318,11 @@
         ) => $X_cross_color_x_y_len__w_h(c1, 320 + x, 240 + y, 640, w1, 640, 640)
             + $X_cross_color_x_y_len__w_h(c2, 320 + x, 240 + y, 640, w2, 480, 640)
 
-        , star: $onestar_Col_X_Y_Size
-
-        , use: $Usestar_X_Y_Scale1_Rot0
-
         , diagonal: (trcolor, strokecolor, linefill) => $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke(0, 480, 640, 0, 640, 480, trcolor)
             + $L_line_width_color_x1_y1_x2_y2(160, strokecolor, -60, 480, 700, 0)
             + $L_line_width_color_x1_y1_x2_y2(120, linefill, -60, 480, 700, 0)
 
         , pathstroke: (d, fill, w = 0, col = 'none') => svg = $path(fill, d, '', w, col)//prf
-
-        , path: $path
 
         , shield: (
             fill = '#fff'
@@ -343,22 +353,7 @@
             , scale
         )
 
-        , sun: (repeat, x = 320, y = 240, scale = 1) => {
-
-        }
-        , rotate: (
-            N
-            , part
-            , x = 320
-            , y = 240
-            , scale = 1
-        ) => $nTimes(N).map(n => g_transform_Content_X_Y_R_S_Id_SW_S_Fill(
-            part
-            , x
-            , y
-            , n * 360 / N
-            , scale
-        )).join``
+        //, sun: (repeat, x = 320, y = 240, scale = 1) => { }
     }
 
     let stringIncludesSVG = x => x.includes(".svg");
@@ -473,7 +468,7 @@
 
             , overlay: `<use href='#overlay'/>`
 
-            , border: (width, color) => `<use href='#outline' ${stroke_W_Col(width, color)}/>`
+            , border: (width, color) => `<use href='#outline' ${$stroke_W_Col(width, color)}/>`
 
             // ,outline:() => `
             // <filter id='ff'>
@@ -1453,8 +1448,8 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
             , height = this.getAttribute('height') || "var(--flagmeisterletterheight,99px)"
         ) {
             //console.time(word);
-            setTimeout(p =>
-                this.innerHTML = `<style>[word='${word}']{
+            //setTimeout(p =>
+            this.innerHTML = `<style>[word='${word}']{
 display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:${height};filter:var(--flagmeistertextfilter,drop-shadow(1px 1px 0 grey) drop-shadow(-1px -1px 0 #fff) drop-shadow(4px 4px 2px #000))</style>`
                 + word.split``.map(
                     (str, idx) =>
@@ -1466,7 +1461,7 @@ display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:$
                             //, l: console.timeLog(word, str)
                         })}' filter=light box='150 0 340 480'/>`
                 ).join``
-            );
+            //);
         }
     });
 
