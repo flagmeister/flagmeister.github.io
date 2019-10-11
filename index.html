@@ -12,42 +12,7 @@
 
     <title>FlagMeister</title>
     <!-- <script src=elements.flagmeister.js onload="console.log('loaded FlagMeister')"></script> -->
-    <script src=elements.flagmeister.min.js onload="console.log('loaded FlagMeister')" defer></script>
-    <script>
-        //make sure my custom element is defined first, 
-        //because the flags MUST be there for later code to count/sum codesize
-        customElements.define('flagmeister-list', class extends HTMLElement {
-            constructor() {
-                super();
-            }
-            connectedCallback() {
-                let img = (iso, char = false) => `<img is=flag-${iso} ${char ? 'char=' + char : ''} title="flag-${iso + (char ? ' char=' + char : '')}">`;
-                let header = x => `<h3>${x}</h3>`;
-                this.innerHTML = header("ISO country code flags")
-                    + Object.keys(window.flagmeister).map(iso => {
-                        let counter = (id, items, title) => `<div id='${id}'>` + ['<h3>', 0, title, "</h3>", ...items]
-                            .reduceRight((reducer, char, idx, redarr) =>
-                                (
-                                    idx > 3
-                                        ? (redarr[1]++ , img(iso, char))
-                                        : char
-                                ) + reducer
-                                , '') + '</div>';
-
-                        if (iso == 'signal') {
-                            if (this.hasAttribute('signals'))
-                                return counter("FlagMeisterNATOFlags", "abcdefghijklmnopqrstuvwxyz0123456789".split``, " signal flags");
-                            else return '';
-                        } else if (iso == 'ics') {
-                            if (this.hasAttribute('signals'))
-                                return counter("FlagMeisterICSFlags", "0123456789".split``, ' ICS signal flags')
-                            else return '';
-                        } else
-                            return (iso == 'eu' ? header("non country flags") : '') + img(iso)
-                    }).join``;
-            }
-        });
-    </script>
+    <script src=elements.flagmeister.min.js onload="console.log('loaded FlagMeister')"></script>
     <style id=theme_greenwhite>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -200,7 +165,8 @@
         <h1>All <span class=highlightText>HTML</span> required to display SVG flags is:</h1>
         <div class=docgrid>
             <div>
-                <textarea class=textarea_html style="width:320px;height:209px">
+                <label for="codeexample" hidden>Code Example:</label>
+                <textarea id="codeexample" class=textarea_html style="width:320px;height:209px">
 <img is=flag-nl>
 <img is=flag-zw>
 <img is=flag-ke>
@@ -228,7 +194,7 @@
             <h2>FlagMeister is a single <span class=highlightText><span class='flagmeister_size'></span> KB</span>
                 <sup>gzip</sup> <span class=highlightText>Custom Element / Web Component</span> file</h2>
 
-            <textarea class=textarea_html style="overflow:hidden">
+            <textarea id="codeexample" class=textarea_html style="overflow:hidden">
 <head>
     <script src="elements.flagmeister.min.js"></script>
 </head>
@@ -257,7 +223,7 @@
     <section convert2HTMLonload>
         <!-- <h2>If you want FlagMeister to create:</h2>
         <div class=horizontalFlags_5>
-            <img is=flag-nl filter=light data-not="Not Holland!" draw='attr:country,80;attr:data-not,80,120'>
+            <img is=flag-nl filter=light data-not="Not Holland!" draw='attr:alt,80;attr:data-not,80,120'>
             <img is=flag-eu filter=light draw="flag:gb,3,215,160">
             <img is=flag-lgbt clip="heart" box="center" filter="light">
             <img is=flag-us filter='light:{"spot":"royalblue","x":160,"y":120}'
@@ -284,6 +250,34 @@
     </section>
 
     <script>
+        function createAllFlags(signals = true) {
+            let img = (iso, char = false) => `<img is=flag-${iso} ${char ? 'char=' + char : ''} title="flag-${iso + (char ? ' char=' + char : '')}">`;
+            let header = x => `<h3>${x}</h3>`;
+            //let isoNames = Object.keys(window.flagmeister);
+            let isoNames = Object.keys(document.querySelector('img[is]').flags);
+            return header("ISO country code flags")
+                + isoNames.map(iso => {
+                    let counter = (id, items, title) => `<div id='${id}'>` + ['<h3>', 0, title, "</h3>", ...items]
+                        .reduceRight((reducer, char, idx, redarr) =>
+                            (
+                                idx > 3
+                                    ? (redarr[1]++ , img(iso, char))
+                                    : char
+                            ) + reducer
+                            , '') + '</div>';
+
+                    if (iso == 'signal') {
+                        if (signals)
+                            return counter("FlagMeisterNATOFlags", "abcdefghijklmnopqrstuvwxyz0123456789".split``, " signal flags");
+                        else return '';
+                    } else if (iso == 'ics') {
+                        if (signals)
+                            return counter("FlagMeisterICSFlags", "0123456789".split``, ' ICS signal flags')
+                        else return '';
+                    } else
+                        return (iso == 'eu' ? header("non country flags") : '') + img(iso)
+                }).join``;
+        };
         //window.onload after whole page loaded
         window.onload = () => {
             document.body.style.visibility = 'initial';
@@ -292,13 +286,11 @@
                 // inject FlagMeister Banner
                 let headerTitle = 'FlagMeister';
                 let letterNr = 11;
-                //let headerInjector = setInterval(() => {
                 injectFlagMeisterBanner.innerHTML = `<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="${headerTitle.slice(0, letterNr++)}"</flagmeister-text>`;
-                //  if (letterNr > headerTitle.length) clearInterval(headerInjector);
-                //}, 0);
 
                 // inject all flags
-                injectFlagMeisterList.innerHTML = '<flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>';
+                injectFlagMeisterList.innerHTML = '<div id=flags_with_detailList class=flagwidthList>' + createAllFlags(true) + '</div>';
+
                 // process all injected flag
                 let flags = [...firstviewAllFlags.querySelectorAll('img')];
 
@@ -343,4 +335,4 @@
 
 
 </body>
-Published: 2019-10-11 16:43 
+Published: 2019-10-11 19:35 
