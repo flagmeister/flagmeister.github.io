@@ -1,39 +1,41 @@
-//-----------------------------------------------------------
-// FlagMeister.github.io - One Custom Element for 300+ flags
-// license: UNlicense
-// This file is optimized for best GZip dowload/performance
-//------------------------------------------------------------
+/* eslint-disable no-console */
+
+let initFlagmeister = (trace = 1) => {
+
+    //-----------------------------------------------------------
+    // FlagMeister.github.io - One Custom Element for 300+ flags
+    // license: UNlicense
+    // This file is optimized for best GZip dowload/performance
+    //------------------------------------------------------------
 
 
-// TODO:
-// Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
-// flags with less detail:argentina (face in sun),angola details in knife
-// replace #000 in stripes,bars with 0 (illegal color) - saves 35 Bytes
+    // TODO:
+    // Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
+    // flags with less detail:argentina (face in sun),angola details in knife
+    // replace #000 in stripes,bars with 0 (illegal color) - saves 35 Bytes
 
-// make colors first parameters
-// lazy load delay
+    // make colors first parameters
+    // lazy load delay
 
-// replace "M  with "m
-// replace [0] and [1] with destructering
-// todo use index number reference to use previous color
+    // replace "M  with "m
+    // replace [0] and [1] with destructering
+    // todo use index number reference to use previous color
 
-// usetransform:(transform,id)=><use transform='${transform}' href='${id}'/>
+    // usetransform:(transform,id)=><use transform='${transform}' href='${id}'/>
 
-// learnings:
-// find colors with capitals regexp:#(?:^|[^A-Z])[A-Z](?![A-Z])
+    // learnings:
+    // find colors with capitals regexp:#(?:^|[^A-Z])[A-Z](?![A-Z])
 
-// language codes
-// ar, cs, da, de, el, en, en-gb, es, fr, fi, he, hu, it, ja, ko, nb, nl, pl, pt, pt-pt, ro, ru, sv, tr, uk, zh, zh-hant
-// https://stackoverflow.com/questions/2511076/which-iso-format-should-i-use-to-store-a-users-language-code
+    // language codes
+    // ar, cs, da, de, el, en, en-gb, es, fr, fi, he, hu, it, ja, ko, nb, nl, pl, pt, pt-pt, ro, ru, sv, tr, uk, zh, zh-hant
+    // https://stackoverflow.com/questions/2511076/which-iso-format-should-i-use-to-store-a-users-language-code
 
-// Syntax
-// starrotate:x,y,fill,scale=1,len=30,wid=4
-// semicircle: path:blue,M33 160 a1 1 0 0 0 124 0,,10,yellow
+    // Syntax
+    // starrotate:x,y,fill,scale=1,len=30,wid=4
+    // semicircle: path:blue,M33 160 a1 1 0 0 0 124 0,,10,yellow
 
-// Probably Not todo
-// recreate (only the detail) Detail flags in FlagMeister own Repo
-
-((trace = 0) => {
+    // Probably Not todo
+    // recreate (only the detail) Detail flags in FlagMeister own Repo
 
     // text for Saudi flag, longer text requires other font-settings for sa: flag
     let Allah =
@@ -81,8 +83,9 @@
             ) {
                 funcColor = 'background:lightgreen;color:black'
             }
-            if (args.length && args[0].includes('background')) { }//overrule color
-            else args.unshift(funcColor);
+            if (args.length && args[0] && args[0].includes && !args[0].includes('background')) {
+                args.unshift(funcColor);
+            }//overrule color
             if (elID) args.unshift('background:blue;color:white');
             args.unshift('background:green;color:white');
 
@@ -107,7 +110,7 @@
         , id = ''
         , strokewidth = false
         , strokeColor
-    ) => svg = `<path id='${id}' fill='${color}' d='${d}' ${strokewidth
+    ) => `<path id='${id}' fill='${color}' d='${d}' ${strokewidth
         ? $stroke_W_Color(strokewidth, strokeColor)
         : ''}/>`;
 
@@ -300,9 +303,9 @@
             , trianglecolor
             , x = 290
             , extra = ''
-        ) => svg = $F_stripes_arr(bars)
+        ) => $F_stripes_arr(bars)
         + extra
-        + $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke(-1, 0, x, 240, -1, 480, trianglecolor)
+            + $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke(-1, 0, x, 240, -1, 480, trianglecolor)
 
         , crossx: (bgcolor, color, size = 70) => flagparser(`bgcolor:${bgcolor};pathstroke:M0 0L640 480h${size}v-480h-${size}L0 480,${bgcolor},${size},${color}`)
 
@@ -320,7 +323,7 @@
             + $L_line_width_color_x1_y1_x2_y2(160, strokecolor, -60, 480, 700, 0)
             + $L_line_width_color_x1_y1_x2_y2(120, linefill, -60, 480, 700, 0)
 
-        , pathstroke: (d, fill, w = 0, col = 'none') => svg = $path(fill, d, '', w, col)//prf
+        , pathstroke: (d, fill, w = 0, col = 'none') => $path(fill, d, '', w, col)//prf
 
         , shield: (
             fill = '#fff'
@@ -358,11 +361,13 @@
 
     // all SVG commands can be called by fullname or abbreviated letter
     // the minified file is patched in the built step to set these same letters
-    let abbreviations = "detail:a,bgcolor:b,circle:c,diagonal:d,circles:e,flag:f,doublecross:g,stripes:h,outline:i,line:l,southerncross:m,bar:n,rotate:o,path:p,pathstroke:q,rect:r,star:s,stripe:t,use:u,bars:v,striangle:w,crossx:x,country:y,triangle:z".split`,`;
-    abbreviations.map(def => {
-        def = def.split`:`;
-        commands[def[0]] = commands[def[0]] || commands[def[1]];
-    });
+    // can't use : to split because the : is in the key: (in JS source code)
+    let abbreviations = "detail a,bgcolor b,circle c,diagonal d,circles e,flag f,doublecross g,stripes h,outline i,line l,southerncross m,bar n,rotate o,path p,pathstroke q,rect r,star s,stripe t,use u,bars v,striangle w,crossx x,country y,triangle z".split`,`;
+    abbreviations.map(def => (
+        def = def.split` `,
+        commands[def[0]] = commands[def[0]] || commands[def[1]]
+    ));
+    window["console"]["log"](Object.keys(commands));
 
 
     let flagparser = (fp_input, element) => {
@@ -393,7 +398,7 @@
             , center: '80 0 480 480'
             , right: '160 0 480 480'
 
-            , signal: x => {
+            , signal: () => {
                 element.box = "0 0 480 480";
                 //make 640:480 a square flag with scale(.75 1)
                 return flagparser(`<g transform='scale(.75 1)'>;` + {
@@ -436,8 +441,9 @@
                     , 9: "bars:#00f|#fff|#00f"
                 }[element.getAttribute("char")] + `;</g>`)
             }
-            , ics: _ => (
+            , ics: () => (
                 //set value
+                //clip a square from the center of the flag
                 element.clip = `outline:M0 0l640 160l0 160l-640 160z`
                 ,
                 //return value:
@@ -510,12 +516,12 @@
             //TEXT
 
             //United Nations world
-            , lun: _ => flagparser(`path:#fff,m360 357l-6 6c-13-14-29-30-45-30-9 0-16 8-24 12-11 7-26 12-39 6-7-2-14-6-19-12 11 7 25 8 37 3 12-6 25-13 40-13 21 0 42 15 56 28zm-93-28l-8-3c-15-6-17-21-25-32 10 7 19 16 28 25 7 6 15 9 24 10l-7 1c-15 4-33 10-49 4-11-4-29-18-27-22 13 8 48 22 64 17zm-32-13l-10-11c-8-12-6-29-12-42 6 7 11 14 15 22 6 13 7 28 20 38-13-4-29-4-40-12-13-8-24-21-27-36 10 20 35 32 54 41zm-64-80c11 19 17 29 36 50l-3-5c-3-6-4-13-3-20 1-9 4-17 3-27 8 17 5 37 10 55l4 12c-7-6-17-11-25-17s-15-14-19-24c-3-8-3-17-3-24zm4-44c2 22 9 40 16 59-2-17 3-30 11-42l4-11c1 7-1 15-2 22l-8 26v18c-7-13-18-21-22-32-3-10-4-20-3-30zm16-38c-4 6-3 56-2 56l1-4c2-12 12-20 21-28l4-7-5 17c-6 13-19 24-22 40-1-15-10-26-10-41 1-5 7-33 13-33zm22-20c-11 8-10 20-13 31 0 2-6 12-3 12 2-5 4-9 8-13 8-6 19-11 22-21-1 14-13 25-24 33-5 4-9 8-12 14v-11c-1-13-2-26 7-36zm28-14c-8 7-13 15-19 24-5 6-12 10-18 16 3-6 4-14 8-20 0-7 29-19 29-20,l;<use transform='translate(640,0) scale(-1,1)' href='#l'/>;path:#fff,M375 206c-2 0-1 5-5 4-3-1 0-3 1-5-1-3-6-2-6 0-4 3 1-3-4-3 1-3-4-2-5-4-4-2-5 3-6 3-2 0-2 3-3-2 2-2 4-1 0-3-2 3-4 4-4 1-3 3-6 0-7 0-4 1 1 4-1 5-3 1-5-3-7-2 2-3 2-7-1-3 0 1-3 4-5 1-2-2-8 1-3 2 3 1-1 3-2 1 0 3 3 4 4 5 3-1 7 2 6 4-4 3 0 0 1 1-1 1 2 3 0 5-4 3-2 1 1 2 2 1 0 5 2 7 0 3-1 6-4 5s-4 3-4 5c-3 4 1 4 3 5-1-2 1-9 1-4 1 1 2 4-1 5-3 0-2-2-4 1-1 1 0 4-4 3 2 3-1 5-3 3-1 2-1 4 1 5 2 3 4-2 6-3 2-2 5-1 7 1 2-1-1-1-2-3 3-1 5 3 7 3 3 2 1 0 0-1-2-3 2-2 1-6-3-2 4 1 2-2 2 1 8-2 5-3-3-2 1-2 2-1 4 1 2 3-1 2-4 1-1 3-3 4s-6 2-5 5c2 2 7-4 6 1 0 3-3 3-5 3-3 0-4 4-7 2-2 1-3-3-6-1-3-1-5 3-7 2-1-2-5 2-6 2l-4 5c-1 2-2 3 0 5s3 6 6 6 4 2 7 1c3 0 6-2 8 0 3 1 2 5 6 5l1 7 6 6c2 2 5 3 7 3 4-1 7-5 10-7 2-2 6-3 4-6 2-2 1-5 0-6 0-2 5-3 3-6s-8-4-4-8c4-3 1-10-1-11-1 5-5 7-10 5l-7-4h4c2 2 5 1 7 2 4 1 4-2 4-5 2-1 2-3 2-6s-5-4-4 0c-2 1-4 3-5 1 1-1 4-2 6-5 1-4 5-4 7-7 2 2 4 0 6-1 5 1 2-3 0-4l-5-7c-2-2 2-3 2-5 4-1-1-3 4-4 3 1 5-3 6-5l-1-1zm28 32c-1 0-3 0 0 0zm2 12c-1 2 3 1 0 0zm3-2c2 5 0-4 0 0zm1-1c0-4-1 4 0 0zm-5 4c2 1-1 3 0 0zm-98 29c-3 0 0 2 0 0zm28-132c-3 0 2 3 0 0zm-25 3c4 0 4 3 0 1 0-1-2-1 0-1zm11-1c5 0 1-4 0-3-2 1 0 2 0 3zm10-17c-2 1 4 1 6 1s6-4 2-3c-3-1-4 1-7 1l-1 1zm0 5c-2-2-1-5-3-5-3 0-7 4-2 3l5 1v1zm35 8c5-3 4 6 0 1v-1zm-11 3c-3 4 2 2 1 5l4 7c-1 2 0 6 2 6 5-3 6 2 5 5 0 2 4 7 5 4 3 0 2 5 6 5l6 4c1 3 3 2 3 5 3 1 5-3 7-5 0-3-3-5-4-8l-5-5c0-4-4-2-5-6-3-1 0-3-1-6-3 2-1-3-5-3 1-3-2-3-3-5l-6-3c-2-2-4-2-5 0h-5zm-18-1c2 4 5 0 1-1l-1 1zm11 15c0-3-5-3-5-6-2-2-3-1-1 2l6 4zm1 3c-2-4 6-2 4 0-2 0-6 5-4 0zm16 13c3-3-3-4-2-7 2 0-3-6-5-5-2-1-4-7-6-5 3 0 2 4 3 5 2 1 2 5 3 7s2 5 5 6l2-1zm-23 13c2 1 3 4 6 3 3 0 7 2 4-2-3-1-6 1-8-2l-2 1zm-5 1c0 2 5 4 4 0h-4zm-1 1c-2 0-3 0 0 0zm18 0c-1-3 3 1 0 0zm3 2c-2-1 1-2 0 0zm8-10c-1-3 3 1 0 0zm3-10c0 1 0 1 0 0zm0 14c0 1 0 1 0 0zm-2-8c0 4 6 3 3-1-1-4-5 0-3 1zm4 6c2-3 7 0 4 1 0 3-4 1-4-1zm-13 8c5-2-1 3 0 0zm7-1c-5 1 0-2-1-4-1-1 1-6 3-4 1 3-3 4-2 6 7 2 0 0 0 2zm11-11l-3-3c-1-3 7 4 3 3zm-1 1c3 1 2 4 4 5 2-2-2-5-4-5zm7 16l-3-7c0-3 2-3 2 0 2 2 1 9 1 7zm1 6c0-1 0-1 0 0zm-2-5c-4 1-2 4-3 7 0 1-1 6 2 4l2-7-1-4zm-4-10c-2 0-7-3-6 1-3 2 4 1 4 5s5 3 5 2c-2 0 0-4-2-5-3 1 2-2-1-3zm-6 25c5 0 2-1 1-1l-1 1zm5-2c-1 3 3-1 0 0zm-2 14c0-4 5 1 0 0zm-11 19c3 0-1 4 0 0zm7 23c1 2 3 3 6 2 0-3 1-7-2-9s-1 4-3 5l-1 2zm-29-21c2-1 1-4 0 0zm-14 1v1m3 1c3-3-3 0 0 0zm-6-26c4-4-2-3 0 0zm-5 7c-2 3-6-3-2 0h2zm-2-13c1-5-3-2-4 1-1 2 0 4-3 4 0 2-4 6-1 7 2-1 4-3 7-2 2-1 3-2 3-5 2-1 3-4-1-4l-1-1zm-3-6c-1-1-1 3-4 4 0 4-3 2-4 5 2 4 3 0 5-2 3-1 1-4 4-5 0 0 1-3-1-2zm5-12c-2 0 1-6-4-4 0-5-1 1-3 1 0 3-4 3-6 3-4 0-7 0-10-2-4-4-7 1-11 0-1 3-6 2-1 2-1 3-3 3-6 3-2 1-2 5-4 6 0 3-1 5-3 7l-2 6c-3 2 4 3 0 4-1 1-7-6-9 0-2 2-4 3-4 6s1 6-3 7c-1 3-5-1-7 0-3 1-3-2-7-1-2 6 0-1-3 0-4-1-4 2-4 4l1 7c0 3 4 6 3 1 0-3 6 2 6 1l6 5c1 3 4 4 6 5 2 3 5 2 7 4 3 2 6-1 9 3 2 3 5 2 8 2 2-2 6-1 9-3-2-3 0-7-3-8-2-3-8-5-5-8-2-3-3-7-3-10 3-3-3-4-2-8 0-3-4-5-3-8-3-3 2-4 3-4-2-5 4-3 4-6-3-1-2-8 2-5 5 0 1 6 2 9-1 3-3 6 0 6 1-5 4-1 7-1 4 0 2 4 6 3-1 2 3 4 3 1 0 2 2 8 2 2 2-1 5-5 5-8 2 0-2-4-3-4s-3 4-4 1l5-4c3-1 1 7 4 2 2 2 2-3 4-3-1-2 5-5 0-5 0 2 1-4 3-3 3-1 6-2 5-6zm-75 64c-2-1-4-7-1-4-2 2 4 4 1 4zm-7-9c-3 0 2 4 1 1l-1-1zm78-61c-1-3 3 1 0 0zm2-1c-3 1 1-3 0 0zm0-1c0-1 0-1 0 0zm1-1c1 0 1 0 0 0`)
+            , lun: () => flagparser(`path:#fff,m360 357l-6 6c-13-14-29-30-45-30-9 0-16 8-24 12-11 7-26 12-39 6-7-2-14-6-19-12 11 7 25 8 37 3 12-6 25-13 40-13 21 0 42 15 56 28zm-93-28l-8-3c-15-6-17-21-25-32 10 7 19 16 28 25 7 6 15 9 24 10l-7 1c-15 4-33 10-49 4-11-4-29-18-27-22 13 8 48 22 64 17zm-32-13l-10-11c-8-12-6-29-12-42 6 7 11 14 15 22 6 13 7 28 20 38-13-4-29-4-40-12-13-8-24-21-27-36 10 20 35 32 54 41zm-64-80c11 19 17 29 36 50l-3-5c-3-6-4-13-3-20 1-9 4-17 3-27 8 17 5 37 10 55l4 12c-7-6-17-11-25-17s-15-14-19-24c-3-8-3-17-3-24zm4-44c2 22 9 40 16 59-2-17 3-30 11-42l4-11c1 7-1 15-2 22l-8 26v18c-7-13-18-21-22-32-3-10-4-20-3-30zm16-38c-4 6-3 56-2 56l1-4c2-12 12-20 21-28l4-7-5 17c-6 13-19 24-22 40-1-15-10-26-10-41 1-5 7-33 13-33zm22-20c-11 8-10 20-13 31 0 2-6 12-3 12 2-5 4-9 8-13 8-6 19-11 22-21-1 14-13 25-24 33-5 4-9 8-12 14v-11c-1-13-2-26 7-36zm28-14c-8 7-13 15-19 24-5 6-12 10-18 16 3-6 4-14 8-20 0-7 29-19 29-20,l;<use transform='translate(640,0) scale(-1,1)' href='#l'/>;path:#fff,M375 206c-2 0-1 5-5 4-3-1 0-3 1-5-1-3-6-2-6 0-4 3 1-3-4-3 1-3-4-2-5-4-4-2-5 3-6 3-2 0-2 3-3-2 2-2 4-1 0-3-2 3-4 4-4 1-3 3-6 0-7 0-4 1 1 4-1 5-3 1-5-3-7-2 2-3 2-7-1-3 0 1-3 4-5 1-2-2-8 1-3 2 3 1-1 3-2 1 0 3 3 4 4 5 3-1 7 2 6 4-4 3 0 0 1 1-1 1 2 3 0 5-4 3-2 1 1 2 2 1 0 5 2 7 0 3-1 6-4 5s-4 3-4 5c-3 4 1 4 3 5-1-2 1-9 1-4 1 1 2 4-1 5-3 0-2-2-4 1-1 1 0 4-4 3 2 3-1 5-3 3-1 2-1 4 1 5 2 3 4-2 6-3 2-2 5-1 7 1 2-1-1-1-2-3 3-1 5 3 7 3 3 2 1 0 0-1-2-3 2-2 1-6-3-2 4 1 2-2 2 1 8-2 5-3-3-2 1-2 2-1 4 1 2 3-1 2-4 1-1 3-3 4s-6 2-5 5c2 2 7-4 6 1 0 3-3 3-5 3-3 0-4 4-7 2-2 1-3-3-6-1-3-1-5 3-7 2-1-2-5 2-6 2l-4 5c-1 2-2 3 0 5s3 6 6 6 4 2 7 1c3 0 6-2 8 0 3 1 2 5 6 5l1 7 6 6c2 2 5 3 7 3 4-1 7-5 10-7 2-2 6-3 4-6 2-2 1-5 0-6 0-2 5-3 3-6s-8-4-4-8c4-3 1-10-1-11-1 5-5 7-10 5l-7-4h4c2 2 5 1 7 2 4 1 4-2 4-5 2-1 2-3 2-6s-5-4-4 0c-2 1-4 3-5 1 1-1 4-2 6-5 1-4 5-4 7-7 2 2 4 0 6-1 5 1 2-3 0-4l-5-7c-2-2 2-3 2-5 4-1-1-3 4-4 3 1 5-3 6-5l-1-1zm28 32c-1 0-3 0 0 0zm2 12c-1 2 3 1 0 0zm3-2c2 5 0-4 0 0zm1-1c0-4-1 4 0 0zm-5 4c2 1-1 3 0 0zm-98 29c-3 0 0 2 0 0zm28-132c-3 0 2 3 0 0zm-25 3c4 0 4 3 0 1 0-1-2-1 0-1zm11-1c5 0 1-4 0-3-2 1 0 2 0 3zm10-17c-2 1 4 1 6 1s6-4 2-3c-3-1-4 1-7 1l-1 1zm0 5c-2-2-1-5-3-5-3 0-7 4-2 3l5 1v1zm35 8c5-3 4 6 0 1v-1zm-11 3c-3 4 2 2 1 5l4 7c-1 2 0 6 2 6 5-3 6 2 5 5 0 2 4 7 5 4 3 0 2 5 6 5l6 4c1 3 3 2 3 5 3 1 5-3 7-5 0-3-3-5-4-8l-5-5c0-4-4-2-5-6-3-1 0-3-1-6-3 2-1-3-5-3 1-3-2-3-3-5l-6-3c-2-2-4-2-5 0h-5zm-18-1c2 4 5 0 1-1l-1 1zm11 15c0-3-5-3-5-6-2-2-3-1-1 2l6 4zm1 3c-2-4 6-2 4 0-2 0-6 5-4 0zm16 13c3-3-3-4-2-7 2 0-3-6-5-5-2-1-4-7-6-5 3 0 2 4 3 5 2 1 2 5 3 7s2 5 5 6l2-1zm-23 13c2 1 3 4 6 3 3 0 7 2 4-2-3-1-6 1-8-2l-2 1zm-5 1c0 2 5 4 4 0h-4zm-1 1c-2 0-3 0 0 0zm18 0c-1-3 3 1 0 0zm3 2c-2-1 1-2 0 0zm8-10c-1-3 3 1 0 0zm3-10c0 1 0 1 0 0zm0 14c0 1 0 1 0 0zm-2-8c0 4 6 3 3-1-1-4-5 0-3 1zm4 6c2-3 7 0 4 1 0 3-4 1-4-1zm-13 8c5-2-1 3 0 0zm7-1c-5 1 0-2-1-4-1-1 1-6 3-4 1 3-3 4-2 6 7 2 0 0 0 2zm11-11l-3-3c-1-3 7 4 3 3zm-1 1c3 1 2 4 4 5 2-2-2-5-4-5zm7 16l-3-7c0-3 2-3 2 0 2 2 1 9 1 7zm1 6c0-1 0-1 0 0zm-2-5c-4 1-2 4-3 7 0 1-1 6 2 4l2-7-1-4zm-4-10c-2 0-7-3-6 1-3 2 4 1 4 5s5 3 5 2c-2 0 0-4-2-5-3 1 2-2-1-3zm-6 25c5 0 2-1 1-1l-1 1zm5-2c-1 3 3-1 0 0zm-2 14c0-4 5 1 0 0zm-11 19c3 0-1 4 0 0zm7 23c1 2 3 3 6 2 0-3 1-7-2-9s-1 4-3 5l-1 2zm-29-21c2-1 1-4 0 0zm-14 1v1m3 1c3-3-3 0 0 0zm-6-26c4-4-2-3 0 0zm-5 7c-2 3-6-3-2 0h2zm-2-13c1-5-3-2-4 1-1 2 0 4-3 4 0 2-4 6-1 7 2-1 4-3 7-2 2-1 3-2 3-5 2-1 3-4-1-4l-1-1zm-3-6c-1-1-1 3-4 4 0 4-3 2-4 5 2 4 3 0 5-2 3-1 1-4 4-5 0 0 1-3-1-2zm5-12c-2 0 1-6-4-4 0-5-1 1-3 1 0 3-4 3-6 3-4 0-7 0-10-2-4-4-7 1-11 0-1 3-6 2-1 2-1 3-3 3-6 3-2 1-2 5-4 6 0 3-1 5-3 7l-2 6c-3 2 4 3 0 4-1 1-7-6-9 0-2 2-4 3-4 6s1 6-3 7c-1 3-5-1-7 0-3 1-3-2-7-1-2 6 0-1-3 0-4-1-4 2-4 4l1 7c0 3 4 6 3 1 0-3 6 2 6 1l6 5c1 3 4 4 6 5 2 3 5 2 7 4 3 2 6-1 9 3 2 3 5 2 8 2 2-2 6-1 9-3-2-3 0-7-3-8-2-3-8-5-5-8-2-3-3-7-3-10 3-3-3-4-2-8 0-3-4-5-3-8-3-3 2-4 3-4-2-5 4-3 4-6-3-1-2-8 2-5 5 0 1 6 2 9-1 3-3 6 0 6 1-5 4-1 7-1 4 0 2 4 6 3-1 2 3 4 3 1 0 2 2 8 2 2 2-1 5-5 5-8 2 0-2-4-3-4s-3 4-4 1l5-4c3-1 1 7 4 2 2 2 2-3 4-3-1-2 5-5 0-5 0 2 1-4 3-3 3-1 6-2 5-6zm-75 64c-2-1-4-7-1-4-2 2 4 4 1 4zm-7-9c-3 0 2 4 1 1l-1-1zm78-61c-1-3 3 1 0 0zm2-1c-3 1 1-3 0 0zm0-1c0-1 0-1 0 0zm1-1c1 0 1 0 0 0`)
 
             // detail world wun
             //+ `<path fill='white' d='M326 196h-1v1h1zm-2-1h1v1h-1zm-1 0l1-1h-1zm-1 0h-1v-1h1zm-6-1h1-1zm-1 1v-1zm0 1h-1v-1h1zm-2 1v-1h1v1zm-78 61h-1v1h1v1h1v-1zm7 9l-1-1-1-1v-1l-1-2 2 1v2h1l1 2zm21 27l-1-2 1 1 1 1 1 1h-1zm54-91h-1v-4h-3v-2h-1v1l-1 1v1h-1v1l-3 2h-6-1-2l-2-1-3-2c-2-2-5 0-5 1h-2-3l-1 1-1 1h-2 3l-1 2h-1v1h-4l-1 1-1 2-1 1v2h-1v3l-1 1v1l-2 2v2l-1 1v2h-1v1l-1 2h2v2c-1 0-2 0-1 1l-2-1-1-1c-1 1-1-1-1-1-1-1-5 1-5 1v1l-2 2-1 2h-1v7l-1 1-2 1v1h-3l-1-1h-6v-1h-4l-1 3-1-2a13 13 0 0 1 1-1h-5v2h-1v3l1 2-1 1 1 1v2l1 1v2l1 1h1v-3c-1-1 1-2 1-1l2 1 2 1c1-2 1-1 1 0l2 2h2v2c2-1 2 0 3 2a4 4 0 0 0 3 3h1l1 1 3 3h3l2 2h3c0-2 3 0 3 1l2 1 1 1 1 1h6l2-1 5-1c3 0 1-3 1-3v-4l-7-7c-2 0-1-2-1-2 2-1 0-2 0-2l-1-3-1-3v-2c-1-1 1-2 1-2 1-1-1-2-1-2v-1h-1l-1-5-3-5v-2l-1-1v-2l2-1h2v-3l2-1h1l1-1v-1h-1l-1-4c2-3 4-1 4-1h2c2 1 0 4 0 4v6l-1 1v2c1 0 1 2-1 1l1 1c1 1 1-1 1-1l2-2 3 2h4l1 3c1-2 4 0 2 1l2 1 1 1v-1c-1-1 2-2 1 0v1l1 1v2c2 0 1-3 1-3h2c-1-4 2-4 2-4l1-3c-1-1 0-2 1-1l-1-2-1-1h-1v-1h-2v1h-1v1h-2v-1h1v-1l1-2h3c0-2 1-1 1-1l1 1v3h1c0-2 2-2 3-1v-1c-1-1 0-2 1-2l1-1s1 1 0 0v-2l2-1v-2h-2c0 2-1 0 0 0l1-1v-2h2l1-1h2l2-2v-3M312 215l-1-1v3h-1l-2 2v1l-1 1v1h-2l-1 2 1 2h1l1-1v-1l1-1 1-1 1-1h1v-3h1l1-1v-2h-1zm3 6v-2l-1-1-1 1-1 1v1l-1 1v2h-1v2h-2v1l-1 1v1l-1 3 2 1 1-1v-1h5l1-1h1v-1h1v-2l1-2h1l-1-1 1-1-1-1h-3zm2 13l-2 1h-1l-1-1v-1h1l1 1h2zm5-7l1-1v-2l-2 2 1 1zm5-5l2 3v1a15 15 0 0 1-2-3v-1h1zm1 31l1-1h-1l-1 1zm-3-2v1m14-2l1-1v-1l-1 1zm29 21h1v2h5v-7l-3-3-1 1v3l-1 1-1 3zm-2-4l-1 1c-1-1 0 0 0 0h1l1-1h-1zm-5-19h1v2h-1zm11-19c-1-1 2-2 2-1v1h-2zm2-14v1h1v-1zm-5 2h3v-1h-1l-1 1v-1zm6-25h-1l-1-1h-4v2h-1v1h1v1c1-1 3 0 3 1s3 2 2 4l1 1h2v-1l1 1v-1h-1v-4h-1v-1h-1l1-2-1-1zm4 10l-2 1-1 2 1 1-1 5c-1 1 0 0 0 0v3h1l1-1 1-3v-2l1-1v-2-2l-1-1zm2 5v-1zm0 2h-1v-1l1 1zm-1-8l-1-1v-1-1l-1-1v-1l-1-2v-1l1-1v-1l1 1v2l1 2v6-1zm-7-16l1 1 1 1h1v3h1l1-1-1-1-1-2h-1l-1-1h-1zm1-1l-1-1h-1a1 1 0 0 1 0-1l-1-1 1-1 1 1 1 1 1 1v1h-1zm-11 11h-3l1-1 1-2s-1 0 0 0l-1-2h1l1-3h2v3h-1v1l-1 1v1h2l1 1c1 0 0 0 0 0h-3v1zm-7 1h2l-1 1h-1v-1zm13-8l2-1 1-1 1 1 1 1v1h-1v1h-3v-1l-1-1zm-4-6c1 0 0 3 2 2l1 1 1-1v-2l-1-1-1-1-1-1-1 1-1 2h1zm3 9v-1l1 1h-1zm-1-1v1zm0-14v1zm-1 10zm-2 0v-1h1v1zm-8 10l-1-1h1zm-3-2v-1h1v1zm-18 0h-2 2zm-3 0h-1l1-1v1zm-1 1v-1l1 1zm5-2v1h1l1 1h2v-2h-1-3zm5-1l1 1h1l1 2a5 5 0 0 0 2 0h4l2 1v-2l-2-2-2 1c-1 1-3 0-3-1l-1-1h-1l-1 1h-1zm23-13l1-2-1-1-2-2v-2h1l-4-5c-1 1-3 0-3-1l-3-4h-2v1h2l1 2-1 1 1 1h1v2l1 1v3l1 1 1 1v1l2 2 1 1 2 1 1-1M348 166v-2h3l1 1v1h-2l-1 2h-2l1-2zm-1-3v-1l-1-1-1-1-2-1-1-1v-1h-1v-1h-2l1 1 1 2 1 1h2v1l3 2zm-11-10v-1l-1-1v2zm0-5l1 1 1 1h1v-2h-1l-1-1-1 1zm18 1l-1 2v1h2v2l2 2v3l2 1-1 3 1 1 1 3h1l3-1c2 0 3 3 3 4h-1v3l3 4h2c0-2 1-1 2-1v3l1 1h2l1 1 1 1h2l1 1 1 2h1l1 2h1v1h1v2h2l1-1a6 6 0 0 0 2-2l2-2v-2s-2-1-1-2l-2-2-1-1-1-2-1-1v-1h-1l-3-3v-2h-2l-2-3-1-1h-1l1-2v-3l-2 1v-3h-2l-1-1v-2l-1-1h-1v-1l-1-1v-1h-2l-1-1-1-1h-2l-1-1h-1l-1-1v1h-2v1h-5zm11-3l2-1s2 1 2 4l-2-1h-1l-1-2zm-30 2v-2l1 1zm-5-10l-1-2v-1h-1v-2h-3l-1 1-1 1-1 1h3v1h3l1 1c2 1 2 0 1-1zm0-5c0-1-2 1 0 1h8v-1l2-1v-1h-4-2v1h-3l-1 1zm-10 17l2-1h1l-1-1-1-1-1-1-1 2 1 2zm-11 1h2l1 1v1l-1-1h-2l-1-1zm34-22l-1 1-1-1v1l1 1v-1h1zm-6-2h-1l1 1 1-1zm-3 21h-1v1l1 1 1-1-1-1zm-33 28v1h1c1 0 0 0 0 0l-1-1zm2 0h1l-1 1zm-19-19h1v1zm30 131l-1-1-1 1h1v1l1-1zm-8-8h-1l-1 1h2-1zm74-19l-1-1v2l1-1zm1-2h-1v-1l1 1zm23-8l1 1-1 1v-2zm5-4a2 2 0 0 0 0-1l-1 1 1 1v-1zm-1 1v1h1a12 12 0 0 1-1-2v1zm-3 2v1h1l-1-1zm-2-12a1 1 0 0 0-1 0h-1 2zm-28-32h-1v1l-1 1v1l-1 1h-3v-1-2h1l1-2-1-1-1-1h-2l-1 1h-1v1c0 1-3 2-2 0l1-1v-1h-2l-1-1v-1l-2-2h-3v-1h-2c-1-1-3 0-3 1v3l-1-1h-1v1l-1 1v-1c0-1-2-3 0-3v-1l1-1h1-2l-1-1a4 4 0 0 0-2 3c-1 1-3-1-2-2l-3 1h-2l-1-1v-1l-1 1-1 1-1 1 1 1v1h1l-2 1h-2l-2-2h-2l1-2 1-3-2 1-1 1s-1 0 0 0l-1 1v1h-3l-1-1-2-1-1 1h-2v1l3 1v2h-2v-1h-1v2l1 1h1l1 2h4l3 3v1l-1 1h-1v1h1l1-2 2 1-1 1v1h1v2l-1 1-1 1-1 1h-1 4v1h1v4l1 1v4l-1 1v1h-5l-1 1-1 1v3l-1 1v3h2l1 1h1v-5l1-1v3h1v1 2h-1l-1 1h-2v-1h-1v2l-2 1c2 0 0 1 0 1 1 1 0 2-3 1v2h1v1c0 2-4 1-4 0v2h-1l1 2v1h1v1h2l4-4 2-1h2l1 1h1l1 1c0 1 0 0 0 0v-1h1-1l-1-1h-1c-1-2 0-1 1-1h1l2 2 1 1h2v1h2v-1h-2v-1h-1c0-2 0-3 1-2v-1h1v-3h-1v-1l3 1v-2h3l3-2v-1h-2v-2h2v1h2l1 1 1 1h-2-1-1l-3 2h1v2h-1l-1 1h-2v1c-2 0-2 1-2 2v1l1 1 2-1 2-1c0-1 2 1 1 2v2h-2v1h-4l-1 1h-1l-1 2-3-1h-2v-1l-2-1-4 1h-1l-1 1-2 1h-1v-1h-1l-1 1-4 2v1l-1 1-1 1h-1v2h-1v1l-1 1h-1l1 2h1l1 2 1 1 1 2 1 1 1 1h4v1h6l4-1 2 1 2 1 1 3h1l2 1v1h1v6l1 1 1 2h1l4 4 3 1 1 1h3l2-1 1-1 11-9-1-1v-2c2-1 2-4 0-4-1 0-1-1 1-1v-2l3-2v-1l-5-5c-3 0 0-5 1-5 2 0 0-8 0-8h-1v-2h-1l-1 2-1 2c0 2-6 1-7 1l-2-1-2-1h-2l-1-1-2-1h2l-1-1 3 1h1l1 1h4l1 1h4v-1l1-1v-3h1v-2h1v-5l-2-2-2 1v1 1l-1 1h-2v1h-2v-2h2l1-1 1-1 1-1 2-2c0-1 1-4 3-4h2l1-2h1v1h2l1-1 3-1h2v-1l-2-2-2-1-1-3-1-1-2-3a2 2 0 0 1 0-2l2-2v-1l2-1v-1h-1l2-2h4l1-2 1-1 1-1s0-3-1-2'/>`
 
-            , gb: (bgcolor = '#00247d', scale = 2) => flagparser(`bgcolor:${bgcolor};<defs><clipPath id='c'>;rect:0,0,640,480;</clipPath></defs><g clip-path='url(#c)' transform='scale(${1 / scale})'>;rect:0,0,640,480,#00247d;pathstroke:M0 0L640 480M0 480L640 0,,95,#fff;pathstroke:M-20-5L320 255M660-30L320 230M660 485L320 235M-20 510L320 250,,40,#cf142b;cross:#fff,320,240,640,160,480;cross:#cf142b,320,240,640,100,480;</g>`)
+            , gb: (bgcolor = '#00247d', scale = 2) => flagparser(`bgcolor:${bgcolor};<defs><clipPath id='c'>;rect:0,0,640,480;</clipPath></defs><g clip-path='url(#c)' transform='scale(${1 / scale})'>;rect:0,0,640,480,#00247d;pathstroke:M0 0l640 480m-640 0l640 -480,,90,#fff;pathstroke:M-20-5L320 255M660-30L320 230M660 485L320 235M-20 510L320 250,,40,#cf142b;doublecross:0,0,#fff,#cf142b,99,60;</g>`)
 
             // repeat pattern for all 52 stars,so GZip will encode great! ONLY TAKES 9 BYTES!!!
             // how:make path relative (no capitals in path)
@@ -578,7 +584,6 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
             fmCommand = fmCommand.trim();
             let presetkey = fmCommand.split`:`[0];
             let preset = presets[presetkey] || commands[presetkey];
-            // window["console"].log(presetkey, preset, commands);
             if (preset) {
                 let args = fmCommand.split`:`[1];
                 if (args)
@@ -612,7 +617,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
     }//flagparser
 
 
-    let flags = window.flagmeister = {
+    let flags = {
         ad: "country:Andorra;detail:40;bars:#0018a8|#fedf00|#d0103a",//end cty
         ae: "country:Arabic Emirates;stripes:#00732f|#fff|#000;bar:0,220,#f00",//end cty
         //todo extra detail in <100 img
@@ -1239,12 +1244,13 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
 
     };
 
-    let fmPropValue = (_this, name, defaultValue = false) => getComputedStyle(_this).getPropertyValue("--flagmeister" + name) || defaultValue;
+    //let fmPropValue = (_this, name, defaultValue = false) => getComputedStyle(_this).getPropertyValue("--flagmeister" + name) || defaultValue;
 
     if (trace) console.time('CreateElement');
     Object.keys(flags)
         .map(iso => {
             //'ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki'.includes(iso) &&
+
             customElements.define('flag-' + iso, class extends HTMLImageElement {
 
                 // Used by the FlagAnalyzer
@@ -1259,7 +1265,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
                     // public attributes/properties getter/setter
                     // ALL ARE PROCESSED BY THE FLAGPARSER!!!
                     [
-                        ['iso', "lgbt"]       // because used more often shaves extra 3 bytes off GZipped size
+                        ['iso', iso]
                         , ['detail', false]   // disable detail by assigning a huge number of width-pixels
 
                         , ['source', false]
@@ -1270,6 +1276,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
 
                         , ['clip', $R_rect_X_Y_W_H___colorNone_strokewidth_stroke(0, 0, 640, 480)]      // default clip is the standard 640 by 480 flag
 
+                        , ['flags', flags]
                         //,['mask','']
                         , ['draw', '']
                         , ['filter', false]
@@ -1288,13 +1295,15 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
                                 // !todo handle 0 '0' value with generic code (now clip in svg() below)
                                 if (val == 'none') val = false;
                                 else if (typeof val == 'string') val = flagparser(val, this);
-                                else val = val;
+                                else;
 
-                                if (0) console.log((() => {
-                                    let hasCSSproperty = getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim();
-                                    let hasAttr = this.getAttribute(attr);
-                                    return `% c ${iso} get:${attr} ${hasCSSproperty ? 'CSSprop' : ''} ${hasAttr ? 'Attribute:' + hasAttr : ''} ${val === defaultvalue ? 'default:' + defaultvalue : ''}=${val} `
-                                })(), 'color:red')
+                                // if (0) console.log((() => {
+                                //     let hasCSSproperty = getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim();
+                                //     let hasAttr = this.getAttribute(attr);
+                                //     return `% c ${iso} get:${attr} ${hasCSSproperty ? 'CSSprop' : ''} ${hasAttr ? 'Attribute:' + hasAttr : ''} ${val === defaultvalue ? 'default:' + defaultvalue : ''}=${val} `
+                                // })(), 'color:red')
+
+
                                 //if (attr == 'clip') window["console"].log(val);
 
                                 return val && val.length === 1 ? val[0] : val;
@@ -1399,15 +1408,21 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
                         //console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
                         //Observe image resize,also called on first load! width is immediatly checked
                         this.O = new ResizeObserver(entries => {
+                            //if detail defined and no '.svg' in detail and current width is wider then defined this.detail
                             if (this.detail
                                 && !stringIncludesSVG(this.detail)
-                                && entries[0].contentRect.width >= this.detail) {
+                                && entries[0].contentRect.width >= this.detail
+                            ) {
+
                                 this.O.disconnect(this);//unobserve(this);//!?? difference .disconnect(this)
+
                                 //console.log(iso,'Observe detail:' + this.detail,entries[0].contentRect.width,this.source);
                                 this.detail = '.svg';//! prevent failed restcountries fetch from running again
+
+                                // save some bytes assign and test in one call
+                                // eslint-disable-next-line no-cond-assign
                                 if (_SOURCE = this.source) {
                                     if (!stringIncludesSVG(_SOURCE)) _SOURCE = _SOURCE + iso + '.svg';
-                                    else _SOURCE = _SOURCE;// stupid else saves 3 bytes GZipped
                                     this.load(_SOURCE);
                                 } else
                                     fetchdata('//restcountries.eu/rest/v2/alpha/' + iso)
@@ -1458,7 +1473,8 @@ display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:$
                         })}' filter=light box='150 0 340 480'/>`
                 ).join``
             //);
-        }
-    });
+        }// connectedCallback
+    });// define flagmeister-text
 
-})()
+};
+setTimeout(initFlagmeister, 0);
