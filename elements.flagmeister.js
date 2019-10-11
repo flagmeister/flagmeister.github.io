@@ -387,7 +387,7 @@
                     //     , ...pars
                 })
 
-            , country: name => (element && element.setAttribute("country", name), '')//return empty string
+            , country: name => (element && element.setAttribute("alt", name), '')//return empty string
 
             , left: '0 0 480 480'
             , center: '80 0 480 480'
