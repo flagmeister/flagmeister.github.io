@@ -5,6 +5,11 @@
 <!-- I wacked this demo page together without much attention for CSS/HTML optimization -->
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="FlagMeister 300+ SVG flags in one Custom Element">
+    <link id=favicon rel="shortcut icon" href="" width=32px>
+    <title>FlagMeister</title>
     <script src=elements.flagmeister.js></script>
 
     <script>
@@ -638,7 +643,7 @@
         <textarea class=textarea_html>
 <img is=flag-be draw="<circle cx='320' cy='240' r='180' fill='green'/>">
 <img is=flag-fr draw="circle:320,240,180,green ; line:120,gold,0,0,640,480 ; star:red,55,30,5">
-<img is=flag-nl draw="attr:country,80;attr:data-not,80,120" data-not="Not Holland!"> 
+<img is=flag-nl draw="attr:alt,80;attr:data-not,80,120" data-not="Not Holland!"> 
 <img is=flag-eu draw="flag:gb,3,220,160">
 <img is=flag-us draw='text:{"str":"USA","fill":"gold","size":220,"stroke":"5,black"}'>
 </textarea>
@@ -646,7 +651,7 @@
         <div class=horizontalFlags_5>
             <img is=flag-be draw="<circle cx='320' cy='240' r='180' fill='green'/>">
             <img is=flag-fr draw="c:320,240,180,green;line:120,gold,0,0,640,480;star:red,55,30,5">
-            <img is=flag-nl data-not="Not Holland!" draw='attr:country,80;attr:data-not,80,120'>
+            <img is=flag-nl data-not="Not Holland!" draw='attr:alt,80;attr:data-not,80,120'>
             <img is=flag-eu draw="flag:gb,3,220,160">
             <img is=flag-us country="USA"
                 draw='text:{"str":"USA","font":"Arial","fill":"gold","size":220,"width":5,"stroke":"black"}'>
