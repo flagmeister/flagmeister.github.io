@@ -10,7 +10,7 @@
     <meta name="Description" content="FlagMeister 300+ SVG flags in one Custom Element">
     <link id=favicon rel="shortcut icon" href="" width=32px>
     <title>FlagMeister</title>
-    <script src=elements.flagmeister.js></script>
+    <script src=elements.flagmeister.min.js></script>
     <script src=element.flagmeister-list.js></script>
     <style id=theme_greenwhite>
         body {
@@ -622,7 +622,7 @@
             <img is=flag-us country="USA"
                 draw='text:{"str":"USA","font":"Arial","fill":"gold","size":220,"width":5,"stroke":"black"}'>
         </div>
-        <h3>FlagMeister commands and parameters</h3>
+        <h3>FlagMeister commands and parameters (to be documented)</h3>
         <style>
             .commandCode {
                 display: table;
@@ -655,8 +655,6 @@
         </ul>
         <h3>Notes on drawing</h3>
         <ul>
-            <li>FlagMeister is not meant to be a SVG drawing tool, <a href="//inkscape.org">use InkScape</a> for SVG
-                drawing</li>
             <li>FlagMeister does no error checking, pay attention to single and double quote usage</li>
             <li><span class=highlightText>SVG strings</span> can only contain <span class=highlightText>single
                     quotes</span>
@@ -1145,7 +1143,7 @@ img[is*="flag-"] {
             <p id=LipisColors>Almost all colors in the Lipis Repo are incorrect, these are just the obvious ones.
             </p>
             <p id=FlagAnalyzerFlagMeisterList>
-                <!-- LIST ALL FLAGS -->
+                <flagmeister-list id=FlagMeisterAnalyzeFlagsSelector delay=1000></flagmeister-list>
             </p>
             <div>
                 <span id=FlagAnalyzerISO></span>
@@ -1172,31 +1170,15 @@ img[is*="flag-"] {
         }
         window.onload = () => {
             document.body.style.visibility = 'initial';
-            //return;
-
-            let flags = [...firstviewAllFlags.querySelectorAll('img')];
-            let codeSize = flag => {
-                return flag && flag.data && flag.data[1].toString().length;
-            }
-            let totalcodesize = 0;
-            FlagMeisterSVGinfo.innerHTML =
-                ['FlagMeister created '
-                    , '<span class= highlightText >'
-                    , flags.length,
-                    , '</span>'
-                    , ' SVG flags, totalling '
-                    , flags.reduce((totalsvg, flag) => {
-                        totalcodesize += codeSize(flag);
-                        return totalsvg + flag.src.length;
-                    }, 0)
-                    , ` hydrated bytes`
-                    //, ` with ${totalcodesize} bytes of Code`,
-                ].join``;
 
             setTimeout(initAnalysisFlags, 2000);
             function initAnalysisFlags() {
+                let flags = [...firstviewAllFlags.querySelectorAll('img')];
+                let codeSize = flag => {
+                    return flag && flag.data && flag.data[1].toString().length;
+                }
+                let totalcodesize = 0;
                 FlagMeisterAnalyzeFlags.style.display = 'initial';
-                FlagAnalyzerFlagMeisterList.innerHTML = `<flagmeister-list id=FlagMeisterAnalyzeFlagsSelector></flagmeister-list>`;
                 //let flags = [...FlagMeisterAnalyzeFlagsSelector.children];
                 //let flags = [...FlagMeisterAnalyzeFlagsSelector.querySelectorAll('img')];
                 flags.forEach(flag => {
