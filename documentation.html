@@ -11,39 +11,7 @@
     <link id=favicon rel="shortcut icon" href="" width=32px>
     <title>FlagMeister</title>
     <script src=elements.flagmeister.js></script>
-
-    <script>
-        customElements.define('flagmeister-list', class extends HTMLElement {
-            constructor() {
-                super();
-            }
-            connectedCallback() {
-                let img = (iso, char = false) => `<img is=flag-${iso} char=${char} title="ISO:${iso}">`;
-                let header = x => `<h3>${x}</h3>`;
-                this.innerHTML = header("ISO country code flags") + Object.keys(window.flagmeister).map(iso => {
-                    let counter = (items, title) => ['<h3>', 0, title, "</h3>", ...items]
-                        .reduceRight((reducer, char, idx, redarr) =>
-                            (
-                                idx > 3
-                                    ? (redarr[1]++ , img(iso, char))
-                                    : char
-                            ) + reducer
-                            , '');
-
-                    if (iso == 'signal') {
-                        if (this.hasAttribute('signals'))
-                            return counter("abcdefghijklmnopqrstuvwxyz0123456789".split``, " NATO/OTAN signal flags");
-                        else return '';
-                    } else if (iso == 'ics') {
-                        if (this.hasAttribute('signals'))
-                            return counter("0123456789".split``, ' ICS signal flags')
-                        else return '';
-                    } else
-                        return (iso == 'eu' ? header("non country flags") : '') + img(iso)
-                }).join``;
-            }
-        });
-    </script>
+    <script src=element.flagmeister-list.js></script>
     <style id=theme_greenwhite>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -581,10 +549,8 @@
                 --flagmeisterdetail: 99999;
             }
         </style>
-        <h2><span id=FlagMeisterSVGinfo> </span></h2>
-        <flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list>
+        <flagmeister-list signals=true class=flagwidthList delay=1000></flagmeister-list>
     </section>
-
 
     <section id=focusDetailFlags>
         <style>
