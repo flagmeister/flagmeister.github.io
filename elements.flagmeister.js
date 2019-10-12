@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-let initFlagmeister = (trace = 1) => {
+let initFlagmeister = (trace = 0) => {
 
     //-----------------------------------------------------------
     // FlagMeister.github.io - One Custom Element for 300+ flags
@@ -104,7 +104,7 @@ let initFlagmeister = (trace = 1) => {
 
     let $stroke_W_Color = (w, c) => w ? ` stroke-width='${w}' stroke='${c}' ` : '';
 
-    let $path = (
+    let $p_path_Color_D__id_strokewidth_stroke_color = (
         color
         , d
         , id = ''
@@ -131,10 +131,10 @@ let initFlagmeister = (trace = 1) => {
         , y
         , scale
         , rotate = 0
-    ) => `<defs>${$path(color, 'M12 7.7l3 9h9l-7.4 5.4 2.8 8.7-7.4-5.4-7.4 5.4 2.8-8.7-7.4-5.4h9.2z', 's')}</defs>${x ? $Usestar_X_Y___Scale1_Rot0(x, y, scale, rotate) : ''}`;
+    ) => `<defs>${$p_path_Color_D__id_strokewidth_stroke_color(color, 'M12 7.7l3 9h9l-7.4 5.4 2.8 8.7-7.4-5.4-7.4 5.4 2.8-8.7-7.4-5.4h9.2z', 's')}</defs>${x ? $U_use_X_Y___scale1_rot0(x, y, scale, rotate) : ''}`;
 
     //todo savebytes, BUT REF all flags! put x y in outside <g> so rotate is no x,y mess
-    let $Usestar_X_Y___Scale1_Rot0 = (
+    let $U_use_X_Y___scale1_rot0 = (
         x
         , y
         , scale = 1
@@ -151,12 +151,20 @@ let initFlagmeister = (trace = 1) => {
         , color
         , strokewidth
         , stroke
-    ) => $path(color, `M${x1} ${y1}L${x2} ${y2}L${x3} ${y3}`, 'tr', strokewidth, stroke);
+    ) => $p_path_Color_D__id_strokewidth_stroke_color(color, `M${x1} ${y1}L${x2} ${y2}L${x3} ${y3}`, 'tr', strokewidth, stroke);
 
     //https://stackoverflow.com/questions/34229483/why-is-my-svg-line-blurry-or-2px-in-height-when-i-specified-1px/34229584
-    let $S_stripe_x_size__color = (x, size = 30, color = '#fff') => $path(color, `M0 ${x}h640v${size}H0`);//,'',crisp ? `shape-rendering='crispEdges'` :'');//todo test anti-aliasing of stripe/bar
+    let $S_stripe_x_size__color = (
+        x
+        , size = 30
+        , color = '#fff'
+    ) => $p_path_Color_D__id_strokewidth_stroke_color(color, `M0 ${x}h640v${size}H0`);//,'',crisp ? `shape-rendering='crispEdges'` :'');//todo test anti-aliasing of stripe/bar
 
-    let $H_bar_Y_Size__color = (y, size, color = '#fff') => $path(color, `M${y} 0h${size}v480H${y}`);//,'',crisp ? `shape-rendering='crispEdges'` :'');//todo remove crisp for better compression
+    let $H_bar_Y_Size__color = (
+        y
+        , size
+        , color = '#fff'
+    ) => $p_path_Color_D__id_strokewidth_stroke_color(color, `M${y} 0h${size}v480H${y}`);//,'',crisp ? `shape-rendering='crispEdges'` :'');//todo remove crisp for better compression
 
     let $F_stripes_arr = (
         stripes
@@ -242,8 +250,8 @@ let initFlagmeister = (trace = 1) => {
         , bar: $H_bar_Y_Size__color
         , cross: $X_cross_color_x_y_len__w_h
         , star: $onestar_Col_X_Y_Scale___Rotate0
-        , use: $Usestar_X_Y___Scale1_Rot0
-        , path: $path
+        , use: $U_use_X_Y___scale1_rot0
+        , path: $p_path_Color_D__id_strokewidth_stroke_color
 
 
         // at what pixel WIDTH image will FlagMeister lazy load a more detailed SVG:
@@ -296,7 +304,7 @@ let initFlagmeister = (trace = 1) => {
         , bgcolor: color => $S_stripe_x_size__color(0, 480, color)// ! todo fix anti alias with crispEdges
 
 
-        , outline: d => $path('none', d, 'outline')
+        , outline: d => $p_path_Color_D__id_strokewidth_stroke_color('none', d, 'outline')
 
         , striangle: (
             bars
@@ -323,7 +331,7 @@ let initFlagmeister = (trace = 1) => {
             + $L_line_width_color_x1_y1_x2_y2(160, strokecolor, -60, 480, 700, 0)
             + $L_line_width_color_x1_y1_x2_y2(120, linefill, -60, 480, 700, 0)
 
-        , pathstroke: (d, fill, w = 0, col = 'none') => $path(fill, d, '', w, col)//prf
+        , pathstroke: (d, fill, w = 0, col = 'none') => $p_path_Color_D__id_strokewidth_stroke_color(fill, d, '', w, col)//prf
 
         , shield: (
             fill = '#fff'
@@ -332,8 +340,7 @@ let initFlagmeister = (trace = 1) => {
             , y = 225   // for 3x in Portugal
             , strokewidth
             , stroke
-            , id = ''
-        ) => $path(fill, `M${x} ${y}v${h}a1 1 0 0 0 ${h * 1.5} 0v-${h}z`, id, strokewidth, stroke)
+        ) => $p_path_Color_D__id_strokewidth_stroke_color(fill, `M${x} ${y}v${h}a1 1 0 0 0 ${h * 1.5} 0v-${h}z`, '', strokewidth, stroke)
 
         , southerncross: (
             color
@@ -347,12 +354,39 @@ let initFlagmeister = (trace = 1) => {
                 [70, 100, 2],
                 [110, 275, 1],
                 [40, 160, 2],
-            ].map(stars => $Usestar_X_Y___Scale1_Rot0(...stars))
+            ].map(stars => $U_use_X_Y___scale1_rot0(...stars))
             , x
             , y
             , 0
             , scale
         )
+        , curve: (
+            cx
+            , cy
+            , dx
+            , dy
+            , x1
+            , y1
+            , strokewidth = 1
+            , stroke = '#000'
+            , fill = 'none'
+            , id
+            , x3 = x1 + dx / 2 + cx
+            , y3 = y1 + dy / 2 + cy
+        ) => $p_path_Color_D__id_strokewidth_stroke_color(fill, `M${x1} ${y1}C${x3} ${y3} ${x3} ${y3} ${x1 + dx} ${y1 + dy}`, id, strokewidth, stroke)
+
+        // base version is spanish castle
+        , castle: (
+            x = 168
+            , y = 255
+            , scaleX = 1
+            , scaleY = 1
+            , rotate = 0
+        ) => flagparser(`<g transform='translate(${x} ${y})'><g transform='scale(${scaleX} ${scaleY}) rotate(${rotate})'>;<defs><pattern id='brick' width='42' height='44' patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)'><g fill='none' fill-rule='evenodd'><g fill='#000'>;pathstroke:M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22;</g></g></pattern></defs>;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;</g></g>`)
+        // + horizontal lines:
+        //line:1,#000,0,0,30,0;line:1,#000,0,-12,28,-12;
+
+
 
         //, sun: (repeat, x = 320, y = 240, scale = 1) => { }
     }
@@ -367,7 +401,6 @@ let initFlagmeister = (trace = 1) => {
         def = def.split` `,
         commands[def[0]] = commands[def[0]] || commands[def[1]]
     ));
-    window["console"]["log"](Object.keys(commands));
 
 
     let flagparser = (fp_input, element) => {
@@ -398,10 +431,10 @@ let initFlagmeister = (trace = 1) => {
             , center: '80 0 480 480'
             , right: '160 0 480 480'
 
-            , signal: () => {
-                element.box = "0 0 480 480";
+            , signal: () => (
+                element.box = "0 0 480 480",
                 //make 640:480 a square flag with scale(.75 1)
-                return flagparser(`<g transform='scale(.75 1)'>;` + {
+                flagparser("<g transform='scale(.75 1)'>;" + {
                     a: "bars:#fff|#00f"
                     , b: "bgcolor:#f00"
                     , c: "stripes:#00f|#fff|red|#fff|#00f"
@@ -440,7 +473,7 @@ let initFlagmeister = (trace = 1) => {
                     , 8: "bars:#ff0|#00f|#ff0"
                     , 9: "bars:#00f|#fff|#00f"
                 }[element.getAttribute("char")] + `;</g>`)
-            }
+            )
             , ics: () => (
                 //set value
                 //clip a square from the center of the flag
@@ -461,13 +494,13 @@ let initFlagmeister = (trace = 1) => {
                     ][element.getAttribute("char")]
                 )
             )
-            , bigstar: attrs => $path(
+            , bigstar: attrs => $p_path_Color_D__id_strokewidth_stroke_color(
                 '#000'
                 , `m${80 + ~~element.box.split` `[0]} 466 146-452 146 452-384-280h476`
                 , attrs
             )    // center star depending on BOX location
 
-            , heart: attrs => $path(
+            , heart: attrs => $p_path_Color_D__id_strokewidth_stroke_color(
                 '#000'
                 , `m${350 + ~~element.box.split` `[0]} 31a122 122 0 0 0-111 69 122 122 0 0 0-233 52c0 128 233 297 233 297s233-169 233-297a122 122 0 0 0-122-122`
                 , attrs
@@ -736,16 +769,6 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         //todo detailM gold leaves with yellow ellipse :#ffc726
         er: "country:Eritrea;detail:60;striangle:#12ad2b|#4189dd,#ea0437,640",//end cty
 
-        //todo badge detailH
-        //     , shield: (
-        // fill = '#fff'
-        // , h = 100   // default h,x for shields in gb flags
-        // , x = 390
-        // , y = 225   // for 3x in Portugal
-        // , strokewidth
-        // , stroke
-        // , id = ''
-
         es: "country:Spain;detail:900;stripes:#c60b1e|#ffc400|#ffc400|#c60b1e;"
             + "<g id='c'>;"
             // <!-- red in crown -->
@@ -806,9 +829,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
             + `text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};`
             + `text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};`
 
-
-
-            //   <!-- big shield outline -->// todo make with arch/q/c
+            //   <!-- big shield outline -->
             //+ "pathstroke:M207 330.6a82 82 0 01-35.5-8 23 23 0 01-13-20v-32h96v32a23 23 0 01-13 20 81 81 0 01-35 8,#ccc,.5,#000;"
             + "shield:#ccc,66,158,217,.5,#000;"
 
@@ -819,7 +840,6 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
             + "pathstroke:m169 322 5 2v-53h-5v52m-11-20a24 24 0 0 0 6 15v-47h-6v33m21 22a27 27 0 0 0 6 0v-55h-6v56m11-2a19 19 0 0 0 6-3v-51h-6v55m11-9c2-2 5-7 5-12l1-34h-6v47,#f1bf00,.4,#000;"
 
             // <!-- SHIELD start bottom-right red shield -->
-            //  <path fill='#aa151b' stroke='#000' stroke-width='.5' d='M254.6 270v32c0 12.6-11 23-24 23s-24-10-24-23v-32h48'/>
             + "shield:#aa151b,33,207,269,.5,#000;"
             + "<g id='b'>;"
             // pattern
@@ -834,14 +854,9 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
             + "<use href='#b' x='-460' transform='scale(-1 1)'/>;"
             + "circle:230,295,4,#058e6e;"
             // <!-- SHIELD  top-left shield: yellow castle (overlaps bottom-left sheild)-->
-            //+ "pathstroke:M158 270h48v-54h-48v54,#aa151b,.4,#000;"//todo make rect
             + "rect:158,217,48,54,#aa151b;"
-            //   <!-- my castle -->//todo reuse bricks in other flags
-            + "<defs><pattern id='brick' width='42' height='44' patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)'>"
-            + "<g fill='none' fill-rule='evenodd'><g fill='#000'><path d='M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22'/></g></g>"
-            + "</pattern></defs>;"
-            + "pathstroke:M168 255h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;"
-            + "pathstroke:M168 255h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;"
+            //   <!-- my castle -->
+            + "castle;"
             //   <!-- blue door 2 windows -->
             + "pathstroke:M185 263v-4c0-1 0-3-3-3-2 0-3 2-3 3v4M179 250v-4c0-1 0-3-3-3-2 0-3 2-3 3v4M191 250v-4c0-1 0-3-3-3-2 0-3 2-3 3v4,#0039f0,.4,#000;"
             // SHIELD pink lion
@@ -1084,10 +1099,37 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
         pr: "country:Puerto Rico;striangle:#ed0000|#fff|#ed0000|#fff|#ed0000,#0050f0,400;star:#fff,7,13,7",//end cty
         ps: "country:State of Palestine;striangle:#000|#fff|#007a3d,#ce1126",//end cty
 
-        //todo detailH 
-        pt: "country:Portugal;detail:60;bgcolor:#f00;bar:0,256,#060;rotate:12,<path fill='#ff0' d='m0 0h-36v4l36'/>,256,240,3;circle:256,240,110,none,10,#ff0;shield:#f00,80,195,170,2,#777;shield:#fff,55,215,190,2,#777;shield:#039,11,246,200;shield:#039,11,246;shield:#039,11,246,250;shield:#039,11,222;shield:#039,11,270;path:#ff0,M200 174v12h12v-12z,s;use:50,0;use:100,0;use:0,50;use:100,50;use:142,-138,1,45;use:200,-194,1,45",//end cty
+        //todo detailH curve
+        pt: "country:Portugal;detail:60;bgcolor:#f00;bar:0,256,#060;"
+            //widest yellow band underneath
+            + "curve:0,20,200,100,155,190,20,#ff0;curve:0,20,200,100,150,195;curve:0,-20,200,100,157,184;"
+            //2 curves arche bottom
+            + "curve:0,20,188,0,162,190,10,#ff0;curve:0,20,188,0,160,187;curve:0,20,188,0,160,193;"
+            + "curve:0,20,220,0,145,250,10,#ff0;curve:0,20,220,0,147,247;curve:0,20,220,0,147,253;"
+            + "curve:0,20,188,0,162,300,10,#ff0;curve:0,20,188,0,160,297;curve:0,20,188,0,160,303;"
+            // circle
+            + "circle:256,240,110,none,10,#ff0;circle:256,240,113,none,1,#000;circle:256,240,107,none,1,#000;"
+            //2 curves arche to top
+            + "curve:0,-20,188,0,162,180,10,#ff0;curve:0,-20,188,0,162,183;curve:0,-20,188,0,162,177;"
+            + "curve:0,-30,220,0,145,240,10,#ff0;curve:0,-30,220,0,147,237;curve:0,-30,220,0,147,243;"
+            + "curve:0,-30,138,0,162,300,10,#ff0;curve:0,-30,138,0,160,297;curve:0,-30,138,0,160,303;"
+            //widest yellow band
+            + "curve:0,-20,200,100,155,190,20,#ff0;curve:0,-20,200,100,150,195;curve:0,-20,200,100,157,184;"
+            // vertical band
+            + "line:10,#ff0,256,124,256,356;line:1,#000,253,124,253,356;line:1,#000,260,124,260,356;"
+            //red shield, white shield
+            + "shield:#f00,90,190,160,2,#fff;shield:#fff,55,215,190,2,#777;"
 
-        // all other flags use a pale blue flagcolors and encycolorpedia say this is the 
+            //5 blue shields
+            + "<g id='s'>;path:#039,M246 196v12a1 1 0 0 0 18 0v-12z;"
+            //5 white circles
+            + "circle:250,200,2,#fff;circle:260,200,2,#fff;circle:250,210,2,#fff;circle:260,210,2,#fff;circle:255,205,2,#fff;"
+            + "</g>;"
+            + "use:0,30;use:-25,30;use:25,30;use:0,60;"
+            //5 castles
+            + "castle:195,182,.6,.6;castle:247,182,.6,.6;castle:303,182,.6,.6;castle:303,234,.6,.6;castle:195,234,.6,.6;castle:288,282,.6,.6,45;castle:213,293,.6,.6,-45;",//end cty
+
+        // all other flags use a pale blue; flagcolors and encycolorpedia say this is the correct one
         pw: "country:Palau;bgcolor:#09f;circle:280,240,150,#ff0",//end cty
         py: "country:Paraguay;detail:60;stripes:#d52b1e|#fff|#0038a8;circle:320,240,60,#fff,5,#000",//end cty
         qa: "country:Qatar;bgcolor:#8d1b3d;path:#fff,M0 0v480h158l98-27-98-27 98-27-98-27 98-27-98-27 98-27-98-27 98-27-98-27 98-27-98-27 98-27-98-27 98-27-98-27 98-27-98-27H0",//end cty
@@ -1462,7 +1504,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
             //setTimeout(p =>
             this.innerHTML = `<style>[word='${word}']{
 display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:${height};filter:var(--flagmeistertextfilter,drop-shadow(1px 1px 0 grey) drop-shadow(-1px -1px 0 #fff) drop-shadow(4px 4px 2px #000))</style>`
-                + word.split``.map(
+                + [...word].map(
                     (str, idx) =>
                         `<img is=flag-${isos[idx] || isos[0]} detail=9999 letter=${str} clip='text:${
                         JSON.stringify({
