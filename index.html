@@ -13,6 +13,8 @@
     <title>FlagMeister</title>
     <!-- <script src=elements.flagmeister.js onload="console.log('loaded FlagMeister')"></script> -->
     <script src=elements.flagmeister.min.js onload="console.log('loaded FlagMeister')"></script>
+    <script src=element.flagmeister-list.js onload="console.log('loaded FlagMeister')"></script>
+
     <style id=theme_greenwhite>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -208,10 +210,8 @@
                 --flagmeisterdetail: 9999;
             }
         </style>
-        <h2><span id=FlagMeisterSVGinfo> </span></h2>
-        <div id=injectFlagMeisterList>
-            <!-- <flagmeister-list signals=true id=flags_with_detailList class=flagwidthList></flagmeister-list> -->
-        </div>
+        <a name="flags"></a>
+        <flagmeister-list hidden signals=true class=flagwidthList delay=1000></flagmeister-list>
         <br>
         <br>
         <br>
@@ -221,6 +221,7 @@
     </section>
 
     <section convert2HTMLonload>
+        <a name="examples"></a>
         <!-- <h2>If you want FlagMeister to create:</h2>
         <div class=horizontalFlags_5>
             <img is=flag-nl filter=light data-not="Not Holland!" draw='attr:alt,80;attr:data-not,80,120'>
@@ -250,34 +251,6 @@
     </section>
 
     <script>
-        function createAllFlags(signals = true) {
-            let img = (iso, char = false) => `<img is=flag-${iso} ${char ? 'char=' + char : ''} title="flag-${iso + (char ? ' char=' + char : '')}">`;
-            let header = x => `<h3>${x}</h3>`;
-            //let isoNames = Object.keys(window.flagmeister);
-            let isoNames = Object.keys(document.querySelector('img[is]').flags);
-            return header("ISO country code flags")
-                + isoNames.map(iso => {
-                    let counter = (id, items, title) => `<div id='${id}'>` + ['<h3>', 0, title, "</h3>", ...items]
-                        .reduceRight((reducer, char, idx, redarr) =>
-                            (
-                                idx > 3
-                                    ? (redarr[1]++ , img(iso, char))
-                                    : char
-                            ) + reducer
-                            , '') + '</div>';
-
-                    if (iso == 'signal') {
-                        if (signals)
-                            return counter("FlagMeisterNATOFlags", "abcdefghijklmnopqrstuvwxyz0123456789".split``, " signal flags");
-                        else return '';
-                    } else if (iso == 'ics') {
-                        if (signals)
-                            return counter("FlagMeisterICSFlags", "0123456789".split``, ' ICS signal flags')
-                        else return '';
-                    } else
-                        return (iso == 'eu' ? header("non country flags") : '') + img(iso)
-                }).join``;
-        };
         //window.onload after whole page loaded
         window.onload = () => {
             document.body.style.visibility = 'initial';
@@ -287,30 +260,6 @@
                 let headerTitle = 'FlagMeister';
                 let letterNr = 11;
                 injectFlagMeisterBanner.innerHTML = `<flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="${headerTitle.slice(0, letterNr++)}"</flagmeister-text>`;
-
-                // inject all flags
-                injectFlagMeisterList.innerHTML = '<div id=flags_with_detailList class=flagwidthList>' + createAllFlags(true) + '</div>';
-
-                // process all injected flag
-                let flags = [...firstviewAllFlags.querySelectorAll('img')];
-
-                FlagMeisterSVGinfo.innerHTML =
-                    ['FlagMeister created '
-                        , '<span class= highlightText >'
-                        , flags.length,
-                        , ' SVG flags'
-                        , '</span>'
-                        , ', totalling '
-                        , flags.reduce((totalsvg, flag) => {
-                            return totalsvg + flag.src.length;
-                        }, 0)
-                        , ` hydrated bytes`
-                    ].join``;
-
-                // set the correct flagcount and filesize in all text elements
-                let replaceHTML = (sel, x) => [...document.querySelectorAll(sel)].map(el => el.innerHTML = x);
-                replaceHTML('.flagmeister_flagcount', flags.length);
-                replaceHTML('.flagmeister_size', 25);
 
                 // resize height of all (code documentation) textareas
                 [...document.querySelectorAll('textarea')].map(o => o.style.height = o.scrollHeight + "px");
@@ -335,4 +284,4 @@
 
 
 </body>
-Published: 2019-10-11 19:35 
+Published: 2019-10-12 16:17 
