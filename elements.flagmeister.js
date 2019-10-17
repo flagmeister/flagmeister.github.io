@@ -1272,6 +1272,7 @@ m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11
 
 
         lgbt: "country:LGBT Rainbow;stripes:#e70000|#ff8c00|#ffef00|#00811f|#0044ff|#760089",//end cty
+        trans: "country:Transgender;stripes:#5bcefa|#f5a9b8|#fff|#f5a9b8|#5bcefa",//end cty
 
         //savebytes? recreate with 4 rotating pieces
         //284 bytes
