@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
-
-let initFlagmeister = (trace = 0) => {
+!(function () {
+    console.assert((() => {// removed in production code
+        window.trace = 0;
+        return true//console.assert does not output line in console
+    })());
 
     //-----------------------------------------------------------
     // FlagMeister.github.io - One Custom Element for 300+ flags
@@ -237,18 +240,20 @@ let initFlagmeister = (trace = 0) => {
             , y + hy
         );
 
-    let $T_text_str_size520_x320_y430_fill_width_stroke_font_weight_anchor = ({
-        str = 'fm'
-        , size = 520
-        , x = 320
-        , y = 430
-        , fill = false
-        , strokewidth
-        , stroke
-        , font = 'courier'//'Bookman Old Style'
-        , weight = 'bold'
-        , anchor = 'middle'// start,end,middle
-    }) => `<text x='${x}' y='${y}' font-size='${size}' ${fill ? `fill='${fill}'` : ''} ${$stroke_W_Color(strokewidth, stroke)}font-family='${font}' font-weight='${weight}' text-anchor='${anchor}'>${str}</text>`;
+    let $T_text_str_size520_x320_y430_fill_width_stroke_font_weight_anchor = (
+        //Object keys are important here, match usage in textstring JSON object
+        {
+            str = 'fm'
+            , size = 520
+            , x = 320
+            , y = 430
+            , fill = false
+            , width
+            , stroke
+            , font = 'courier'//'Bookman Old Style'
+            , weight = 'bold'
+            , anchor = 'middle'// start,end,middle
+        }) => `<text x='${x}' y='${y}' font-size='${size}' ${fill ? `fill='${fill}'` : ''} ${$stroke_W_Color(width, stroke)}font-family='${font}' font-weight='${weight}' text-anchor='${anchor}'>${str}</text>`;
 
     let $C_circle__x320_y240_r80_fill_strokewidth_stroke = (
         x = 320
@@ -286,6 +291,7 @@ let initFlagmeister = (trace = 0) => {
 
 
         // at what pixel WIDTH image will FlagMeister lazy load a more detailed SVG:
+        // include as SVG comment
         , detail: x => `<!--dtl:${x}dtl:-->`
 
 
@@ -302,6 +308,8 @@ let initFlagmeister = (trace = 0) => {
             , scale = 1
         ) => [...Array(~~times).keys()].map(n => $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
             part
+            //todo proces as: flagparser(part)
+            //but part can NOT have commas, so need to be escaped somehow
             , x
             , y
             , n * 360 / times
@@ -434,7 +442,7 @@ let initFlagmeister = (trace = 0) => {
             , scaleY = 1
             , rotate = 0
         ) => flagparser(
-            `<g transform='translate(${x} ${y})'><g transform='scale(${scaleX} ${scaleY}) rotate(${rotate})'>;<defs><pattern id='brick' width='42' height='44' patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)'><g fill='none' fill-rule='evenodd'><g fill='#000'>;pathstroke:M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22;</g></g></pattern></defs>;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;</g></g>`
+            `<g transform='translate(${x} ${y})'><g transform='scale(${scaleX} ${scaleY}) rotate(${rotate})'><defs><pattern id='brick' width='42' height='44' patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)'><g fill='none' fill-rule='evenodd'><g fill='#000'>;pathstroke:M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22;</g></g></pattern></defs>;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;</g></g>`
         )
         // + horizontal lines:
         //line:1,#000,0,0,30,0;line:1,#000,0,-12,28,-12;
@@ -462,25 +470,26 @@ let initFlagmeister = (trace = 0) => {
     ) => {
         //if (fp_input) {
         let presets = {
+
+            // presets the flagparser can proces
+            // the output goes into the SVG string
+
+            // display text from given attributename in font-size at y position
+            // example: <img is=flag-nl alt='Netherlands' draw='attr:alt,80'>
             attr: (
                 attrname
                 , size
                 , y
-                // attrname = false
-                // , size = 45
-                // , y = 440
-                // , pars = (typeof attrname == 'object' ? attrname : [])
             ) => $T_text_str_size520_x320_y430_fill_width_stroke_font_weight_anchor(
                 {
                     str: element.getAttribute(attrname)
                     , size
-                    , y//:440                // align with white bar in USA flag
-                    //     , fill: '#fff'
-                    //     , width: 2
-                    //     , stroke: '#000'
-                    //     , ...pars
+                    , y
                 })
 
+            // set the alt attribute to specified name
+            // example: country: "country:Andorra;detail:40;bars:#0018a8|#fedf00|#d0103a"
+            // the flagparser creates SVG so we return an empty string
             , country: name => (
                 element && element.setAttribute("alt", name)
                 , ''//return empty string
@@ -595,22 +604,7 @@ let initFlagmeister = (trace = 0) => {
                 , z = 70
                 , spot = 'transparent'
                 , focus = 15
-            }) => `<filter id='ff'>
-<feGaussianBlur in='SourceAlpha' stdDeviation='${blur}' result='f'></feGaussianBlur>
-<feOffset dy='${offset}' dx='${offset}'></feOffset>
-<feComposite in2='f' operator='arithmetic' k2='-1' k3='1' result='a'></feComposite>
-<feFlood flood-color='${color1}'></feFlood>
-<feComposite in2='a' operator='in'></feComposite>
-<feComposite in2='SourceGraphic' result='b' operator='over'></feComposite>
-<feGaussianBlur in='b' stdDeviation='${blur}'></feGaussianBlur>
-<feOffset dy='${-2 * offset}' dx='${-2 * offset}'></feOffset>
-<feComposite in2='b' operator='arithmetic' k2='-1' k3='1' result='c'></feComposite>
-<feFlood flood-color='${color2}'></feFlood>
-<feComposite in2='c' operator='in'></feComposite>
-<feComposite in2='b' operator='over' result='d'></feComposite>
-<feSpecularLighting result='e' in='d' specularExponent='${focus}' lighting-color='${spot}'><fePointLight x='${x}' y='${y}' z='${z}'/></feSpecularLighting>
-<feComposite in2='e' in='d' operator='arithmetic' k1='0' k2='1' k3='1' k4='0'/>
-</filter>`
+            }) => `<filter id='ff'><feGaussianBlur in='SourceAlpha' stdDeviation='${blur}' result='f'></feGaussianBlur><feOffset dy='${offset}' dx='${offset}'></feOffset><feComposite in2='f' operator='arithmetic' k2='-1' k3='1' result='a'></feComposite><feFlood flood-color='${color1}'></feFlood><feComposite in2='a' operator='in'></feComposite><feComposite in2='SourceGraphic' result='b' operator='over'></feComposite><feGaussianBlur in='b' stdDeviation='${blur}'></feGaussianBlur><feOffset dy='${-2 * offset}' dx='${-2 * offset}'></feOffset><feComposite in2='b' operator='arithmetic' k2='-1' k3='1' result='c'></feComposite><feFlood flood-color='${color2}'></feFlood><feComposite in2='c' operator='in'></feComposite><feComposite in2='b' operator='over' result='d'></feComposite><feSpecularLighting result='e' in='d' specularExponent='${focus}' lighting-color='${spot}'><fePointLight x='${x}' y='${y}' z='${z}'/></feSpecularLighting><feComposite in2='e' in='d' operator='arithmetic' k1='0' k2='1' k3='1' k4='0'/></filter>`
             //TEXT
 
             //United Nations world
@@ -623,7 +617,7 @@ let initFlagmeister = (trace = 0) => {
                 bgcolor = '#00247d'
                 , scale = 2
             ) => flagparser(
-                `bgcolor:${bgcolor};<defs><clipPath id='c'>;rect:0,0,640,480;</clipPath></defs><g clip-path='url(#c)' transform='scale(${1 / scale})'>;rect:0,0,640,480,#00247d;pathstroke:M0 0l640 480m-640 0l640 -480,,90,#fff;pathstroke:M-20-5L320 255M660-30L320 230M660 485L320 235M-20 510L320 250,,40,#cf142b;doublecross:0,0,#fff,#cf142b,99,60;</g>`
+                `bgcolor:${bgcolor};<defs><clipPath id='c'>;rect:0,0,640,480;</clipPath></defs><g transform='scale(${1 / scale})' clip-path='url(#c)'>;rect:0,0,640,480,#00247d;pathstroke:M0 0l640 480m-640 0l640 -480,,90,#fff;pathstroke:M-20-5L320 255M660-30L320 230M660 485L320 235M-20 510L320 250,,40,#cf142b;doublecross:0,0,#fff,#cf142b,99,60;</g>`
             )
 
             // repeat pattern for all 52 stars,so GZip will encode great! ONLY TAKES 9 BYTES!!!
@@ -735,7 +729,27 @@ let initFlagmeister = (trace = 0) => {
         al: "country:Albania;detail:40;bgcolor:#e41e20",//end cty
         am: "country:Armenia;stripes:#d90012|#0033a0|#f2a800",//end cty
         ao: "country:Angola;stripes:#cc092f|#000;pathstroke:m318 227-20-15-21 14 8-23-20-15h24l9-22 8 23 24-1-19 15m14-79-5 13-20-4-1 15c165 43 59 256-72 167l-8 14 17 11-6 13 21 10 7-14 19 4v14h24v-13l19-4 6 12 22-9-6-12 17-11 10 9 16-17-10-9c5-5 9-11 12-17l12 5 9-22-12-5c2-6 3-13 3-19h14v-24h-14c0-7-2-13-4-20l13-5-8-22-13 5-11-17 9-9-17-17-9 9-16-10 5-13,#ffcb00;pathstroke:m406 346l-10 19 4 1c14 4 20 9 26 17 3 3 7 3 10 1l7-5c3-5 2-8-2-11zm-11 18c-31-23-179-71-137-125 35 43 102 78 146 107,#ffcb00,5,#000",//end cty
-        aq: "country:Antarctica;bgcolor:#072b5f;<defs><g id='c' fill='none'>;circle:134,134,50;circle:134,134,93;circle:134,134,133;path:#000,M-100 134h467M134-100v467,a;<use transform='rotate(30 134 133)' href='#a'/><use transform='rotate(60 133 133)' href='#a'/></g><clipPath id='d'>;path:#fff,M164 220c-12 7-21-12-10-18 2-13-15-11-24-14-13-2-27 3-40-2-10-2-23-8-23-19 0-9-1-19-11-16-10-6 3-19 1-28 1-6 2-14-6-12-13 0-2-16-13-20-5-4-11-19-3-18 2 9 11 9 18 14 9 6 18 15 30 12 14-1 23-13 22-26 2-13 11-24 23-29 12-2 24 1 36 3 11 5 19 14 31 15 9 3 21 3 28 11 1 13 4 25 4 38 3 8 22 10 13 22 0 10 10 20-1 28-4 12-10 21-16 31-7 10-11 21-24 24-11 2-22 7-33 5,b;</clipPath></defs><g transform='scale(1.8) translate(45)'>;path:#072b5f,h267v267z;<use width='267' height='267' href='#c' stroke-width='3' stroke='#fff'/><use width='267' height='267' href='#b'/><use width='267' height='267' href='#c' clip-path='url(#d)' stroke-width='3' stroke='#072b5f'/></g>",//end cty
+        aq: "country:Antarctica;bgcolor:#072b5f;"
+            + "<defs><g id='c' fill='none'>"
+            + ";circle:134,134,50;circle:134,134,93;circle:134,134,133"
+
+            + ";path:#000,M-100 134h467M134-100v467,s"
+            + ";use:0,0,1,30 133 133"
+            + ";use:0,0,1,60 133 133;"
+            //+ ";<use transform='rotate(30 134 133)' href='#s'/>"
+            //+ "<use transform='rotate(60 133 133)' href='#s'/>"
+
+            + "</g>"
+            + "<clipPath id='d'>"
+            + ";path:#fff,M164 220c-12 7-21-12-10-18 2-13-15-11-24-14-13-2-27 3-40-2-10-2-23-8-23-19 0-9-1-19-11-16-10-6 3-19 1-28 1-6 2-14-6-12-13 0-2-16-13-20-5-4-11-19-3-18 2 9 11 9 18 14 9 6 18 15 30 12 14-1 23-13 22-26 2-13 11-24 23-29 12-2 24 1 36 3 11 5 19 14 31 15 9 3 21 3 28 11 1 13 4 25 4 38 3 8 22 10 13 22 0 10 10 20-1 28-4 12-10 21-16 31-7 10-11 21-24 24-11 2-22 7-33 5,b"
+            + ";</clipPath>"
+            + "</defs>"
+            + "<g transform='scale(1.8) translate(45)'>"
+            + "<use width='267' height='267' href='#b'/>"
+            + ";path:#072b5f,h267v267z"
+            + ";<use width='267' height='267' href='#c' stroke-width='3' stroke='#fff'/>"
+            + "<use width='267' height='267' href='#c' stroke-width='3' stroke='#072b5f' clip-path='url(#d)'/>"
+            + "</g>",//end cty
 
         //starrotate 18
         //sun:
@@ -955,7 +969,7 @@ let initFlagmeister = (trace = 0) => {
             + "<ellipse fill='#aa151b' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='15' ry='18'/>"
             + "<ellipse fill='#005bbf' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='11' ry='14'/>"
             //   <!-- 3 yellow lilys -->
-            + "path:#f1bf00,M201 261s-1 1-1 3a6 6 0 00.6 2c-.2-.5-1-1-1-1-1 0-1.4.6-1.4 1l.2.8.5.9c.1-.3.5-1 1-1s1 1 1 1a.9.9 0 010 1h-1v1h1l-1 1.5 1-.4.8.9.8-1 1 .4-.7-1h1v-1h-1.1a.9.9 0 010-.3 1 1 0 011-1c.4 0 .7.3 1 1l.4-1 .2-1a1 1 0 00-1-1c-1 0-1.2.3-1.4.9 0 0 .6-1.2.6-2.5s-1-3-1-3,f,.4,#000;"
+            + ";path:#f1bf00,M201 261s-1 1-1 3a6 6 0 00.6 2c-.2-.5-1-1-1-1-1 0-1.4.6-1.4 1l.2.8.5.9c.1-.3.5-1 1-1s1 1 1 1a.9.9 0 010 1h-1v1h1l-1 1.5 1-.4.8.9.8-1 1 .4-.7-1h1v-1h-1.1a.9.9 0 010-.3 1 1 0 011-1c.4 0 .7.3 1 1l.4-1 .2-1a1 1 0 00-1-1c-1 0-1.2.3-1.4.9 0 0 .6-1.2.6-2.5s-1-3-1-3,f,.4,#000;"
             + "<use href='#f' x='10'/><use href='#f' x='5' y='9'/>;"
         ,//end cty spain
 
@@ -1041,10 +1055,34 @@ let initFlagmeister = (trace = 0) => {
         jo: "country:Jordan;striangle:#000|#fff|#007a3d,#ce1126,380;path:#fff,m140 240-18 1 2 18-12-13-12 13 2-18-18-1 15-9-10-15 17 6 5-17 5 17 17-6-10 15",//end cty
         jp: "country:Japan;bgcolor:;circle:320,240,150,#bc002d",//end cty
 
-        ke: "country:Kenya;stripes:#000|#b00|#060;stripe:145,22,#fff;stripe:315,22,#fff;<g id='s'>;pathstroke:m220 70q50 40 50 80-30-20-50-80z,#fff,1,#000;line:6,#fff,360,330,390,390;</g><use transform='matrix(-1 0 0 1 640 0)' href='#s'/>;path:#b00,m320 80q150 150 0 320-150-170 0-320;path:#000,m262 165q30 70 0 150-30-70-5-140 30-70;path:#000,m379 165q30 70 0 150-30-70-5-140 30-70;path:#fff,m320 80q30 70 0 150-30-70-5-140 30-70;path:#fff,m320 250q30 70 0 150-30-70-5-140 30-70;line:4,#b00,320,83,320,397;circle:320,240,14,#fff",//end cty
+        ke: "country:Kenya;stripes:#000|#b00|#060;stripe:145,22,#fff;stripe:315,22,#fff;"
+            //spear
+            + "<g id='s'>;"
+            + "pathstroke:m220 70q50 40 50 80-30-20-50-80z,#fff,1,#000;"
+            + "line:6,#fff,360,330,390,390;"
+            + "</g>"
+            + "<use transform='matrix(-1 0 0 1 640 0)' href='#s'/>;"
+            //red shield
+            + "path:#b00,m320 80q150 150 0 320-150-170 0-320;"
+            //black shield right
+            + "path:#000,m262 165q30 70 0 150-30-70-5-140 30-70;"
+            //black shield left
+            + "path:#000,m379 165q30 70 0 150-30-70-5-140 30-70;"
+            //white shield TOP
+            + "path:#fff,m320 80q30 70 0 150-30-70-5-140 30-70;"
+            //white shield BOTTOM
+            + "path:#fff,m320 250q30 70 0 150-30-70-5-140 30-70;"
+            //red line over whites
+            + "line:4,#b00,320,80,320,400;"
+            //white circle
+            + "circle:320,240,14,#fff",//end cty
 
         //starrotate
-        kg: "country:Kyrgyzstan;bgcolor:#e8112d;rotate:40,<path fill='#ffef00' d='M60 60c13-16 41 0 66-12-28 1-43-13-64-11 22-14 41'/>;circle:320,240,95,#e8112d;circle:320,235,80,#ffef00;<g id='s'>;pathstroke:M260 180Q360 220 360 310,none,7,#e8112d;pathstroke:M270 170Q370 220 380 300,none,7,#e8112d;pathstroke:M280 160Q380 220 395 280,none,7,#e8112d;</g><use transform='matrix(-1 0 0 1 640 0)' href='#s'/>",//end cty
+        kg: "country:Kyrgyzstan;bgcolor:#e8112d;"
+            + "rotate:40,<path fill='#ffef00' d='M60 60c13-16 41 0 66-12-28 1-43-13-64-11 22-14 41'/>;"
+            + "circle:320,240,95,#e8112d;circle:320,235,80,#ffef00"
+            + ";<g id='s'>;pathstroke:M260 180Q360 220 360 310,none,7,#e8112d;pathstroke:M270 170Q370 220 380 300,none,7,#e8112d;pathstroke:M280 160Q380 220 395 280,none,7,#e8112d;</g>"
+            + "<use transform='matrix(-1 0 0 1 640 0)' href='#s'/>",//end cty
 
         // !! todo better abstract temple
         kh: "country:Cambodia;detail:40;stripes:#032ea1|#e00025|#e00025|#032ea1;rect:150,310,400,20,#fff,2,#000;rect:200,224,280,20,#fff,2,#000",//end cty
@@ -1055,7 +1093,21 @@ let initFlagmeister = (trace = 0) => {
         km: "country:Comoros;detail:80;striangle:#ffc61e|#fff|#ce1126|#3a75c4,#3d8e33,340;circle:120,240,100,#fff;circle:160,240,100,#3d8e33;star:#fff,70,80,1.7;use:70,105,1.7;use:70,132,1.7;use:70,160,1.7",//end cty
         kn: "country:Saint Kitts and Nevis;bgcolor:#009e49;diagonal:#ce1126,#fcd116,#000;star:#fff,80,0,4,40;use:100,-60,4,40",//end cty
         kp: "country:North Korea;stripes:#024fa2|#fff|#fff|#fff|#024fa2;stripe:110,257,#ed1c27;circle:250,240,80,#fff;star:#ed1c27,30,20,6",//end cty
-        kr: "country:South Korea;bgcolor:;circle:320,240,100,#c60c30;path:#003478,m237 185a50 50 0 0 0 83 55 50 50 0 0 1 83 55 99 99 0 0 1-165-110;<g id='s'>;line:16,#000,100,150,160,60;line:16,#000,120,165,180,75;line:16,#000,142,180,202,90;</g>;<use transform='rotate(110 320 240)' href='#s'/><use transform='rotate(180 320 240)' href='#s'/><use transform='rotate(290 320 240)' href='#s'/>;line:12,#fff,460,143,480,128;line:12,#fff,500,115,520,100;line:12,#fff,450,330,520,382;line:12,#fff,160,345,135,368",//end cty
+        kr: "country:South Korea;bgcolor:;circle:320,240,99,#c60c30;"
+            + "path:#003478,m237 185a50 50 0 0 0 83 55 50 50 0 0 1 83 55 99 99 0 0 1-165-110;"
+            + "<g id='s'>;line:16,#000,100,150,160,60;line:16,#000,120,165,180,75;line:16,#000,142,180,202,90;</g>;"
+
+            + "use:0,0,1,110 320 240;"
+            + "use:0,0,1,180 320 240;"
+            + "use:0,0,1,290 320 240;"
+            // + "<use transform='rotate(110 320 240)' href='#s'/>"
+            // + "<use transform='rotate(180 320 240)' href='#s'/>"
+            // + "<use transform='rotate(290 320 240)' href='#s'/>;"
+
+            + "line:12,#fff,460,143,480,128;"
+            + "line:12,#fff,500,115,520,100;"
+            + "line:12,#fff,450,330,520,382;"
+            + "line:12,#fff,160,345,135,368",//end cty
         kw: "country:Kuwait;striangle:#007a3d|#fff|#ce1126,#000;rect:194,159,640,160,#fff",//end cty
         ky: "country:Cayman Islands;detail:40;gb",//end cty
 
@@ -1072,7 +1124,19 @@ let initFlagmeister = (trace = 0) => {
         li: "country:Liechtenstein;detail:80;stripes:#002b7f|#ce1126;path:#ffd83d,M140 60l16 19 17-19-17-18zm-83 78l24 54h150l27-51c-82-78-122-78-201-3",//end cty
 
         //todo detailM change to bigger detail size// replace 4x matrix with rotate:
-        lk: "country:Sri Lanka;detail:60;bgcolor:#ffbe29;rect:27,27,88,427,#00534e;rect:115,27,88,427,#eb7400;rect:230,27,385,427,#8d153a;path:#ffb700,M579 409s4 7 8 10c6 4 18 4 23 9 6 6 0 15 0 15v5h-6c-3 0-4 2-9 2-12-1-11-12-12-21l-3-12-1-8z,s,1,#000;<use transform='matrix(-1 0 0 1 845 0)' href='#s'/><use transform='matrix(1 0 0 -1 0 480)' href='#s'/><use transform='rotate(180 423 240)' href='#s'/><use stroke='#000' stroke-width='6' href='#a'/><path fill='#ffb700' id='a' d='m379 280c2 5-2 3 0 0zm86-1c-6 11 7 20 12 30 10 14-12 24-17 29 9 5 23 6 31-1 10-15 6-36-6-49-5-5-12-8-20-9zm-150-34c4 0 10 0 3 2l-3-2zm158-94c-24 1-53 21-22 46 19 11 44 8 70 3 12 9-1 26-13 23-47 0-58 10-105 8 31-3 39-14 30-24-12-7 5-4 3-34-1-11-12-16-21-14-12-1-33 15-61 10-12 0-9 16-1 19 8 2 21 1 24 13v1c-3-2-18-8-23-7-7 3 18 9 21 9-6 5-19-8-25 0-5 15 22 6 23 19-4 11-20 15-22 28-2 8-2 18 2 26l-21-29c-4-4-11 25-1 29 21 33 29 10 29 9l6 4c10 2 19 10 20 20 4 12-6 19-16 20-13 8 8 15 15 11 14-4 31-20 33-62 10 14 16 8 24 3 28-21 58 7 73 34 2 10-20 17-8 25 12 4 41-29 21-61 5-12 12-24 6-37-16-16 17-35-7-49-16-7-32 3-48-1-9-1-42-11-21-29 20-6 34 2 37 10 10 5 23 0 31 10 6 9 21-3 10-8-10 0-18-3-25-10-11-9-23-15-38-15zm-140-12c-34 20-24 88-21 104-5-4-10-7-9 2 2 5 6 7 11 8-6 4-2 23-1 28 1 4-17 16-2 29 3 4 10 4 13-1 3-4 2-10-2-13-4-4-2-11 1-15 1-4 2-24-4-28 5-1 10-3 12-8-10-40-5-66-2-86l4-20'/>",//end cty
+        lk: "country:Sri Lanka;detail:60;bgcolor:#ffbe29;rect:27,27,88,427,#00534e;rect:115,27,88,427,#eb7400;rect:230,27,385,427,#8d153a;"
+            // one of 4 corner leaves
+            + "path:#ffb700,M579 409s4 7 8 10c6 4 18 4 23 9 6 6 0 15 0 15v5h-6c-3 0-4 2-9 2-12-1-11-12-12-21l-3-12-1-8z,s,1,#000;"
+
+            + "<use transform='matrix(-1 0 0 1 845 0)' href='#s'/>"
+            + "<use transform='matrix(1 0 0 -1 0 480)' href='#s'/>"
+
+            + ";use:0,0,1,180 423 240;"
+            //+ "<use transform='rotate(180 423 240)' href='#s'/>"
+
+            //yellow lion
+            + "pathstroke:m379 280c2 5-2 3 0 0zm86-1c-6 11 7 20 12 30 10 14-12 24-17 29 9 5 23 6 31-1 10-15 6-36-6-49-5-5-12-8-20-9zm-150-34c4 0 10 0 3 2l-3-2zm158-94c-24 1-53 21-22 46 19 11 44 8 70 3 12 9-1 26-13 23-47 0-58 10-105 8 31-3 39-14 30-24-12-7 5-4 3-34-1-11-12-16-21-14-12-1-33 15-61 10-12 0-9 16-1 19 8 2 21 1 24 13v1c-3-2-18-8-23-7-7 3 18 9 21 9-6 5-19-8-25 0-5 15 22 6 23 19-4 11-20 15-22 28-2 8-2 18 2 26l-21-29c-4-4-11 25-1 29 21 33 29 10 29 9l6 4c10 2 19 10 20 20 4 12-6 19-16 20-13 8 8 15 15 11 14-4 31-20 33-62 10 14 16 8 24 3 28-21 58 7 73 34 2 10-20 17-8 25 12 4 41-29 21-61 5-12 12-24 6-37-16-16 17-35-7-49-16-7-32 3-48-1-9-1-42-11-21-29 20-6 34 2 37 10 10 5 23 0 31 10 6 9 21-3 10-8-10 0-18-3-25-10-11-9-23-15-38-15zm-140-12c-34 20-24 88-21 104-5-4-10-7-9 2 2 5 6 7 11 8-6 4-2 23-1 28 1 4-17 16-2 29 3 4 10 4 13-1 3-4 2-10-2-13-4-4-2-11 1-15 1-4 2-24-4-28 5-1 10-3 12-8-10-40-5-66-2-86l4-20,#ffb700,2,#000",//end cty
+
         lr: "country:Liberia;stripes:#bf0a30|#fff|#bf0a30|#fff|#bf0a30|#fff|#bf0a30|#fff|#bf0a30|#fff|#bf0a30;rect:0,0,217,217,#002868;star:#fff,6,-2,6",//end cty
 
         //todo rework path in inkscape
@@ -1097,7 +1161,11 @@ let initFlagmeister = (trace = 0) => {
         mm: "country:Myanmar;stripes:#fecb00|#34b233|#ea2839;star:#fff,13,0,13",//end cty
 
         mn: "country:Mongolia;detail:80;bars:#c4272f|#015197|#c4272f;path:#f9cf02,M91 132a16 16 0 0 0 32 0c0-6-4-7-4-10 0-2 2-5-3-9 3 4-1 5-1 9l1 7a3 3 0 0 1-6 0c0-3 3-7 3-11 0-5 0-7-3-11-2-4-6-7-3-10-5 1-2 8-2 12s-4 6-4 11 3 6 3 9a3 3 0 0 1-7 0c0-3 2-3 2-7s-4-5-2-9c-4 4-2 7-2 9 0 3-4 3-4 10;circle:107,189,35,#f9cf02;circle:107,180,25,#f9cf02;path:#f9cf02,m37 230v153h32v-153zm108 0v153h32v-153zm-70 26v13h64v-13zm0 89v13h64v-13zm0-115h64l-32 20zm0 134h64l-32 19;circle:107,307,34,#f9cf02,4,#c4272f",//end cty
-        mo: "country:Macau;bgcolor:#00795e;path:#fbd20e,M295 109l41 29-16-47-15 47 40-29;<g id='s'>;path:#fff,M320 332H218a146 146 0 0 1-4-4h106a2 2 0 0 1 1 2l-1 2zm0-32a13 13 0 0 0 1-7 12 12 0 0 0-1-4 82 82 0 0 1-32 19 81 81 0 0 1-24 3h-63a144 144 0 0 0 6 8h61c20 0 38-7 52-19zm-110-24a32 32 0 0 1-9 2 81 81 0 0 0 61 27 81 81 0 0 0 58-25 441 441 0 0 0 5-59 441 441 0 0 0-5-67c-7 6-19 18-25 38a81 81 0 0 0-3 23 81 81 0 0 0 14 45 81 81 0 0 1-17-49c0-13 2-25 7-35a33 33 0 0 1-7-13 81 81 0 0 0-10 40c0 18 5 35 15 48a95 95 0 0 0-73-29 33 33 0 0 1 7 8 95 95 0 0 1 68 30 95 95 0 0 0-61-22 95 95 0 0 0-36 7 81 81 0 0 0 82 52l-14 1a81 81 0 0 1-57-22zm110 88h-53a144 144 0 0 0 53 10 11 11 0 0 0 1-4 11 11 0 0 0-1-6zm0-24h-94a144 144 0 0 0 8 6h86a5 5 0 0 0 1-3 4 4 0 0 0-1-3zm0 12h-77a144 144 0 0 0 15 8h62a8 8 0 0 0 1-4 8 8 0 0 0-1-4;path:#fbd20e,M201 175l25 23-7-34-14 32 30-17zm36-32h35l-28-21 11 34 11-33;</g><use transform='matrix(-1 0 0 1 640 0)' href='#s'/>",//end cty
+        mo: "country:Macau;bgcolor:#00795e;path:#fbd20e,M295 109l41 29-16-47-15 47 40-29;"
+            + "<g id='s'>;path:#fff,M320 332H218a146 146 0 0 1-4-4h106a2 2 0 0 1 1 2l-1 2zm0-32a13 13 0 0 0 1-7 12 12 0 0 0-1-4 82 82 0 0 1-32 19 81 81 0 0 1-24 3h-63a144 144 0 0 0 6 8h61c20 0 38-7 52-19zm-110-24a32 32 0 0 1-9 2 81 81 0 0 0 61 27 81 81 0 0 0 58-25 441 441 0 0 0 5-59 441 441 0 0 0-5-67c-7 6-19 18-25 38a81 81 0 0 0-3 23 81 81 0 0 0 14 45 81 81 0 0 1-17-49c0-13 2-25 7-35a33 33 0 0 1-7-13 81 81 0 0 0-10 40c0 18 5 35 15 48a95 95 0 0 0-73-29 33 33 0 0 1 7 8 95 95 0 0 1 68 30 95 95 0 0 0-61-22 95 95 0 0 0-36 7 81 81 0 0 0 82 52l-14 1a81 81 0 0 1-57-22zm110 88h-53a144 144 0 0 0 53 10 11 11 0 0 0 1-4 11 11 0 0 0-1-6zm0-24h-94a144 144 0 0 0 8 6h86a5 5 0 0 0 1-3 4 4 0 0 0-1-3zm0 12h-77a144 144 0 0 0 15 8h62a8 8 0 0 0 1-4 8 8 0 0 0-1-4;"
+            + "path:#fbd20e,M201 175l25 23-7-34-14 32 30-17zm36-32h35l-28-21 11 34 11-33;"
+            + "</g>"
+            + "<use transform='matrix(-1 0 0 1 640 0)' href='#s'/>",//end cty
 
         //todo detailM 
         mp: "country:North Mariana Islands;detail:60;bgcolor:#0071bc;circle:320,240,180,none,40,#fff;rect:280,100,80,350,#8c8a8c,2,#000;star:#fff,24,7,9",//end cty
@@ -1250,7 +1318,16 @@ let initFlagmeister = (trace = 0) => {
         tf: "country:French Southern Territories;bgcolor:#002395;path:#fff,M0 0h292.8v196.8H0;path:#002395,M0 0h96v192H0;path:#ed2939,M192 0h96v192h-96;path:#fff,M426 219.6l15 25h44V330l-33-52-44 71h22l23-41 47 84 47-84 23 41h22L546 278 513 330v-47h20l15-23H513v-15h44l15-25H426zm52 105h-48v17h48zm91 0h-48v17h48;star:#fff,185,115,2;use:285,115,2;use:210,175,2;use:265,175,2;use:238,195,2",//end cty
         tg: "country:Togo;stripes:#006a4e|#ffce00|#006a4e|#ffce00|#006a4e;rect:0,0,288,288,#d21034;star:#fff,9,0,7",//end cty
         th: "country:Thailand;stripes:#a51931|#f4f5f8|#2d2a4a|#2d2a4a|#f4f5f8|#a51931",//end cty
-        tj: "country:Tajikistan;stripes:#cc0000|#fff|#fff|#006600;path:#f8c300,M301 234a9 9 0 0 1 16 4v34h6v-34a9 9 0 0 1 16-4 20 20 0 1 0-38 0;path:#f8c300,M317 258a26 26 0 0 1-44 17 27 27 0 0 1-41 12c3 25 40 20 43-4 12 20 37 14 45-11,a;<use transform='matrix(-1 0 0 1 640 0)' href='#a' fill='#f8c300'/>;path:#f8c300,M292 303c-5 11-16 13-25 4l8-4c-1-3 0-7 3-9a15 15 0 0 1 6 8c5-1 8 1 8 1,b;<use transform='rotate(9 320 551)' href='#b' fill='#f8c300'/><use transform='rotate(19 320 551)' href='#b' fill='#f8c300'/>;pathstroke:M254 328a233 233 0 0 1 133 0z,none,11,#f8c300;star:#f8c300,200,80,1.5;use:170,90,1.5;use:230,90,1.5;use:150,115,1.5;use:250,115,1.5;use:140,150,1.5;use:260,150,1.5",//end cty
+        tj: "country:Tajikistan;stripes:#cc0000|#fff|#fff|#006600;"
+            + "path:#f8c300,M301 234a9 9 0 0 1 16 4v34h6v-34a9 9 0 0 1 16-4 20 20 0 1 0-38 0;"
+            + "path:#f8c300,M317 258a26 26 0 0 1-44 17 27 27 0 0 1-41 12c3 25 40 20 43-4 12 20 37 14 45-11,a;"
+            + "<use fill='#f8c300' transform='matrix(-1 0 0 1 640 0)' href='#a'/>;"
+            + "path:#f8c300,M292 303c-5 11-16 13-25 4l8-4c-1-3 0-7 3-9a15 15 0 0 1 6 8c5-1 8 1 8 1,b;"
+            + "<use fill='#f8c300' transform='rotate(9 320 551)' href='#b'/>"
+            + "<use fill='#f8c300' transform='rotate(19 320 551)' href='#b'/>;"
+            + "pathstroke:M254 328a233 233 0 0 1 133 0z,none,11,#f8c300;"
+            + "star:#f8c300,200,80,1.5;"
+            + "use:170,90,1.5;use:230,90,1.5;use:150,115,1.5;use:250,115,1.5;use:140,150,1.5;use:260,150,1.5",//end cty
 
         //todo abstract shapes, better southerncross
         tk: "country:Tokelau;bgcolor:#00247d;path:#fed100,M108 355c134-90 266-195 401-259-39 96-11 201 67 254 7-2 34 9 12 8l-480-3zm-4 6c10 27 42 8 62 13l437 6c-4-24-32-15-48-14-152-3-311-3-451-5;southerncross:#fff,30,-99",//end cty
@@ -1361,7 +1438,7 @@ let initFlagmeister = (trace = 0) => {
 
     //let fmPropValue = (_this, name, defaultValue = false) => getComputedStyle(_this).getPropertyValue("--flagmeister" + name) || defaultValue;
 
-    if (trace) console.time('CreateElement');
+    if (window.trace) console.time('CreateElement');
     Object.keys(flags)
         .map(iso => {
             //'ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki'.includes(iso) &&
@@ -1375,7 +1452,7 @@ let initFlagmeister = (trace = 0) => {
 
                 constructor() {
                     super();
-                    if (trace) console.element(this);
+                    if (window.trace) console.element(this);
 
                     // public attributes/properties getter/setter
                     // ALL ARE PROCESSED BY THE FLAGPARSER!!!
@@ -1399,11 +1476,11 @@ let initFlagmeister = (trace = 0) => {
                     ].map(([attr, defaultvalue]) => {
                         Object.defineProperty(this, attr, {
                             set(val) {
-                                if (trace) console.element(this, 'background:lightcoral', attr, val);
+                                if (window.trace) console.element(this, 'background:lightcoral', attr, val);
                                 val ? this.setAttribute(attr, val) : this.removeAttribute(attr);
                             },
                             get() {
-                                if (trace) console.element(this, attr);
+                                if (window.trace) console.element(this, attr);
                                 let val = this.getAttribute(attr)//todo numbers are stills strings here,but ~~string == 0
                                     || getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim()
                                     || defaultvalue;
@@ -1445,7 +1522,7 @@ let initFlagmeister = (trace = 0) => {
                         + `<g ${filter ? `filter='url(#ff)'` : ''}><g clip-path='url(#clip)' transform='${this['transform']}'>${svg}${this.draw}</g></g></svg>`;
                 }
                 connectedCallback() {
-                    if (trace) console.element(this);
+                    if (window.trace) console.element(this);
                     //this.iso = iso;
                     this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
                     // this.setAttribute('title',iso + ' :' + flag[0]);
@@ -1473,7 +1550,7 @@ let initFlagmeister = (trace = 0) => {
                 load(
                     load_svg = this.svg()
                 ) {
-                    if (trace) console.element(this, 22);
+                    if (window.trace) console.element(this, 22);
                     let fetchdata = async (uri) => {
                         //async/await is nice sugar, but 11 GZip bytes longer
                         this.detail = uri;              // prevent detailed flag from reloading again
@@ -1562,7 +1639,7 @@ let initFlagmeister = (trace = 0) => {
         }//createCustomElement
 
         );//map iso flags
-    if (trace) console.timeLog('CreateElement');
+    if (window.trace) console.timeLog('CreateElement');
 
     customElements.define('flagmeister-text', class extends HTMLElement {
         constructor() {
@@ -1575,8 +1652,7 @@ let initFlagmeister = (trace = 0) => {
         ) {
             //console.time(word);
             //setTimeout(p =>
-            this.innerHTML = `<style>[word='${word}']{
-display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:${height};filter:var(--flagmeistertextfilter,drop-shadow(1px 1px 0 grey) drop-shadow(-1px -1px 0 #fff) drop-shadow(4px 4px 2px #000))</style>`
+            this.innerHTML = `<style>[word='${word}']{display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:${height};filter:var(--flagmeistertextfilter,drop-shadow(1px 1px 0 grey) drop-shadow(-1px -1px 0 #fff) drop-shadow(4px 4px 2px #000))</style>`
                 + [...word].map(
                     (str, idx) =>
                         `<img is=flag-${isos[idx] || isos[0]} detail=9999 letter=${str} clip='text:${
@@ -1591,5 +1667,4 @@ display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:$
         }// connectedCallback
     });// define flagmeister-text
 
-};
-setTimeout(initFlagmeister, 0);
+})();
