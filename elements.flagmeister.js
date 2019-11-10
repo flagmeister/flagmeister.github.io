@@ -1443,196 +1443,199 @@
         .map(iso => {
             //'ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki'.includes(iso) &&
 
-            customElements.define('flag-' + iso, class extends HTMLImageElement {
+            let createFlagElement = (baseClass, options) =>
+                customElements.define('flag-' + iso, class extends baseClass {
 
-                // Used by the FlagAnalyzer
-                get data() {
-                    return flags[iso];
-                }
+                    // Used by the FlagAnalyzer
+                    get data() {
+                        return flags[iso];
+                    }
 
-                constructor() {
-                    super();
-                    if (window.trace) console.element(this);
+                    constructor() {
+                        super();
+                        if (window.trace) console.element(this);
 
-                    // public attributes/properties getter/setter
-                    // ALL ARE PROCESSED BY THE FLAGPARSER!!!
-                    [
-                        ['iso', iso]
-                        , ['detail', false]   // disable detail by assigning a huge number of width-pixels
+                        // public attributes/properties getter/setter
+                        // ALL ARE PROCESSED BY THE FLAGPARSER!!!
+                        [
+                            ['iso', iso]
+                            , ['detail', false]   // disable detail by assigning a huge number of width-pixels
 
-                        , ['source', false]
+                            , ['source', false]
 
-                        , ['box', '0 0 640 480']  // default viewBox='0 0 640 480'
+                            , ['box', '0 0 640 480']  // default viewBox='0 0 640 480'
 
-                        , ['transform', '']    // SVG transform on <g> wrapping FlagMeister SVG content
+                            , ['transform', '']    // SVG transform on <g> wrapping FlagMeister SVG content
 
-                        , ['clip', $R_rect_X_Y_W_H___colorNone_strokewidth_stroke(0, 0, 640, 480)]      // default clip is the standard 640 by 480 flag
+                            , ['clip', $R_rect_X_Y_W_H___colorNone_strokewidth_stroke(0, 0, 640, 480)]      // default clip is the standard 640 by 480 flag
 
-                        , ['flags', flags]
-                        //,['mask','']
-                        , ['draw', '']
-                        , ['filter', false]
+                            , ['flags', flags]
+                            //,['mask','']
+                            , ['draw', '']
+                            , ['filter', false]
 
-                    ].map(([attr, defaultvalue]) => {
-                        Object.defineProperty(this, attr, {
-                            set(val) {
-                                if (window.trace) console.element(this, 'background:lightcoral', attr, val);
-                                val ? this.setAttribute(attr, val) : this.removeAttribute(attr);
-                            },
-                            get() {
-                                if (window.trace) console.element(this, attr);
-                                let val = this.getAttribute(attr)//todo numbers are stills strings here,but ~~string == 0
-                                    || getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim()
-                                    || defaultvalue;
-                                // !todo handle 0 '0' value with generic code (now clip in svg() below)
-                                if (val == 'none') val = false;
-                                else if (typeof val == 'string') val = flagparser(val, this);
-                                else;
+                        ].map(([attr, defaultvalue]) => {
+                            Object.defineProperty(this, attr, {
+                                set(val) {
+                                    if (window.trace) console.element(this, 'background:lightcoral', attr, val);
+                                    val ? this.setAttribute(attr, val) : this.removeAttribute(attr);
+                                },
+                                get() {
+                                    if (window.trace) console.element(this, attr);
+                                    let val = this.getAttribute(attr)//todo numbers are stills strings here,but ~~string == 0
+                                        || getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim()
+                                        || defaultvalue;
+                                    // !todo handle 0 '0' value with generic code (now clip in svg() below)
+                                    if (val == 'none') val = false;
+                                    else if (typeof val == 'string') val = flagparser(val, this);
+                                    else;
 
-                                // if (0) console.log((() => {
-                                //     let hasCSSproperty = getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim();
-                                //     let hasAttr = this.getAttribute(attr);
-                                //     return `% c ${iso} get:${attr} ${hasCSSproperty ? 'CSSprop' : ''} ${hasAttr ? 'Attribute:' + hasAttr : ''} ${val === defaultvalue ? 'default:' + defaultvalue : ''}=${val} `
-                                // })(), 'color:red')
+                                    // if (0) console.log((() => {
+                                    //     let hasCSSproperty = getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim();
+                                    //     let hasAttr = this.getAttribute(attr);
+                                    //     return `% c ${iso} get:${attr} ${hasCSSproperty ? 'CSSprop' : ''} ${hasAttr ? 'Attribute:' + hasAttr : ''} ${val === defaultvalue ? 'default:' + defaultvalue : ''}=${val} `
+                                    // })(), 'color:red')
 
 
-                                //if (attr == 'clip') window["console"].log(val);
+                                    //if (attr == 'clip') window["console"].log(val);
 
-                                return val && val.length === 1 ? val[0] : val;
-                            },// property GETTER
-                            //enumerable:1,  // default:false
-                            //configurable:1   // default:false   
-                            //writable:1       // not valid,since there is a set method!
-                        })
-                    });
-                }
-                svg(// todo create as getter
-                    newiso = iso
-                    , svg = flagparser(flags[newiso], this)
-                    , filter = this.filter
-                    , clip = this.clip
-                    //, log = console.log(svg, commands)
-                ) {
-                    return `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='${this.box}'><defs><clipPath id='clip'>${clip === '0' ? '' : clip}</clipPath></defs>`
-                        + (filter || '')
-                        //additional filter can be wrapped in extra <g>
-                        //+ `<filter id='f1'><feGaussianBlur stdDeviation='0'></feGaussianBlur></filter>`
+                                    return val && val.length === 1 ? val[0] : val;
+                                },// property GETTER
+                                //enumerable:1,  // default:false
+                                //configurable:1   // default:false   
+                                //writable:1       // not valid,since there is a set method!
+                            })
+                        });
+                    }
+                    svg(// todo create as getter
+                        newiso = iso
+                        , svg = flagparser(flags[newiso], this)
+                        , filter = this.filter
+                        , clip = this.clip
+                        //, log = console.log(svg, commands)
+                    ) {
+                        return `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='${this.box}'><defs><clipPath id='clip'>${clip === '0' ? '' : clip}</clipPath></defs>`
+                            + (filter || '')
+                            //additional filter can be wrapped in extra <g>
+                            //+ `<filter id='f1'><feGaussianBlur stdDeviation='0'></feGaussianBlur></filter>`
 
-                        // extra group so filter is also applied to clip-path itself
-                        + `<g ${filter ? `filter='url(#ff)'` : ''}><g clip-path='url(#clip)' transform='${this['transform']}'>${svg}${this.draw}</g></g></svg>`;
-                }
-                connectedCallback() {
-                    if (window.trace) console.element(this);
-                    //this.iso = iso;
-                    this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
-                    // this.setAttribute('title',iso + ' :' + flag[0]);
-                    if (
-                        !this.detail                    //if no detail specified,
-                        &&
-                        flags[iso].includes('detail:')  //and flag has detail: specification
-                    )
-                        this.detail = flags[iso].split`detail:`[1].split`;`[0];
-                    this.load();            // always load/set our FlagMeister svg first
-                }
-                reset() {
-                    //this.source=false;
-                    this.removeAttribute('detail');
-                    this.connectedCallback();
-                }
-                static get observedAttributes() {
-                    return ['source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
-                }
-                attributeChangedCallback(name, oldValue, newValue) {
-                    //console["warn"](name, oldValue, newValue);
-                    if (name == 'selected') console.element(this, name, oldValue, newValue);
-                    if (oldValue && oldValue !== newValue) this.load();
-                }
-                load(
-                    load_svg = this.svg()
-                ) {
-                    if (window.trace) console.element(this, 22);
-                    let fetchdata = async (uri) => {
-                        //async/await is nice sugar, but 11 GZip bytes longer
-                        this.detail = uri;              // prevent detailed flag from reloading again
-                        let response = await fetch(uri);
-                        let response_data = await (stringIncludesSVG(response.url)
-                            ? response.text()   // SVG file content
-                            : response.json());   // JSON from RestCountries API
-                        if (typeof response_data === 'string')
-                            load_img(response_data)
-                        else {
-                            if (response_data.flag) {
-                                this.info = response_data;//store countryinfo
-                                fetchdata(response_data.flag);
-                            } else {
-                                //error
+                            // extra group so filter is also applied to clip-path itself
+                            + `<g ${filter ? `filter='url(#ff)'` : ''}><g clip-path='url(#clip)' transform='${this['transform']}'>${svg}${this.draw}</g></g></svg>`;
+                    }
+                    connectedCallback() {
+                        if (window.trace) console.element(this);
+                        //this.iso = iso;
+                        this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
+                        // this.setAttribute('title',iso + ' :' + flag[0]);
+                        if (
+                            !this.detail                    //if no detail specified,
+                            &&
+                            flags[iso].includes('detail:')  //and flag has detail: specification
+                        )
+                            this.detail = flags[iso].split`detail:`[1].split`;`[0];
+                        this.load();            // always load/set our FlagMeister svg first
+                    }
+                    reset() {
+                        //this.source=false;
+                        this.removeAttribute('detail');
+                        this.connectedCallback();
+                    }
+                    static get observedAttributes() {
+                        return ['source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
+                    }
+                    attributeChangedCallback(name, oldValue, newValue) {
+                        //console["warn"](name, oldValue, newValue);
+                        if (name == 'selected') console.element(this, name, oldValue, newValue);
+                        if (oldValue && oldValue !== newValue) this.load();
+                    }
+                    load(
+                        load_svg = this.svg()
+                    ) {
+                        if (window.trace) console.element(this, 22);
+                        let fetchdata = async (uri) => {
+                            //async/await is nice sugar, but 11 GZip bytes longer
+                            this.detail = uri;              // prevent detailed flag from reloading again
+                            let response = await fetch(uri);
+                            let response_data = await (stringIncludesSVG(response.url)
+                                ? response.text()   // SVG file content
+                                : response.json());   // JSON from RestCountries API
+                            if (typeof response_data === 'string')
+                                load_img(response_data)
+                            else {
+                                if (response_data.flag) {
+                                    this.info = response_data;//store countryinfo
+                                    fetchdata(response_data.flag);
+                                } else {
+                                    //error
+                                }
                             }
                         }
-                    }
-                    //console.log('load()',iso,load_svg ? 'svg' :'NO svg',load_svg.slice(0,20));
-                    let _SOURCE;
-                    let load_img = svg => {
-                        // if (false|| this._SOURCE_IS_SVGFILE) {        // received svg data from a URI,process/wrap in a SVG <g> tag
-                        //     if (log) console.warn('processing SVG file');
-                        //     //create SVG document from svg string
-                        //     let docSVG=(new DOMParser()).parseFromString(svg,'image/svg+xml').children[0];
-                        //     if (this.box !== 'match') {
-                        //         //add a group element with correct SVG namespace at the end
-                        //         let G=docSVG.appendChild(document.createElementNS('http://www.w3.org/2000/svg','g'));
-                        //         //fit in width
-                        //         let vbw=640 / docSVG.getAttribute('viewBox').split` `[2];
-                        //         //fit in height
-                        //         //let vbh=480 / docSVG.getAttribute('viewBox').split` `[3];
-                        //         //scale the loaded SVG into our FlagMeister viewBox
-                        //         G.setAttribute('transform',`scale(${ vbw })`);
-                        //         //move all elements inside <g>
-                        //         while (docSVG.children[0] !== G) G.appendChild(docSVG.children[0]);
-                        //         //apply our FlagMeister default viewBox size
-                        //         docSVG.setAttribute('viewBox','0 0 640 480');
-                        //     }
-                        //     //remove offending width/height settings
-                        //     docSVG.removeAttribute('width');
-                        //     docSVG.removeAttribute('height');
-                        //     //serialize SVG document back to svg string and wrap in our FlagMeister SVG structure
-                        //     svg=this.svg((new XMLSerializer()).serializeToString(docSVG.children[0]));
-                        // }
-                        this.src = 'data:image/svg+xml,' + svg.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/#/g, '%23');
-                        //console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
-                        //Observe image resize,also called on first load! width is immediatly checked
-                        this.O = new ResizeObserver(entries => {
-                            //if detail defined and no '.svg' in detail and current width is wider then defined this.detail
-                            if (this.detail
-                                && !stringIncludesSVG(this.detail)
-                                && entries[0].contentRect.width >= this.detail
-                            ) {
+                        //console.log('load()',iso,load_svg ? 'svg' :'NO svg',load_svg.slice(0,20));
+                        let _SOURCE;
+                        let load_img = svg => {
+                            // if (false|| this._SOURCE_IS_SVGFILE) {        // received svg data from a URI,process/wrap in a SVG <g> tag
+                            //     if (log) console.warn('processing SVG file');
+                            //     //create SVG document from svg string
+                            //     let docSVG=(new DOMParser()).parseFromString(svg,'image/svg+xml').children[0];
+                            //     if (this.box !== 'match') {
+                            //         //add a group element with correct SVG namespace at the end
+                            //         let G=docSVG.appendChild(document.createElementNS('http://www.w3.org/2000/svg','g'));
+                            //         //fit in width
+                            //         let vbw=640 / docSVG.getAttribute('viewBox').split` `[2];
+                            //         //fit in height
+                            //         //let vbh=480 / docSVG.getAttribute('viewBox').split` `[3];
+                            //         //scale the loaded SVG into our FlagMeister viewBox
+                            //         G.setAttribute('transform',`scale(${ vbw })`);
+                            //         //move all elements inside <g>
+                            //         while (docSVG.children[0] !== G) G.appendChild(docSVG.children[0]);
+                            //         //apply our FlagMeister default viewBox size
+                            //         docSVG.setAttribute('viewBox','0 0 640 480');
+                            //     }
+                            //     //remove offending width/height settings
+                            //     docSVG.removeAttribute('width');
+                            //     docSVG.removeAttribute('height');
+                            //     //serialize SVG document back to svg string and wrap in our FlagMeister SVG structure
+                            //     svg=this.svg((new XMLSerializer()).serializeToString(docSVG.children[0]));
+                            // }
+                            this.src = 'data:image/svg+xml,' + svg.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/#/g, '%23');
+                            //console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
+                            //Observe image resize,also called on first load! width is immediatly checked
+                            this.O = new ResizeObserver(entries => {
+                                //if detail defined and no '.svg' in detail and current width is wider then defined this.detail
+                                if (this.detail
+                                    && !stringIncludesSVG(this.detail)
+                                    && entries[0].contentRect.width >= this.detail
+                                ) {
 
-                                this.O.disconnect(this);//unobserve(this);//!?? difference .disconnect(this)
+                                    this.O.disconnect(this);//unobserve(this);//!?? difference .disconnect(this)
 
-                                //console.log(iso,'Observe detail:' + this.detail,entries[0].contentRect.width,this.source);
-                                this.detail = '.svg';//! prevent failed restcountries fetch from running again
+                                    //console.log(iso,'Observe detail:' + this.detail,entries[0].contentRect.width,this.source);
+                                    this.detail = '.svg';//! prevent failed restcountries fetch from running again
 
-                                // save some bytes assign and test in one call
-                                // eslint-disable-next-line no-cond-assign
-                                if (_SOURCE = this.source) {
-                                    if (!stringIncludesSVG(_SOURCE)) _SOURCE = _SOURCE + iso + '.svg';
-                                    this.load(_SOURCE);
-                                } else
-                                    fetchdata('//restcountries.eu/rest/v2/alpha/' + iso)
-                                // } else {
-                                //console.log('No Observed Action');
-                            }
-                        });
-                        this.O.observe(this);
-                    }
-                    if (stringIncludesSVG(load_svg))
-                        fetchdata(load_svg);
-                    else
-                        load_img(load_svg);
-                }//load
-            }, {
-                extends: 'img'
-            });
+                                    // save some bytes assign and test in one call
+                                    // eslint-disable-next-line no-cond-assign
+                                    if (_SOURCE = this.source) {
+                                        if (!stringIncludesSVG(_SOURCE)) _SOURCE = _SOURCE + iso + '.svg';
+                                        this.load(_SOURCE);
+                                    } else
+                                        fetchdata('//restcountries.eu/rest/v2/alpha/' + iso)
+                                    // } else {
+                                    //console.log('No Observed Action');
+                                }
+                            });
+                            this.O.observe(this);
+                        }
+                        if (stringIncludesSVG(load_svg))
+                            fetchdata(load_svg);
+                        else
+                            load_img(load_svg);
+                    }//load
+                },options);
             //created Custom Element
+
+            createFlagElement(HTMLImageElement, { extends: 'img' });
+            //todo Create <flag-nl></flag-nl>
+//            createFlagElement(HTMLElement, {});
 
             //return flag;// ! todo create flatMap?
 
