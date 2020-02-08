@@ -267,7 +267,6 @@
         #FlagMeisterAnalyzeFlagsSelector img[is*="-va"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-uy"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-ug"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-tn"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-tm"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-tc"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-sz"],
@@ -276,7 +275,6 @@
         #FlagMeisterAnalyzeFlagsSelector img[is*="-sm"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-sh"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-py"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-pt"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-pn"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-pf"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-pe"],
@@ -287,14 +285,12 @@
         #FlagMeisterAnalyzeFlagsSelector img[is*="-mx"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-mt"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-ms"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-mr"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-mp"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-me"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-md"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-li"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-kz"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-ky"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-kr"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-ki"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-kh"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-je"],
@@ -309,7 +305,6 @@
         #FlagMeisterAnalyzeFlagsSelector img[is*="-ge"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-gi"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-gq"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-gr"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-gs"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-gt"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-gu"],
@@ -325,16 +320,16 @@
         #FlagMeisterAnalyzeFlagsSelector img[is*="-bm"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-bo"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-bt"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-by"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-bz"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-as"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-al"],
         #FlagMeisterAnalyzeFlagsSelector img[is*="-ai"],
-        #FlagMeisterAnalyzeFlagsSelector img[is*="-af"] {
+        #FlagMeisterAnalyzeFlagsSelector img[is*="-af"],
+        #FlagMeisterAnalyzeFlagsSelector img[is*="-ad"] {
             opacity: 1;
         }
     </style>
-    <style id=button_IncorrectFlags onload="this.disabled=true">
+    <style id=button_MismatchFlags onload="this.disabled=true">
         #LipisColors {
             display: block;
         }
@@ -381,7 +376,7 @@
             opacity: 1;
         }
 
-        button[onclick*="IncorrectFlags"] {
+        button[onclick*="MismatchFlags"] {
             background: lightcoral;
             color: black;
         }
@@ -1010,6 +1005,42 @@ light: ({
                     <td><img is=flag-kz style=width:100px sourcevar=nilson /></td>
                     <td><img is=flag-kz style=width:100px sourcevar=lipis /></td>
                 </tr>
+                <tr>
+                    <td>flag-rs - Serbia</td>
+                    <td><img is=flag-rs style=width:20px /></td>
+                    <td><img is=flag-rs style=width:40px /></td>
+                    <td><img is=flag-rs style=width:60px /></td>
+                    <td><img is=flag-rs style=width:100px /></td>
+                    <td><img is=flag-rs style=width:100px detail=9999 /></td>
+                    <td><img is=flag-rs style=width:100px /></td>
+                    <td><img is=flag-rs style=width:100px sourcevar=kent /></td>
+                    <td><img is=flag-rs style=width:100px sourcevar=nilson /></td>
+                    <td><img is=flag-rs style=width:100px sourcevar=lipis /></td>
+                </tr>
+                <tr>
+                    <td>flag-hr - Croatia</td>
+                    <td><img is=flag-hr style=width:20px /></td>
+                    <td><img is=flag-hr style=width:40px /></td>
+                    <td><img is=flag-hr style=width:60px /></td>
+                    <td><img is=flag-hr style=width:100px /></td>
+                    <td><img is=flag-hr style=width:100px detail=9999 /></td>
+                    <td><img is=flag-hr style=width:100px /></td>
+                    <td><img is=flag-hr style=width:100px sourcevar=kent /></td>
+                    <td><img is=flag-hr style=width:100px sourcevar=nilson /></td>
+                    <td><img is=flag-hr style=width:100px sourcevar=lipis /></td>
+                </tr>
+                <tr>
+                    <td>flag-bf - Burkina Faso</td>
+                    <td><img is=flag-bf style=width:20px /></td>
+                    <td><img is=flag-bf style=width:40px /></td>
+                    <td><img is=flag-bf style=width:60px /></td>
+                    <td><img is=flag-bf style=width:100px /></td>
+                    <td><img is=flag-bf style=width:100px detail=9999 /></td>
+                    <td><img is=flag-bf style=width:100px /></td>
+                    <td><img is=flag-bf style=width:100px sourcevar=kent /></td>
+                    <td><img is=flag-bf style=width:100px sourcevar=nilson /></td>
+                    <td><img is=flag-bf style=width:100px sourcevar=lipis /></td>
+                </tr>
             </table>
             <h3>Observations</h3>
             <ul>
@@ -1139,7 +1170,7 @@ img[is*="flag-"] {
                 <button onclick="buttonSelect(this,'All')">All</button>
                 <button onclick="buttonSelect(this,'NeedWork')">FlagMeister flags needing work</button>
                 <button onclick="buttonSelect(this,'DimNoDetail')">Flags with detail</button>
-                <button onclick="buttonSelect(this,'IncorrectFlags')">Mismatching flags</button>
+                <button onclick="buttonSelect(this,'MismatchFlags')">Mismatching flags</button>
                 <!-- <button onclick="buttonSelect(this,'FlagsKB')">> 1 KB flags</button> -->
             </p>
             <p id=LipisColors>Almost all colors in the Lipis Repo are incorrect, these are just the obvious ones.
@@ -1157,7 +1188,7 @@ img[is*="flag-"] {
                 <div id=FlagAnalyzer class=flaggrid>
                     <!-- dispaying flags from all providers-->
                 </div>
-                CodeString:
+                <h2>Codestring for FlagMeister SVG parser:</h2>
                 <div spacer id=FlagMeisterCodeString></div>
             </div>
         </p>
