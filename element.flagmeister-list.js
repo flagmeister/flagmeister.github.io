@@ -3,8 +3,8 @@ customElements.define('flagmeister-list', class extends HTMLElement {
         super();
     }
     connectedCallback() {
-        const GZsize = 25;
-        const delay=500;    // execute after delay so header IMGs is available
+        const GZsize = 27;
+        const delay = 500;    // execute after delay so header IMGs is available
         setTimeout(() => {
             let signals = this.hasAttribute('signals');
             let img = (iso, char = false) => `<img is=flag-${iso} ${char ? 'char=' + char : ''} title="flag-${iso + (char ? ' char=' + char : '')}">`;
