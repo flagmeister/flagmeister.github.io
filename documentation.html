@@ -14,6 +14,15 @@
     <script src=element.flagmeister-list.js></script>
     <script defer src="https://365csi.nl/meisterbanner.js"></script>
 
+    <style>
+        section {
+            display: none;
+        }
+
+        section#analyzer {
+            display: initial;
+        }
+    </style>
     <style id=theme_greenwhite>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -216,7 +225,7 @@
         }
 
         #FlagMeisterAnalyzeFlags flagmeister-list img {
-            max-width: 50px;
+            max-width: 40px;
         }
 
         #LipisColors {
@@ -666,7 +675,7 @@
                     Federal code 36</a></li>
         </ul>
     </section>
-    <section>
+    <section id="CSSforflags">
         <h2>Apply CSS on IMGs</h2>
         <p>
             The FlagMeister flag IMG takes <span class=highlightText>100% of available width</span>, in examples below
@@ -684,7 +693,7 @@ img {
 }
             </textarea>
     </section>
-    <section>
+    <section id="clip">
         <h2>Clip flags</h2>
         <textarea class=textarea_html>
 <img is=flag-gd clip="bigstar">
@@ -714,7 +723,7 @@ img {
 
         </div>
     </section>
-    <section>
+    <section id="viewbox">
         <h2>Change SVG viewBox = " x y width height " </h2>
         <h3> <span class=highlightText>The flag is still drawn in a 640 by 480 grid !</span> </h3>
         <textarea class=textarea_html>
@@ -734,7 +743,7 @@ img {
 
         </div>
     </section>
-    <section id=sectionFilter>
+    <section id=filter>
         <style>
             #sectionFilter .clipexamples img {
                 border: initial;
@@ -850,7 +859,7 @@ light: ({
             Use the flag.load() method to redraw a flag OR trigger an attribute change.
         </p>
     </section>
-    <section id=sectionCreateBanner>
+    <section id=CreateBanner>
         <div>
             <style>
                 #FlagMeisterCreateBanner {
@@ -901,9 +910,9 @@ light: ({
         <h2>Ofcourse it is <span class=highlightText>impossible</span> to store all flag details in <span
                 class='flagmeister_size'>22</span> KB</h2>
         <p><span class=highlightText><b>IF</b> flags require more detail </span>
-            <br>FlagMeister loads flags async when the width (observed by the <a
+            <br>FlagMeister loads flags async when the width exceeds a number of pixels (observed by the <a
                 href="https://caniuse.com/#feat=resizeobserver">ResizeObserver
-                API</a>) exceeds a number of pixels
+                API</a>)
         </p>
         <p>
             Note: See the Flag Analyzer <a href="documentation.html#FlagMeisterAnalyzeFlags">below</a> which flags load
@@ -943,7 +952,9 @@ light: ({
                     <th colspan></th>
                     <th colspan></th>
                     <th colspan></th>
-                    <th colspan=4 align=left>SVG flag repositories:</th>
+                    <th colspan=4 align=left>
+                        <h2>SVG flag repositories:</h2>
+                    </th>
                 </tr>
                 <tr>
                     <th>country</th>
@@ -964,10 +975,10 @@ light: ({
                     <td><img is=flag-bo style=width:60px /></td>
                     <td><img is=flag-bo style=width:100px /></td>
                     <td><img is=flag-bo style=width:100px detail=9999 /></td>
-                    <td><img is=flag-bo style=width:100px /></td>
-                    <td><img is=flag-bo style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-bo style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-bo style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-bo style=width:100px detail=1 /></td>
+                    <td><img is=flag-bo style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-bo style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-bo style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
                 <tr>
                     <td>flag-es - Spain</td>
@@ -976,10 +987,10 @@ light: ({
                     <td><img is=flag-es style=width:60px /></td>
                     <td><img is=flag-es style=width:100px /></td>
                     <td><img is=flag-es style=width:100px detail=9999 /></td>
-                    <td><img is=flag-es style=width:100px /></td>
-                    <td><img is=flag-es style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-es style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-es style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-es style=width:100px detail=1 /></td>
+                    <td><img is=flag-es style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-es style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-es style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
                 <tr>
                     <td>flag-by - Belarus</td>
@@ -988,10 +999,10 @@ light: ({
                     <td><img is=flag-by style=width:60px /></td>
                     <td><img is=flag-by style=width:100px /></td>
                     <td><img is=flag-by style=width:100px detail=9999 /></td>
-                    <td><img is=flag-by style=width:100px /></td>
-                    <td><img is=flag-by style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-by style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-by style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-by style=width:100px detail=1 /></td>
+                    <td><img is=flag-by style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-by style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-by style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
                 <tr>
                     <td>flag-kz - Kazachstan</td>
@@ -1000,10 +1011,10 @@ light: ({
                     <td><img is=flag-kz style=width:60px /></td>
                     <td><img is=flag-kz style=width:100px /></td>
                     <td><img is=flag-kz style=width:100px detail=9999 /></td>
-                    <td><img is=flag-kz style=width:100px /></td>
-                    <td><img is=flag-kz style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-kz style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-kz style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-kz style=width:100px detail=1 /></td>
+                    <td><img is=flag-kz style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-kz style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-kz style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
                 <tr>
                     <td>flag-rs - Serbia</td>
@@ -1012,10 +1023,10 @@ light: ({
                     <td><img is=flag-rs style=width:60px /></td>
                     <td><img is=flag-rs style=width:100px /></td>
                     <td><img is=flag-rs style=width:100px detail=9999 /></td>
-                    <td><img is=flag-rs style=width:100px /></td>
-                    <td><img is=flag-rs style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-rs style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-rs style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-rs style=width:100px detail=1 /></td>
+                    <td><img is=flag-rs style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-rs style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-rs style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
                 <tr>
                     <td>flag-hr - Croatia</td>
@@ -1024,10 +1035,10 @@ light: ({
                     <td><img is=flag-hr style=width:60px /></td>
                     <td><img is=flag-hr style=width:100px /></td>
                     <td><img is=flag-hr style=width:100px detail=9999 /></td>
-                    <td><img is=flag-hr style=width:100px /></td>
-                    <td><img is=flag-hr style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-hr style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-hr style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-hr style=width:100px detail=1 /></td>
+                    <td><img is=flag-hr style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-hr style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-hr style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
                 <tr>
                     <td>flag-bf - Burkina Faso</td>
@@ -1036,10 +1047,10 @@ light: ({
                     <td><img is=flag-bf style=width:60px /></td>
                     <td><img is=flag-bf style=width:100px /></td>
                     <td><img is=flag-bf style=width:100px detail=9999 /></td>
-                    <td><img is=flag-bf style=width:100px /></td>
-                    <td><img is=flag-bf style=width:100px sourcevar=kent /></td>
-                    <td><img is=flag-bf style=width:100px sourcevar=nilson /></td>
-                    <td><img is=flag-bf style=width:100px sourcevar=lipis /></td>
+                    <td><img is=flag-bf style=width:100px detail=1 /></td>
+                    <td><img is=flag-bf style=width:100px sourcevar=kent detail=1 /></td>
+                    <td><img is=flag-bf style=width:100px sourcevar=nilson detail=1 /></td>
+                    <td><img is=flag-bf style=width:100px sourcevar=lipis detail=1 /></td>
                 </tr>
             </table>
             <h3>Observations</h3>
@@ -1081,8 +1092,8 @@ img[is*="flag-"] {
         </div>
 
     </section>
-    <section></section>
-    <section id=FlagMeisterAnalyzeFlags style="max-width:unset" hidden>
+
+    <section id=repoanalyzer style="max-width:unset">
         <!-- 
     
     
@@ -1101,6 +1112,7 @@ img[is*="flag-"] {
         </p>
         <p>
             <table id=FlagTable>
+
                 <tr>
                     <td>Repo</td>
                     <td>GitHub<br>used / stars / fork</td>
@@ -1166,31 +1178,35 @@ img[is*="flag-"] {
                     <td class=highlightText><span class='flagmeister_size'>21</span> KB</td>
                 </tr>
             </table>
-            <p>
-                <button onclick="buttonSelect(this,'All')">All</button>
-                <button onclick="buttonSelect(this,'NeedWork')">FlagMeister flags needing work</button>
-                <button onclick="buttonSelect(this,'DimNoDetail')">Flags with detail</button>
-                <button onclick="buttonSelect(this,'MismatchFlags')">Mismatching flags</button>
-                <!-- <button onclick="buttonSelect(this,'FlagsKB')">> 1 KB flags</button> -->
-            </p>
-            <p id=LipisColors>Almost all colors in the Lipis Repo are incorrect, these are just the obvious ones.
-            </p>
-            <p id=FlagAnalyzerFlagMeisterList>
-                <flagmeister-list id=FlagMeisterAnalyzeFlagsSelector delay=1000></flagmeister-list>
-            </p>
-            <div>
-                <span id=FlagAnalyzerISO></span>
+    </section>
+    <section id="FlagMeisterAnalyzeFlags" style="max-width:unset" hidden>
+
+        <p>
+            <button onclick="buttonSelect(this,'All')">All</button>
+            <button onclick="buttonSelect(this,'NeedWork')">FlagMeister flags needing work</button>
+            <button onclick="buttonSelect(this,'DimNoDetail')">Flags with detail</button>
+            <button onclick="buttonSelect(this,'MismatchFlags')">Mismatching flags</button>
+            <!-- <button onclick="buttonSelect(this,'FlagsKB')">> 1 KB flags</button> -->
+            Filter: <input type="text" placeholder="" onchange="textfilterflags(this)">
+        </p>
+        <p id=LipisColors>Almost all colors in the Lipis Repo are incorrect, these are just the obvious ones.
+        </p>
+        <p id=FlagAnalyzerFlagMeisterList>
+            <flagmeister-list id=FlagMeisterAnalyzeFlagsSelector delay=1000></flagmeister-list>
+        </p>
+        <div>
+            <span id=FlagAnalyzerISO></span>
+        </div>
+        <div id=FlagDetailAnalyzer>
+            <div id=FlagAnalyzerHeader class=flaggrid>
+                <h1>Loading FlagAnalyzer...</h1>
             </div>
-            <div id=FlagDetailAnalyzer>
-                <div id=FlagAnalyzerHeader class=flaggrid>
-                    <h1>Loading FlagAnalyzer...</h1>
-                </div>
-                <div id=FlagAnalyzer class=flaggrid>
-                    <!-- dispaying flags from all providers-->
-                </div>
-                <h2>Codestring for FlagMeister SVG parser:</h2>
-                <div spacer id=FlagMeisterCodeString></div>
+            <div id=FlagAnalyzer class=flaggrid>
+                <!-- dispaying flags from all providers-->
             </div>
+            <h2>Codestring for FlagMeister SVG parser:</h2>
+            <div spacer id=FlagMeisterCodeString></div>
+        </div>
         </p>
     </section>
     <script>
