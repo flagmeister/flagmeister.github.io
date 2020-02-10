@@ -40,6 +40,9 @@
 
     // Probably NOT todo: recreate (only the detail) Detail flags in FlagMeister own Repo, easier to load full SVG from other Repo
 
+    // resources
+    // https://css-tricks.com/snippets/svg/svg-patterns/
+
     console.assert((() => {// removed in production code
         console.element = function () {
             let errorstack = new Error().stack.split('\n');
@@ -106,7 +109,7 @@
     let $p_path_Color_D__id_strokewidth_stroke_color_transform = (
         color
         , d_path
-        , id = ""
+        , id = "none"
         , strokewidth = false
         , strokeColor
         , transform = ""
@@ -138,7 +141,8 @@
         , y
         , scale = 1
         , rotate = 0
-    ) => `<use transform='rotate(${rotate}) scale(${scale})' href='#s' x='${x}' y='${y}'/>`;
+        , id = "s"
+    ) => `<use transform='rotate(${rotate}) scale(${scale})' href='#${id}' x='${x}' y='${y}'/>`;
 
     let $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke = (
         x1
@@ -193,14 +197,14 @@
 
     let $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke = (
         content
-        , x//todo default to =0 ?
-        , y//todo||0 can be removed if x and y have always a value
-        , rot
-        , scale
-        , id//todo default to ='x' , does empty id work for all flags?
+        , x = 0
+        , y = 0
+        , rot = 0
+        , scale = 1
+        , id = "none"
         , strokewidth
         , stroke
-    ) => `<g fill='none' ${(id ? `id='${id}' ` : "")} transform='translate(${x || 0} ${y || 0}) rotate(${rot || 0}) scale(${scale || 1})' ${$stroke_W_Color(strokewidth, stroke)}>${content}</g>`;
+    ) => `<g fill='none' id='${id}' transform='translate(${x} ${y}) rotate(${rot}) scale(${scale})' ${$stroke_W_Color(strokewidth, stroke)}>${content}</g>`;
 
     let $L_line_width_color_x1_y1_x2_y2 = (
         w
@@ -286,11 +290,9 @@
         , use: $U_use_X_Y___scale1_rot0
         , path: $p_path_Color_D__id_strokewidth_stroke_color_transform
 
-
         // at what pixel WIDTH image will FlagMeister lazy load a more detailed SVG:
         // include as SVG comment
         , detail: x => `<!--dtl:${x}dtl:-->`
-
 
         , bars: (
             bars
@@ -299,19 +301,47 @@
 
         , rotate: (
             times
-            , part
-            , x = 320
-            , y = 240
-            , scale = 1
-        ) => [...Array(~~times).keys()].map(n => $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
-            part
-            //todo proces as: flagparser(part)
-            //but part can NOT have commas, so need to be escaped somehow
+            , SVG_part
+            , center_x = 320
+            , center_y = 240
+            , partscale = 1
+            , id = "r"
+            , startdegree = 0 //(=90 degrees) top=-90
+            , max = times
             , x
             , y
-            , n * 360 / times
+            , rotation = 0
+            , scale = 1
+            , trace = window["console"]["log"](center_x, center_y, scale, this)
+        ) => $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
+
+            [...Array(~~times).keys()].map(n => max > n ? $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
+
+                SVG_part
+                //flagparser(part.replace(/|/g, ','))
+                //todo proces as: flagparser(part)
+                //but part can NOT have commas in 'path:#fff,M100 0c10 10', so need to be escaped somehow
+
+                , center_x
+                , center_y
+                , startdegree + (n * 360 / times) // rotate
+                , partscale
+                //, id
+                //, strokewidth
+                //, stroke
+
+            ) : ""
+            ).join``//Content
+
+            , x
+            , y
+            , rotation
             , scale
-        )).join``
+            , id
+            // , strokewidth
+            // , stroke
+
+        )// rotate:
 
         , circles: (
             times
@@ -382,7 +412,7 @@
             , w = 0
             , col = "none"
             , transform
-        ) => $p_path_Color_D__id_strokewidth_stroke_color_transform(fill, d, "", w, col, transform)//prf
+        ) => $p_path_Color_D__id_strokewidth_stroke_color_transform(fill, d, "p", w, col, transform)//prf
 
         , shield: (
             fill = "#fff"
@@ -416,6 +446,9 @@
             , y
             , 0
             , scale
+            // , id
+            // , strokewidth
+            // , stroke
         )
         , curve: (
             cx
@@ -625,6 +658,11 @@
             // detail world wun
             //+ `<path fill='white' d='M326 196h-1v1h1zm-2-1h1v1h-1zm-1 0l1-1h-1zm-1 0h-1v-1h1zm-6-1h1-1zm-1 1v-1zm0 1h-1v-1h1zm-2 1v-1h1v1zm-78 61h-1v1h1v1h1v-1zm7 9l-1-1-1-1v-1l-1-2 2 1v2h1l1 2zm21 27l-1-2 1 1 1 1 1 1h-1zm54-91h-1v-4h-3v-2h-1v1l-1 1v1h-1v1l-3 2h-6-1-2l-2-1-3-2c-2-2-5 0-5 1h-2-3l-1 1-1 1h-2 3l-1 2h-1v1h-4l-1 1-1 2-1 1v2h-1v3l-1 1v1l-2 2v2l-1 1v2h-1v1l-1 2h2v2c-1 0-2 0-1 1l-2-1-1-1c-1 1-1-1-1-1-1-1-5 1-5 1v1l-2 2-1 2h-1v7l-1 1-2 1v1h-3l-1-1h-6v-1h-4l-1 3-1-2a13 13 0 0 1 1-1h-5v2h-1v3l1 2-1 1 1 1v2l1 1v2l1 1h1v-3c-1-1 1-2 1-1l2 1 2 1c1-2 1-1 1 0l2 2h2v2c2-1 2 0 3 2a4 4 0 0 0 3 3h1l1 1 3 3h3l2 2h3c0-2 3 0 3 1l2 1 1 1 1 1h6l2-1 5-1c3 0 1-3 1-3v-4l-7-7c-2 0-1-2-1-2 2-1 0-2 0-2l-1-3-1-3v-2c-1-1 1-2 1-2 1-1-1-2-1-2v-1h-1l-1-5-3-5v-2l-1-1v-2l2-1h2v-3l2-1h1l1-1v-1h-1l-1-4c2-3 4-1 4-1h2c2 1 0 4 0 4v6l-1 1v2c1 0 1 2-1 1l1 1c1 1 1-1 1-1l2-2 3 2h4l1 3c1-2 4 0 2 1l2 1 1 1v-1c-1-1 2-2 1 0v1l1 1v2c2 0 1-3 1-3h2c-1-4 2-4 2-4l1-3c-1-1 0-2 1-1l-1-2-1-1h-1v-1h-2v1h-1v1h-2v-1h1v-1l1-2h3c0-2 1-1 1-1l1 1v3h1c0-2 2-2 3-1v-1c-1-1 0-2 1-2l1-1s1 1 0 0v-2l2-1v-2h-2c0 2-1 0 0 0l1-1v-2h2l1-1h2l2-2v-3M312 215l-1-1v3h-1l-2 2v1l-1 1v1h-2l-1 2 1 2h1l1-1v-1l1-1 1-1 1-1h1v-3h1l1-1v-2h-1zm3 6v-2l-1-1-1 1-1 1v1l-1 1v2h-1v2h-2v1l-1 1v1l-1 3 2 1 1-1v-1h5l1-1h1v-1h1v-2l1-2h1l-1-1 1-1-1-1h-3zm2 13l-2 1h-1l-1-1v-1h1l1 1h2zm5-7l1-1v-2l-2 2 1 1zm5-5l2 3v1a15 15 0 0 1-2-3v-1h1zm1 31l1-1h-1l-1 1zm-3-2v1m14-2l1-1v-1l-1 1zm29 21h1v2h5v-7l-3-3-1 1v3l-1 1-1 3zm-2-4l-1 1c-1-1 0 0 0 0h1l1-1h-1zm-5-19h1v2h-1zm11-19c-1-1 2-2 2-1v1h-2zm2-14v1h1v-1zm-5 2h3v-1h-1l-1 1v-1zm6-25h-1l-1-1h-4v2h-1v1h1v1c1-1 3 0 3 1s3 2 2 4l1 1h2v-1l1 1v-1h-1v-4h-1v-1h-1l1-2-1-1zm4 10l-2 1-1 2 1 1-1 5c-1 1 0 0 0 0v3h1l1-1 1-3v-2l1-1v-2-2l-1-1zm2 5v-1zm0 2h-1v-1l1 1zm-1-8l-1-1v-1-1l-1-1v-1l-1-2v-1l1-1v-1l1 1v2l1 2v6-1zm-7-16l1 1 1 1h1v3h1l1-1-1-1-1-2h-1l-1-1h-1zm1-1l-1-1h-1a1 1 0 0 1 0-1l-1-1 1-1 1 1 1 1 1 1v1h-1zm-11 11h-3l1-1 1-2s-1 0 0 0l-1-2h1l1-3h2v3h-1v1l-1 1v1h2l1 1c1 0 0 0 0 0h-3v1zm-7 1h2l-1 1h-1v-1zm13-8l2-1 1-1 1 1 1 1v1h-1v1h-3v-1l-1-1zm-4-6c1 0 0 3 2 2l1 1 1-1v-2l-1-1-1-1-1-1-1 1-1 2h1zm3 9v-1l1 1h-1zm-1-1v1zm0-14v1zm-1 10zm-2 0v-1h1v1zm-8 10l-1-1h1zm-3-2v-1h1v1zm-18 0h-2 2zm-3 0h-1l1-1v1zm-1 1v-1l1 1zm5-2v1h1l1 1h2v-2h-1-3zm5-1l1 1h1l1 2a5 5 0 0 0 2 0h4l2 1v-2l-2-2-2 1c-1 1-3 0-3-1l-1-1h-1l-1 1h-1zm23-13l1-2-1-1-2-2v-2h1l-4-5c-1 1-3 0-3-1l-3-4h-2v1h2l1 2-1 1 1 1h1v2l1 1v3l1 1 1 1v1l2 2 1 1 2 1 1-1M348 166v-2h3l1 1v1h-2l-1 2h-2l1-2zm-1-3v-1l-1-1-1-1-2-1-1-1v-1h-1v-1h-2l1 1 1 2 1 1h2v1l3 2zm-11-10v-1l-1-1v2zm0-5l1 1 1 1h1v-2h-1l-1-1-1 1zm18 1l-1 2v1h2v2l2 2v3l2 1-1 3 1 1 1 3h1l3-1c2 0 3 3 3 4h-1v3l3 4h2c0-2 1-1 2-1v3l1 1h2l1 1 1 1h2l1 1 1 2h1l1 2h1v1h1v2h2l1-1a6 6 0 0 0 2-2l2-2v-2s-2-1-1-2l-2-2-1-1-1-2-1-1v-1h-1l-3-3v-2h-2l-2-3-1-1h-1l1-2v-3l-2 1v-3h-2l-1-1v-2l-1-1h-1v-1l-1-1v-1h-2l-1-1-1-1h-2l-1-1h-1l-1-1v1h-2v1h-5zm11-3l2-1s2 1 2 4l-2-1h-1l-1-2zm-30 2v-2l1 1zm-5-10l-1-2v-1h-1v-2h-3l-1 1-1 1-1 1h3v1h3l1 1c2 1 2 0 1-1zm0-5c0-1-2 1 0 1h8v-1l2-1v-1h-4-2v1h-3l-1 1zm-10 17l2-1h1l-1-1-1-1-1-1-1 2 1 2zm-11 1h2l1 1v1l-1-1h-2l-1-1zm34-22l-1 1-1-1v1l1 1v-1h1zm-6-2h-1l1 1 1-1zm-3 21h-1v1l1 1 1-1-1-1zm-33 28v1h1c1 0 0 0 0 0l-1-1zm2 0h1l-1 1zm-19-19h1v1zm30 131l-1-1-1 1h1v1l1-1zm-8-8h-1l-1 1h2-1zm74-19l-1-1v2l1-1zm1-2h-1v-1l1 1zm23-8l1 1-1 1v-2zm5-4a2 2 0 0 0 0-1l-1 1 1 1v-1zm-1 1v1h1a12 12 0 0 1-1-2v1zm-3 2v1h1l-1-1zm-2-12a1 1 0 0 0-1 0h-1 2zm-28-32h-1v1l-1 1v1l-1 1h-3v-1-2h1l1-2-1-1-1-1h-2l-1 1h-1v1c0 1-3 2-2 0l1-1v-1h-2l-1-1v-1l-2-2h-3v-1h-2c-1-1-3 0-3 1v3l-1-1h-1v1l-1 1v-1c0-1-2-3 0-3v-1l1-1h1-2l-1-1a4 4 0 0 0-2 3c-1 1-3-1-2-2l-3 1h-2l-1-1v-1l-1 1-1 1-1 1 1 1v1h1l-2 1h-2l-2-2h-2l1-2 1-3-2 1-1 1s-1 0 0 0l-1 1v1h-3l-1-1-2-1-1 1h-2v1l3 1v2h-2v-1h-1v2l1 1h1l1 2h4l3 3v1l-1 1h-1v1h1l1-2 2 1-1 1v1h1v2l-1 1-1 1-1 1h-1 4v1h1v4l1 1v4l-1 1v1h-5l-1 1-1 1v3l-1 1v3h2l1 1h1v-5l1-1v3h1v1 2h-1l-1 1h-2v-1h-1v2l-2 1c2 0 0 1 0 1 1 1 0 2-3 1v2h1v1c0 2-4 1-4 0v2h-1l1 2v1h1v1h2l4-4 2-1h2l1 1h1l1 1c0 1 0 0 0 0v-1h1-1l-1-1h-1c-1-2 0-1 1-1h1l2 2 1 1h2v1h2v-1h-2v-1h-1c0-2 0-3 1-2v-1h1v-3h-1v-1l3 1v-2h3l3-2v-1h-2v-2h2v1h2l1 1 1 1h-2-1-1l-3 2h1v2h-1l-1 1h-2v1c-2 0-2 1-2 2v1l1 1 2-1 2-1c0-1 2 1 1 2v2h-2v1h-4l-1 1h-1l-1 2-3-1h-2v-1l-2-1-4 1h-1l-1 1-2 1h-1v-1h-1l-1 1-4 2v1l-1 1-1 1h-1v2h-1v1l-1 1h-1l1 2h1l1 2 1 1 1 2 1 1 1 1h4v1h6l4-1 2 1 2 1 1 3h1l2 1v1h1v6l1 1 1 2h1l4 4 3 1 1 1h3l2-1 1-1 11-9-1-1v-2c2-1 2-4 0-4-1 0-1-1 1-1v-2l3-2v-1l-5-5c-3 0 0-5 1-5 2 0 0-8 0-8h-1v-2h-1l-1 2-1 2c0 2-6 1-7 1l-2-1-2-1h-2l-1-1-2-1h2l-1-1 3 1h1l1 1h4l1 1h4v-1l1-1v-3h1v-2h1v-5l-2-2-2 1v1 1l-1 1h-2v1h-2v-2h2l1-1 1-1 1-1 2-2c0-1 1-4 3-4h2l1-2h1v1h2l1-1 3-1h2v-1l-2-2-2-1-1-3-1-1-2-3a2 2 0 0 1 0-2l2-2v-1l2-1v-1h-1l2-2h4l1-2 1-1 1-1s0-3-1-2'/>`
 
+            , leaves: (
+                fill,
+                stroke=fill
+            )=> flagparser(`<g id='v'>;rotate:72,<path fill='${fill}' stroke='${stroke}' d='m80 0c-3 0-5-6-5-9 1 4 5 5 5 9zm0 0c3 0 5-6 5-9-1 4-5 5-5 9z'/>,320,240,1,l,-30,25;use:-640,0,-1 1,0,l;</g>;`)
+
             , crown: (
                 nr = 1,
                 x = [0, -80][nr],
@@ -771,6 +809,7 @@
                             )
                         )          // flagparser array param??
                         : preset.call(element, args);         // pass remaining string as parameters
+
                 else
                     return preset;
             } else
@@ -785,7 +824,14 @@
         ae: "country:Arabic Emirates;stripes:#00732f|#fff|#000;bar:0,220,#f00",//end cty
 
         //todo extra detail in <100 img
-        af: "country:Afghanistan;detail:80;bars:#000|#d32011|#007a36;circle:320,240,80,#d32011,15,#d3d3d3}",//end cty
+        af: "country:Afghanistan;detail:80;bars:#000|#d32011|#007a36;"
+            //+ "circle:320,240,80,#d32011,15,#d3d3d3;"
+            + "leaves:white;"
+            + "use:47,35,.87,0,v;"//x,y,scale,rotate,id
+            //+ "rotate:5,<use href='#v' transform='translate(-300 -220)'/>,320,240,.6;"
+
+        ,//end cty
+
 
         ag: "country:Antigua;bgcolor:;stripe:0,240,0;stripe:190,120,#0072c6;pathstroke:M488 191l-72-19 61-45-75 10 39-65-67 39 12-76-45 60-18-70-20 72-45-61 13 78-66-41 38 65-73-11 60 44-75 20h332,#fcd116;pathstroke:M0 60L320 480L640 60V480H-480,#ce1126",//end cty
 
@@ -876,7 +922,7 @@
 
         //colors: #ce1720 , #007c30 - wikipedia    brighter red/green
         //colors: #c8313e , #4aa657 - flag colors  pale red/green
-        by: "country:Belarus;detail:120;bgcolor:#c8313e;stripe:300,300,#4aa657;"
+        by: "country:Belarus;detail:900;bgcolor:#c8313e;stripe:300,300,#4aa657;"
             //white bar
             + "bar:0,120;"
             //pattern , re-used 3 times
@@ -890,8 +936,8 @@
             //lesser detail -120 bytes
             //+ "m572 0v150h-22v-150zm-562 285h79v-65h40v-79h56v-69h46v-72h139v72h45v69h56v79h40v65h61v101h-61v65h-40v79h-56v69h-45v74h-32v62h-75v-62h-32v-74h-46v-69h-56v-79h-40v-65h-79m310-235h-41v61h-39v77h-38v95h38v77h39v60h41v-60h39v-77h39v-95h-39v-77h-39zm4 139v90h-49v-90zm248 260 2 100h-24v-100zm-108 137v68h48v70h60v92h-60v71h-48v68h-56v-68h-48v-71h-40v-92h40v-70h48v-68zm-454 138h79v-70h48v-68h55v68h48v70h40v92h-40v71h-48v68h-55v-68h-48v-71h-79m447-90h-41v87h41zm-271 0h-41v87h41zm16 1441-34-47v-71h-45v-43h-34v-69h-79v-160h79v46h34v67h45v80h64v-72h47v-53h34v-63h45v-67h33v-68h32v-70h43v-94h-57v-85l-62-51h-104v74h60v67l-40 82h-47v72h-59v-72h-49v-82h-30v-67h-68v-127h79v-82h30v-63h28v-72h40v-71h39v-47h47v-71h57v71h47v47h40v71h39v72h32v62h32v54h52v397h-59v67h-17v70h-44v68h-27v50h-28v53h-48v52l-69 145m296-1218-2 150h-24v-150zm-6 860v88h-42v-88zm-58 358v-55l-26-43h-38v-129h38v52h40v76h44v98"
 
-            //no pixelated lines -370pixels savebytes
-            + "m572 0v150h-22v-150zm-562 285 221-285h139l202 285v101l-234 349h-75l-253-349m310-235h-41l-77 138v95l77 137h41l78-137v-95zm4 139v90h-49v-90zm248 260 2 100h-24v-100zm-108 137 86 113-3 131-83 125h-56l-88-139v-92l88-138zm-414 113 87-113h55l88 138v92l-88 139h-55l-87-156m407-73h-41v87h41zm-271 0h-41v87h41zm16 1441-113-230-79-160h79l79 193h64l234-393v-94l-66-134-157-2 57 152-84 143h-59l-147-221v-127l263-406h57l242 377v397h-59l-17 67-216 438m296-1218-2 150h-24v-150zm-6 860v88h-42v-88zm-58 358-64-98v-129l122 226"
+            //no pixelated lines -390pixels savebytes
+            + "m572 0v150h-22v-150zm-562 285 221-285h139l202 285v101l-234 349h-75l-253-349m310-235h-41l-77 138v95l77 137h41l78-137v-95zm4 139v90h-49v-90zm248 260 2 100h-24v-100zm-108 137 86 113-3 131-83 125h-56l-88-139v-92l88-138zm-414 113 87-113h55l88 138v92l-88 139h-55l-87-156m407-73h-41v87h41zm-271 0h-41v87h41zm16 1441c-64-130-128-260-192-390h79l143 193 234-393v-94l-66-134-157-2 57 152-84 143h-59l-147-221v-127l263-406h57l242 377v397l-292 505m296-1218-2 150h-24v-150zm-6 860v88h-42v-88zm-58 358-64-98v-129l122 226"
 
             + "' transform='scale(.106)'/>"
             + ";use:0,-480,1 -1;"//bottom left
@@ -1101,7 +1147,7 @@
         hn: "country:Honduras;stripes:#0073cf|#fff|#0073cf;star:#0073cf,145,100,2;use:85,80,2;use:85,120,2;use:205,80,2;use:205,120,2",//end cty
 
         //feb 2020: detail crown & checkboard pattern
-        hr: "country:Croatia;detail:100;stripes:#f00|#fff|#171796;"
+        hr: "country:Croatia;detail:900;stripes:#f00|#fff|#171796;"
             // white shield, red outline
             + "shield:#fff,120,230,160,3,#f00;"
             //checkboard red/white
@@ -1371,7 +1417,7 @@
         ps: "country:State of Palestine;striangle:#000|#fff|#007a3d,#ce1126",//end cty
 
         //todo detailH curve
-        pt: "country:Portugal;detail:640;bgcolor:#f00;bar:0,256,#060;"
+        pt: "country:Portugal;detail:900;bgcolor:#f00;bar:0,256,#060;"
             //widest yellow band underneath
             + "curve:curve:0,20,200,100,155,190,20,#ff0;curve:0,20,200,100,150,195;curve:0,-20,200,100,157,184;"
             //2 curves arche bottom
@@ -1409,7 +1455,7 @@
 
         // created detail february 2020, maybe better to redraw completely for smaller version
         // feathers are all the same Path for better GZip compression
-        rs: "country:Serbia;detail:100;stripes:#c6363c|#0c4076|#fff;"
+        rs: "country:Serbia;detail:900;stripes:#c6363c|#0c4076|#fff;"
             // re using Spain crown
             + "crown:1;use:-50,-50,2.1;"
 
