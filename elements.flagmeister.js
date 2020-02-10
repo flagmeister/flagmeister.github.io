@@ -312,7 +312,7 @@
             , y
             , rotation = 0
             , scale = 1
-            , trace = window["console"]["log"](center_x, center_y, scale, this)
+            //, trace = window["console"]["log"](center_x, center_y, scale, this)
         ) => $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
 
             [...Array(~~times).keys()].map(n => max > n ? $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
