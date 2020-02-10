@@ -3,7 +3,7 @@ customElements.define('flagmeister-list', class extends HTMLElement {
         super();
     }
     connectedCallback() {
-        const GZsize = 27;
+        const GZsize = 32;
         const delay = 500;    // execute after delay so header IMGs is available
         setTimeout(() => {
             let signals = this.hasAttribute('signals');
