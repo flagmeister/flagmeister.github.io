@@ -43,6 +43,9 @@
     // resources
     // https://css-tricks.com/snippets/svg/svg-patterns/
 
+    // eurovision participants - https://en.wikipedia.org/wiki/List_of_countries_in_the_Eurovision_Song_Contest#2020s
+    // todo: Moldova, San Marino
+
     console.assert((() => {// removed in production code
         console.element = function () {
             let errorstack = new Error().stack.split('\n');
@@ -163,22 +166,26 @@
     );
 
     //https://stackoverflow.com/questions/34229483/why-is-my-svg-line-blurry-or-2px-in-height-when-i-specified-1px/34229584
-    let $S_stripe_x_size__color = (
-        x
+    let $S_stripe_Y_Size__color_length_x = (
+        y
         , size = 30
         , color = "#fff"
+        , length = 640
+        , x = 640 - length
     ) => $p_path_Color_D__id_strokewidth_stroke_color_transform(
         color
-        , `M0 ${x}h640v${size}H0`
+        , `M${x} ${y}h${length}v${size}H${x}`
     );//,"",crisp ? `shape-rendering='crispEdges'` :"");//todo test anti-aliasing of stripe/bar
 
-    let $H_bar_Y_Size__color = (
-        y
+    let $H_bar_X_Size__color_height_y = (
+        x
         , size
         , color = "#fff"
+        , height = 480
+        , y = 480 - height
     ) => $p_path_Color_D__id_strokewidth_stroke_color_transform(
         color
-        , `M${y} 0h${size}v480H${y}`
+        , `M${x} ${y}h${size}v${height}h-${size}`
     );//,"",crisp ? `shape-rendering='crispEdges'` :"");//todo remove crisp for better compression
 
     let $F_stripes_arr = (
@@ -188,7 +195,7 @@
         (
             color
             , idx
-        ) => $S_stripe_x_size__color(
+        ) => $S_stripe_Y_Size__color_length_x(
             size * idx - 1
             , size + 2
             , color
@@ -281,10 +288,10 @@
 
         , rect: $R_rect_X_Y_W_H___colorNone_strokewidth_stroke
         , line: $L_line_width_color_x1_y1_x2_y2
-        , stripe: $S_stripe_x_size__color
+        , stripe: $S_stripe_Y_Size__color_length_x
         , triangle: $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke
         , stripes: $F_stripes_arr
-        , bar: $H_bar_Y_Size__color
+        , bar: $H_bar_X_Size__color_height_y
         , cross: $X_cross_color_x_y_len__w_h
         , star: $S_Color_X_Y_Scale___Rotate0
         , use: $U_use_X_Y___scale1_rot0
@@ -294,10 +301,36 @@
         // include as SVG comment
         , detail: x => `<!--dtl:${x}dtl:-->`
 
+        // Vertical bars
         , bars: (
-            bars
-            , size = 640 / bars.length
-        ) => bars.map((color, idx) => $H_bar_Y_Size__color(size * idx, size, color)).join``
+            bars_array                          // array of colord: red|green|blue  OR red>x1>y1|green|blue>x1
+            // >x1>y1 specifications overrule calculations
+            , height                            // when undefined defaults to Flag height 480 in $H_bar_X_Size__color_height_y
+            , x_offset = 0                      // origin , the map function calcs the x location
+            , y                                 // when undefined defaults to 0 in $H_bar_X_Size__color_height_y
+            , bar_width = 640 / bars_array.length    // auto calculate bar_width
+        ) => bars_array.map(
+            (color, idx) => (
+                // first sets variables
+                [bar_color
+                    , bar_x = bar_width * idx + x_offset    // if no x1 specified in bars_array Value red>x1>y1
+                    , bar_y = y                        // if no y1 specified
+                    , bar_size = bar_width
+                    , bar_height = height
+                ] = color.split('>')//::
+
+                ,
+
+                // last returns the value
+                $H_bar_X_Size__color_height_y(
+                    bar_x
+                    , bar_size
+                    , bar_color
+                    , bar_height
+                    , bar_y
+                )
+
+            )).join``
 
         , rotate: (
             times
@@ -375,7 +408,7 @@
         //     return fl;
         // }
 
-        , bgcolor: color => $S_stripe_x_size__color(0, 480, color)// ! todo fix anti alias with crispEdges
+        , bgcolor: color => $S_stripe_Y_Size__color_length_x(0, 480, color)// ! todo fix anti alias with crispEdges
 
 
         , outline: d => $p_path_Color_D__id_strokewidth_stroke_color_transform("none", d, 'outline')
@@ -659,9 +692,10 @@
             //+ `<path fill='white' d='M326 196h-1v1h1zm-2-1h1v1h-1zm-1 0l1-1h-1zm-1 0h-1v-1h1zm-6-1h1-1zm-1 1v-1zm0 1h-1v-1h1zm-2 1v-1h1v1zm-78 61h-1v1h1v1h1v-1zm7 9l-1-1-1-1v-1l-1-2 2 1v2h1l1 2zm21 27l-1-2 1 1 1 1 1 1h-1zm54-91h-1v-4h-3v-2h-1v1l-1 1v1h-1v1l-3 2h-6-1-2l-2-1-3-2c-2-2-5 0-5 1h-2-3l-1 1-1 1h-2 3l-1 2h-1v1h-4l-1 1-1 2-1 1v2h-1v3l-1 1v1l-2 2v2l-1 1v2h-1v1l-1 2h2v2c-1 0-2 0-1 1l-2-1-1-1c-1 1-1-1-1-1-1-1-5 1-5 1v1l-2 2-1 2h-1v7l-1 1-2 1v1h-3l-1-1h-6v-1h-4l-1 3-1-2a13 13 0 0 1 1-1h-5v2h-1v3l1 2-1 1 1 1v2l1 1v2l1 1h1v-3c-1-1 1-2 1-1l2 1 2 1c1-2 1-1 1 0l2 2h2v2c2-1 2 0 3 2a4 4 0 0 0 3 3h1l1 1 3 3h3l2 2h3c0-2 3 0 3 1l2 1 1 1 1 1h6l2-1 5-1c3 0 1-3 1-3v-4l-7-7c-2 0-1-2-1-2 2-1 0-2 0-2l-1-3-1-3v-2c-1-1 1-2 1-2 1-1-1-2-1-2v-1h-1l-1-5-3-5v-2l-1-1v-2l2-1h2v-3l2-1h1l1-1v-1h-1l-1-4c2-3 4-1 4-1h2c2 1 0 4 0 4v6l-1 1v2c1 0 1 2-1 1l1 1c1 1 1-1 1-1l2-2 3 2h4l1 3c1-2 4 0 2 1l2 1 1 1v-1c-1-1 2-2 1 0v1l1 1v2c2 0 1-3 1-3h2c-1-4 2-4 2-4l1-3c-1-1 0-2 1-1l-1-2-1-1h-1v-1h-2v1h-1v1h-2v-1h1v-1l1-2h3c0-2 1-1 1-1l1 1v3h1c0-2 2-2 3-1v-1c-1-1 0-2 1-2l1-1s1 1 0 0v-2l2-1v-2h-2c0 2-1 0 0 0l1-1v-2h2l1-1h2l2-2v-3M312 215l-1-1v3h-1l-2 2v1l-1 1v1h-2l-1 2 1 2h1l1-1v-1l1-1 1-1 1-1h1v-3h1l1-1v-2h-1zm3 6v-2l-1-1-1 1-1 1v1l-1 1v2h-1v2h-2v1l-1 1v1l-1 3 2 1 1-1v-1h5l1-1h1v-1h1v-2l1-2h1l-1-1 1-1-1-1h-3zm2 13l-2 1h-1l-1-1v-1h1l1 1h2zm5-7l1-1v-2l-2 2 1 1zm5-5l2 3v1a15 15 0 0 1-2-3v-1h1zm1 31l1-1h-1l-1 1zm-3-2v1m14-2l1-1v-1l-1 1zm29 21h1v2h5v-7l-3-3-1 1v3l-1 1-1 3zm-2-4l-1 1c-1-1 0 0 0 0h1l1-1h-1zm-5-19h1v2h-1zm11-19c-1-1 2-2 2-1v1h-2zm2-14v1h1v-1zm-5 2h3v-1h-1l-1 1v-1zm6-25h-1l-1-1h-4v2h-1v1h1v1c1-1 3 0 3 1s3 2 2 4l1 1h2v-1l1 1v-1h-1v-4h-1v-1h-1l1-2-1-1zm4 10l-2 1-1 2 1 1-1 5c-1 1 0 0 0 0v3h1l1-1 1-3v-2l1-1v-2-2l-1-1zm2 5v-1zm0 2h-1v-1l1 1zm-1-8l-1-1v-1-1l-1-1v-1l-1-2v-1l1-1v-1l1 1v2l1 2v6-1zm-7-16l1 1 1 1h1v3h1l1-1-1-1-1-2h-1l-1-1h-1zm1-1l-1-1h-1a1 1 0 0 1 0-1l-1-1 1-1 1 1 1 1 1 1v1h-1zm-11 11h-3l1-1 1-2s-1 0 0 0l-1-2h1l1-3h2v3h-1v1l-1 1v1h2l1 1c1 0 0 0 0 0h-3v1zm-7 1h2l-1 1h-1v-1zm13-8l2-1 1-1 1 1 1 1v1h-1v1h-3v-1l-1-1zm-4-6c1 0 0 3 2 2l1 1 1-1v-2l-1-1-1-1-1-1-1 1-1 2h1zm3 9v-1l1 1h-1zm-1-1v1zm0-14v1zm-1 10zm-2 0v-1h1v1zm-8 10l-1-1h1zm-3-2v-1h1v1zm-18 0h-2 2zm-3 0h-1l1-1v1zm-1 1v-1l1 1zm5-2v1h1l1 1h2v-2h-1-3zm5-1l1 1h1l1 2a5 5 0 0 0 2 0h4l2 1v-2l-2-2-2 1c-1 1-3 0-3-1l-1-1h-1l-1 1h-1zm23-13l1-2-1-1-2-2v-2h1l-4-5c-1 1-3 0-3-1l-3-4h-2v1h2l1 2-1 1 1 1h1v2l1 1v3l1 1 1 1v1l2 2 1 1 2 1 1-1M348 166v-2h3l1 1v1h-2l-1 2h-2l1-2zm-1-3v-1l-1-1-1-1-2-1-1-1v-1h-1v-1h-2l1 1 1 2 1 1h2v1l3 2zm-11-10v-1l-1-1v2zm0-5l1 1 1 1h1v-2h-1l-1-1-1 1zm18 1l-1 2v1h2v2l2 2v3l2 1-1 3 1 1 1 3h1l3-1c2 0 3 3 3 4h-1v3l3 4h2c0-2 1-1 2-1v3l1 1h2l1 1 1 1h2l1 1 1 2h1l1 2h1v1h1v2h2l1-1a6 6 0 0 0 2-2l2-2v-2s-2-1-1-2l-2-2-1-1-1-2-1-1v-1h-1l-3-3v-2h-2l-2-3-1-1h-1l1-2v-3l-2 1v-3h-2l-1-1v-2l-1-1h-1v-1l-1-1v-1h-2l-1-1-1-1h-2l-1-1h-1l-1-1v1h-2v1h-5zm11-3l2-1s2 1 2 4l-2-1h-1l-1-2zm-30 2v-2l1 1zm-5-10l-1-2v-1h-1v-2h-3l-1 1-1 1-1 1h3v1h3l1 1c2 1 2 0 1-1zm0-5c0-1-2 1 0 1h8v-1l2-1v-1h-4-2v1h-3l-1 1zm-10 17l2-1h1l-1-1-1-1-1-1-1 2 1 2zm-11 1h2l1 1v1l-1-1h-2l-1-1zm34-22l-1 1-1-1v1l1 1v-1h1zm-6-2h-1l1 1 1-1zm-3 21h-1v1l1 1 1-1-1-1zm-33 28v1h1c1 0 0 0 0 0l-1-1zm2 0h1l-1 1zm-19-19h1v1zm30 131l-1-1-1 1h1v1l1-1zm-8-8h-1l-1 1h2-1zm74-19l-1-1v2l1-1zm1-2h-1v-1l1 1zm23-8l1 1-1 1v-2zm5-4a2 2 0 0 0 0-1l-1 1 1 1v-1zm-1 1v1h1a12 12 0 0 1-1-2v1zm-3 2v1h1l-1-1zm-2-12a1 1 0 0 0-1 0h-1 2zm-28-32h-1v1l-1 1v1l-1 1h-3v-1-2h1l1-2-1-1-1-1h-2l-1 1h-1v1c0 1-3 2-2 0l1-1v-1h-2l-1-1v-1l-2-2h-3v-1h-2c-1-1-3 0-3 1v3l-1-1h-1v1l-1 1v-1c0-1-2-3 0-3v-1l1-1h1-2l-1-1a4 4 0 0 0-2 3c-1 1-3-1-2-2l-3 1h-2l-1-1v-1l-1 1-1 1-1 1 1 1v1h1l-2 1h-2l-2-2h-2l1-2 1-3-2 1-1 1s-1 0 0 0l-1 1v1h-3l-1-1-2-1-1 1h-2v1l3 1v2h-2v-1h-1v2l1 1h1l1 2h4l3 3v1l-1 1h-1v1h1l1-2 2 1-1 1v1h1v2l-1 1-1 1-1 1h-1 4v1h1v4l1 1v4l-1 1v1h-5l-1 1-1 1v3l-1 1v3h2l1 1h1v-5l1-1v3h1v1 2h-1l-1 1h-2v-1h-1v2l-2 1c2 0 0 1 0 1 1 1 0 2-3 1v2h1v1c0 2-4 1-4 0v2h-1l1 2v1h1v1h2l4-4 2-1h2l1 1h1l1 1c0 1 0 0 0 0v-1h1-1l-1-1h-1c-1-2 0-1 1-1h1l2 2 1 1h2v1h2v-1h-2v-1h-1c0-2 0-3 1-2v-1h1v-3h-1v-1l3 1v-2h3l3-2v-1h-2v-2h2v1h2l1 1 1 1h-2-1-1l-3 2h1v2h-1l-1 1h-2v1c-2 0-2 1-2 2v1l1 1 2-1 2-1c0-1 2 1 1 2v2h-2v1h-4l-1 1h-1l-1 2-3-1h-2v-1l-2-1-4 1h-1l-1 1-2 1h-1v-1h-1l-1 1-4 2v1l-1 1-1 1h-1v2h-1v1l-1 1h-1l1 2h1l1 2 1 1 1 2 1 1 1 1h4v1h6l4-1 2 1 2 1 1 3h1l2 1v1h1v6l1 1 1 2h1l4 4 3 1 1 1h3l2-1 1-1 11-9-1-1v-2c2-1 2-4 0-4-1 0-1-1 1-1v-2l3-2v-1l-5-5c-3 0 0-5 1-5 2 0 0-8 0-8h-1v-2h-1l-1 2-1 2c0 2-6 1-7 1l-2-1-2-1h-2l-1-1-2-1h2l-1-1 3 1h1l1 1h4l1 1h4v-1l1-1v-3h1v-2h1v-5l-2-2-2 1v1 1l-1 1h-2v1h-2v-2h2l1-1 1-1 1-1 2-2c0-1 1-4 3-4h2l1-2h1v1h2l1-1 3-1h2v-1l-2-2-2-1-1-3-1-1-2-3a2 2 0 0 1 0-2l2-2v-1l2-1v-1h-1l2-2h4l1-2 1-1 1-1s0-3-1-2'/>`
 
             , leaves: (
-                fill,
-                stroke=fill
-            )=> flagparser(`<g id='v'>;rotate:72,<path fill='${fill}' stroke='${stroke}' d='m80 0c-3 0-5-6-5-9 1 4 5 5 5 9zm0 0c3 0 5-6 5-9-1 4-5 5-5 9z'/>,320,240,1,l,-30,25;use:-640,0,-1 1,0,l;</g>;`)
+                fill
+                , stroke = fill
+                , strokewidth = .2
+            ) => flagparser(`<g id='v'>;rotate:72,<path fill='${fill}' ${$stroke_W_Color(strokewidth, stroke)} d='m90 0c-3 0-5-6-5-9 1 4 5 5 5 9zm0 0c3 0 5-6 5-9-1 4-5 5-5 9z'/>,320,240,1,l,-33,26;use:-640,0,-1 1,0,l;</g>;`)
 
             , crown: (
                 nr = 1,
@@ -825,10 +859,37 @@
 
         //todo extra detail in <100 img
         af: "country:Afghanistan;detail:80;bars:#000|#d32011|#007a36;"
-            //+ "circle:320,240,80,#d32011,15,#d3d3d3;"
-            + "leaves:white;"
+            + "leaves:#fff,#bd6b00;"
             + "use:47,35,.87,0,v;"//x,y,scale,rotate,id
-            //+ "rotate:5,<use href='#v' transform='translate(-300 -220)'/>,320,240,.6;"
+
+            //fun rotate 3 partly cricles
+            //+ "rotate:3,<use href='#v' transform='translate(-300 -220)'/>,320,240,.6;"
+
+            + "<g id='lf'>;"
+            // 3 banners in leaves and flag on templepillar
+            + "path:#fff,M220 245l-1 2c0 1 2 9 6 11 3 2 17 5 24 7 3 1 6 2 9 5l-3-10c-2-3-5-6-8-6-6 0-14-1-20-3l-7-6zm11-21v-2h6l1-3c0-1 0-4 1-3l5 8c3 4 5 9 6 13 1 5-1 10-4 13 1-3-1-7-3-10a112 112 0 00-12-16zm4 68h-1c6 7 7 9 15 8 9-1 11-3 17-6 3-2 7-3 11-1 1 0 2 0 1-1l-4-4c-3-2-8-3-12-2-6 0-12 4-18 6h-9zm32-64c-1-2-2 2-7 6-3 1-4 6-4 9v5c-1 1-2 4-1 5l6 6c2 1 3-5 3-8 1-3 1-6 4-9l6-5-7-9z;"
+            // red cover making 3 stripes in flag
+            //+ "path:#d32011,M267 244l-5-5c-2-1-2-3-3-5h-1c-2 2-3 5-3 7v4l3 1c2 0 4 1 5 3l2 3 4 1-2-2v-7z;"
+            + "line:10,blue,260,240,270,250;"
+            + "bar:160,10,hotpink,20,10;" // $H_bar_X_Size__color_height_y
+            //::
+            + "bars:red>5>20>5>20|green|blue,50,10,10,25;" // bars,x,y,width,height
+            + "</g>;"
+
+            // Arabic text at top - 750 GZb
+            //+ "path:#fff,M374 172c1-4 4 0 1 2-3 4-4 10-10 11-1 1-4 0-4-1-1 0 0-2 1-1h5c3-3 6-7 7-11zm-10 9l7-13c1-1 2 2 1 3-2 1-6 8-7 11l-1-1zm-54-24c-1-2 1-3 1-2l7 14c1 2 0 2-1 1l-3-4c-2 0-4 5-10 4l-1-7s1-1 1 1c0 1 0 5 2 5s6-3 7-5l-3-7zm53 8l1-2c3 3 4 12 5 18l-1 1c0-3-2-14-5-17zm-78-3c1-1 3-3 2-4l-1-1v2l-1 2v1zm-5 0c-1-1 1-3 2-1 0 2 5 8 6 10s0 3-1 1l-7-10zm-3 0l-1 2 1 1 1-2-1-1zm-5 10l-1 1 3-1c-1-1 3 0 2-2l-2-2-1 1 2 1h-2v2h-1zm-1-4s0 2 1 1l-1-1zm-5 8l1 1c1 0 3-2 2-3 0-1-2-2-3-1s2 1 2 2l-2 1zm4 9v1h3v-6l4 3c2 1 2-4 5-4 2 0 2-2 2-4l-4-4c-2-1-2 1-1 1l3 4-2 2-4-5v2l3 3-2 4-4-4h-2l1 6-2 1zm-3-5l1 2 1-2h-2zm28-24l2 2h-2v-2zm-5 11l1 1c3-2 7-4 8-8l2-3c1-1 3 2 4 0l3-1v-3h-1v2h-1v-1h-1c-1 1-1 3-2 1-1-1-2-3-2 0l-3 2c-1 0-1-3-3-2l-1 3c0 2 4 1 4 2l-8 7zm67 6v1h4v-1h-4zm2-5l-1 1 2 1c1-1-1-1-1-2zm-9 7s-1-2-1 1 5 2 7 1c1-1 0 4 2 5l4-3c3-3 4-8 7-12 1-1-1-2-1-1-2 4-5 12-8 14-3 1-2-2-2-4 0 0-1-2-3 0l-3 1c-1 0-2 0-2-2zm8-14a612 612 0 01-5 12l5-12zm-9-3v1h3v-1h-3zm-1 3l-1 1 1 1 3-1-2-1h-1zm-6 13c-1-1-1 1 1 1 3 1 7 0 8-4l2-8c1-2 2-1 1-4h-1l-4 11c-1 3-3 4-7 4zm-3-17c-2-1 0-4 1-3l4 7 1-5c1-1 2-1 2 1l-2 6c1 3 3 5 3 8h-1l-2-6-2 8c0 1-2 1-1-1l2-9-5-6zm-17 8l1 4 5-6h1v7l3-1 1-7h1v7c0 1 3 3 3 0v-6c-1-1 1-1 2 1v4c0 3-2 4-3 4l-3-1-3 1c-4 0-2-5-3-5l-4 5c-2 0-3-4-3-6 1-2 2-2 2-1zm9-7l2 1 3-1-1-2-1 2h-1c-1 1-1 0-1-1l-1 1zm2-5v0zm-6 2l1-2 1 1-1 2-1-1zm-5 0l-2-1c0-1 2-2 3-1 1 2 0 4-2 4s-5 3-5 3l9 1c1 0 1 1-1 1l-5 1-3 4-1-1 3-4h-3v-2l4-4 3-1zm-16 6c-1-1 1-2 2-1 3 2-4 10-7 13-1 1-2-1-1-1l7-8c0-1 1-2-1-3zm8-5v1h2c0-1 0-3-1-2l-1 1zm3-3l3-3h1l-3 3h-1zm-4 0l3-2v1l-2 2-1-1zm-12 10h-1l3-4 1 1-3 3zm-2 3l1 2c-1 0-2-1-1-2zm-9-9c-1-1 2-2 1 0 0 3 5 9 5 12s-1 5-3 6c-2 2-5 2-7 1l-1-4c0-1 2 3 4 3 3 0 6-2 6-4 0-4-5-10-5-14;"
+            // Arabic text at top - 480 GZb
+            + "path:#fff,M374 172l1 2-10 11-4-1 1-1h5l7-11zm-10 9l7-13 1 3-7 11-1-1zm-54-24l1-2 7 14-1 1-3-4-10 4-1-7 1 1 2 5 7-5-3-7zm53 8l1-2 5 18-1 1-5-17zm-78-3l2-4-1-1v2l-1 2v1zm-5 0l2-1 6 10-1 1-7-10zm-3 0l-1 2 1 1 1-2-1-1zm-5 10l-1 1 3-1 2-2-2-2-1 1 2 1h-2v2h-1zm-1-4l1 1zm-5 8l1 1 2-3-3-1 2 2zm4 9v1h3v-6l4 3 5-4 2-4-4-4-1 1 3 4-2 2-4-5v2l3 3-2 4-4-4h-2l1 6-2 1zm-3-5l1 2 1-2h-2zm28-24l2 2h-2v-2zm-5 11l1 1 8-8 2-3h4l3-1v-3h-1v2h-1v-1h-1l-2 1h-2l-3 2-3-2-1 3 4 2-8 7zm67 6v1h4v-1h-4zm2-5l-1 1 2 1-1-2zm-9 7l-1 1 7 1 2 5 4-3 7-12-1-1-8 14-2-4h-3l-3 1-2-2zm8-14h2l-7 12 5-12zm-9-3v1h3v-1h-3zm-1 3l-1 1 1 1 3-1-2-1h-1zm-6 13l1 1 8-4 2-8 1-4h-1l-4 11-7 4zm-3-17l1-3 4 7 1-5 2 1-2 6 3 8h-1l-2-6-2 8-1-1 2-9-5-6zm-17 8l1 4 5-6h1v7l3-1 1-7h1v7h3v-6l2 1v4l-3 4-3-1-3 1-3-5-4 5-3-6 2-1zm9-7l2 1 3-1-1-2-1 2h-1l-1-1-1 1zm2-5v2zm-6 2l1-2 1 1-1 2-1-1zm-5 0l-2-1 3-1-2 4-5 3 9 1-1 1-5 1-3 4-1-1 3-4h-3v-2l4-4 3-1zm-16 6l2-1-7 13-1-1 7-8-1-3zm8-5v1h2l-1-2-1 1zm3-3l3-3h1l-3 3h-1zm-4 0l3-2v1l-2 2-1-1zm-12 10h-1l3-4 1 1-3 3zm-2 3l1 2zm-9-9h1l5 12-3 6-7 1-1-4 4 3 6-4-5-14z;"
+
+            // Arabic subtext
+            + "pathstroke:M375 160c-2 0 0 3 1 1l-1-1zm5 2h2c-1 1-2 2-1 4h-1v-4zm-9 3c-2 0-1 3 0 2s1 1 2 1l4-1c1 0 2-2 0-3 0 1 0 3-1 2l-1-1h-4zm-6-5l-4 5-2 2h-2-2l3-2 2-1 4-4h1zm1 2c-1 1-2 3-1 4s-2 2-1 0v-3l2-1z;"
+            //"M386 165v0zm5 2s1-2 2 0c0 1-2 1-2 3v2-5zm-8 5c1 1 5 0 6-1l-1-2c-2 4-1 0-2 0-1 5-2-1-4 1-3 5 1 0 1 2zm-7-7c-3 1-4 6-6 7-1 0-1-2-2-1 0 1-1 2-2 1s2-1 2-2h2l1-2 4-4c1-1 2 1 1 1zm1 2c-2 1-1 7-2 5v-5h2;"
+
+
+            // bottom shield for arabic text
+            + "path:#fff,M350 330v3c-2-1-20 3-15-1 3-2 10-1 15-2zm-58 0v3c2-2 19 4 16 0-1-1-3-3-5-3h-11zm4-21c-1-1-3 0-4 1l-14 12c-1 1-3 3 4 6l8 2c2 1 0 4 0 4-2 1 0 2 1 2 4-5 17 4 19-1l2-4h18c2 0 2 3 3 4 2 3 13-3 18 0h2c-1-2-3-5-1-5 11-2 15-5 11-8l-13-13h-4c-17 7-33 7-50 0z;"
+            // bottom arabic text
+            + "path:#d32011,M350 318c2 1 0 4-1 2s-5-4-5-6c3 0 4 3 6 4m-9-5c1 3-5 1-2 0h2m8 8c-3 0-6 4-8 1 1-2 4-1 5-2-1-2-3 2-5 0-2-3 1-6 3-4l5 5m-6-3c-1-2-2 2 0 0m-7-2c1 3-6 1-2 0h2m7 7c-3 1-6 0-8 2-2 0-1-3 1-3-1 0-4 0-2-2s5-1 6 1c1 1 3 0 3 2m-8 2c-3 1-5-2-6-4-1-1-2-5 1-3 1 2 1 5 3 5s2 1 2 2m-6-7c0 3-6 0-2-1l2 1m1 8c-2 0-5 2-6-1 2-1 5 0 3-3 1-2 4 0 3 2v2m-5 1l-9-1h-6c0-3 4-1 5-3 1 3 5 1 6 0 1 1 2 2 2 0 3-1 2 3 2 4m-11-8h-5 5m-3 7c-2-1-7 1-6-2 2-1 6 2 6-2 3-1 1 3 0 4m-6-1c-2 1-3-4-1-5 0-1 1-5 3-3-1 3-4 5-1 7l-1 1m-3-7c-1 3-5-1-2-2l2 2zm-1 6c-2 2-5 2-8 1-2 1-5-3-2-5l3-1c-3 1-2 5 1 5 2 1 5 1 6-2 0-2 3-1 1 0l-1 2;"
 
         ,//end cty
 
@@ -838,8 +899,17 @@
         //todo detail blue water and 3 dolphins
         ai: "country:Anguila;detail:40;gb;shield:#cc3",//end cty
 
-        //todo abstract detail black dragon
-        al: "country:Albania;detail:40;bgcolor:#e41e20",//end cty
+        al: "country:Albania;detail:40;bgcolor:#e41e20;"
+            //left half black eagle
+            // InkScape simplified less detail 360 GZb todo save maybe 20 or 30 bytes
+            + "path:#000,M270 97c-11 1-41 13-17 12 14 19-36-18-18 4 15 3 37 7 8 4 19 8 70 22 42 49-24-1-1-34-30-34-22-9-48-3-63-31-26 26 36 34 40 46-16 13-58-29-40 6 8 14 60-3 31 16-12 13-45-21-33 7 8 20 62-14 36 11-9 15-54-7-33 16 16 4 58-20 27 5-8 11-49 2-25 21 14 4 54-32 32-1-5 20-59 6-32 25 17 8 54-42 35-7-5 22-45 12-40 29 27 24 45-38 62-28 4 13-36 30-6 26 11-3 22-47 22-17-19 16 4 18 10-1 16-20 1 29-15 26-38-4-11 15-11 15-18 8-37 8-49-9-36-2 18 15 9 19-13 1-25-12-35 3 11 1 57-1 26 5-12-2-16 30-6 12 15-4 30-23 45-4 22 11 9-12-7-11-6-5 31-14 38-3 4-14 37-54 32-17-4 21-30 24-41 31 7 19 42-16 25 9-8 5-32 12-9 15 12-8 29-17 15 4-27 1-3 24 6 5 12-25 13 13-2 16 10 14 25 46 23 13l18-204c-10-16-17-35-32-48 17-4-27-12-1-10-6-8-21-10-4-17-12 0-22-6-33-8zm1 9c22 8-21 6 0 0z,s;"
+
+            // Full detail 700 GZb
+            //+ "path:#000,M270 97c-5 0-13 2-13 5-13-2-15 4-14 9l4-4 6 2 5 4h-12l-6-2-5-5c-3-3-6-2-5 2 2 5 6 7 11 7l9 1h10c-1 1-3 3-6 3-3 1-8-2-11-2 1 2 4 4 10 6 10 2 18 3 24 6 5 3 9 7 11 10 5 6 5 10 5 11 1 10-2 15-8 16-3 1-8 0-10-3-2-2-4-6-3-12 0-2 3-9 1-10l-34-16c-3-1-5 3-6 4-16-2-30-13-37-24-4-8-12 0-11 7 2 8 9 14 16 19 8 4 18 8 28 8 5 1 5 8-1 9-13 1-23 0-32-9-7-7-11 1-9 6 3 13 23 17 42 13 8-1 4 7 1 7-8 6-23 11-36 0-6-5-10-1-7 6 5 17 27 13 43 5 3-2 7 3 2 6-19 14-28 14-36 9-11-5-12 7-6 11 7 4 25 1 38-7 6-4 6 2 3 5-16 13-22 17-38 15-8-1-8 9-2 13 9 5 26-4 39-15 5-2 6 2 3 8-8 10-15 16-22 19-8 3-15 2-19 0-6-2-7 5-4 10 2 4 10 5 19 2s19-11 25-20c6-5 5 2 3 7-13 21-25 28-41 27-7-1-9 4-4 9 7 7 17 7 26 0 8-7 22-23 30-32 5-4 7 0 6 9-2 5-6 11-15 14-7 4-2 10 3 10 3 0 8-4 13-8 5-7 6-11 9-21 3-5 8-3 8 2-2 10-5 12-10 16-5 5 4 6 6 5 9-6 12-13 14-19 2-5 8-3 5 5-6 18-16 25-34 29-2 0-3 1-3 3l8 7-32 9-15-10c-2-4-2-9-11-5-5-3-8-2-11 1 5 0 7 1 8 3 3 6 8 6 13 5l9 8-17-1c-7-6-11-6-16-1-3 1-5 1-7 5 4-2 6-2 8 0 6 3 10 3 14 0l18 1-8 5c-9-3-14 1-16 8-1 3-2 7-1 10 1-3 2-6 5-7 8 2 11-2 12-7l14-7 12 4c2 5 5 7 12 6 7 0 6 3 6 6 2-4 2-7-2-10-2-5-6-7-10-4-5-2-6-4-11-5 12-4 20-4 31-8l8 7h4c7-10 11-20 17-26 3-3 6-7 10-8l5 1 2 9c-1 6-2 8-4 11l-6 9c-4 6-10 9-13 11-6 4-9 2-14 2-7 1-9 4-3 9 5 2 9 3 13 2l10-7c3-4 7 1 4 5-6 7-12 12-20 12-8 1-6 5-1 7 10 4 18-3 23-8 3-4 5-4 5 2-4 10-8 14-16 15-6-1-6 4-1 7 10 7 17-5 20-12s7-3 7 2c0 7-3 13-12 20l21 32 20-223-20-35-11-12v-1l5-1c-5-4-8-6-16-8l9-1c-2-3-7-8-14-10l10-7-20-4-13-4zm1 9c4 0 6 1 6 3s-2 3-6 3-7-2-7-3c0-2 3-3 7-3z,s;"//highdetail
+
+            + "use:-640,0,-1 1"
+
+        ,//end cty
 
         am: "country:Armenia;stripes:#d90012|#0033a0|#f2a800",//end cty
         ao: "country:Angola;stripes:#cc092f|#000;pathstroke:m318 227-20-15-21 14 8-23-20-15h24l9-22 8 23 24-1-19 15m14-79-5 13-20-4-1 15c165 43 59 256-72 167l-8 14 17 11-6 13 21 10 7-14 19 4v14h24v-13l19-4 6 12 22-9-6-12 17-11 10 9 16-17-10-9c5-5 9-11 12-17l12 5 9-22-12-5c2-6 3-13 3-19h14v-24h-14c0-7-2-13-4-20l13-5-8-22-13 5-11-17 9-9-17-17-9 9-16-10 5-13,#ffcb00;pathstroke:m406 346l-10 19 4 1c14 4 20 9 26 17 3 3 7 3 10 1l7-5c3-5 2-8-2-11zm-11 18c-31-23-179-71-137-125 35 43 102 78 146 107,#ffcb00,5,#000",//end cty
@@ -967,7 +1037,12 @@
         co: "country:Colombia;stripes:#fcd116|#fcd116|#003893|#ce1126",//end cty
         cr: "country:Costa Rica;stripes:#002b7f|#fff|#ce1126|#ce1126|#fff|#002b7f",//end cty
         cu: "country:Cuba;striangle:#002a8f|#fff|#002a8f|#fff|#002a8f,#cf142b,400;star:#fff,10,22,5.5",//end cty
-        cv: "country:Cabo Verde;stripes:#003893|#003893|#fff|#003893;stripe:280,40,#cf2027;star:#f7d116,140,70,2;use:180,80,2;use:200,110,2;use:200,150,2;use:180,170,2;use:140,190,2;use:100,170,2;use:80,150,2;use:80,110,2;use:100,80,2",//end cty
+
+        cv: "country:Cabo Verde;stripes:#003893|#003893|#fff|#003893;stripe:280,40,#cf2027;"
+            //10 stars todo: create with rotate
+            + "star:#f7d116,140,70,2;use:180,80,2;use:200,110,2;use:200,150,2;use:180,170,2;use:140,190,2;use:100,170,2;use:80,150,2;use:80,110,2;use:100,80,2"
+        ,//end cty
+
         cw: "country:Curacao;bgcolor:#002680;stripe:320,60,#f9e90d;star:#fff,10,3,4;use:30,10,5",//end cty
 
         //todo path with green landscape and yellow bird
@@ -1157,7 +1232,6 @@
             + "</pattern>;"
             + "pathstroke:m233 163h174v120c0 108-174 108-174 0,url(#c);"
 
-            //+ "path:hotpink;"
             //light blue crown
             + "pathstroke:m410 159 22-49-17-27-28 10-19-22-25 15-23-20-23 19-25-15-19 22-28-10-17 27 22 49a218 218 0 0 1 90-19c32 0 62 7 90 19,#0093dd,2,#fff;"
             //dark blue crowninset segment 2 and 4
@@ -1283,6 +1357,7 @@
             + "line:12,#fff,500,115,520,100;"
             + "line:12,#fff,450,330,520,382;"
             + "line:12,#fff,160,345,135,368",//end cty
+
         kw: "country:Kuwait;striangle:#007a3d|#fff|#ce1126,#000;rect:194,159,640,160,#fff",//end cty
         ky: "country:Cayman Islands;detail:40;gb",//end cty
 
