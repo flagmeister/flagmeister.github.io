@@ -126,7 +126,7 @@
         , color = "none"
         , strokewidth//todo! all usages for now are 2,BLACK
         , stroke = "#000"
-        , attr = ""
+        , attr = "" // rx="10" ry="10"
     ) => `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${color}' ${$stroke_W_Color(strokewidth, stroke)} ${attr}/>`
 
     //todo merge next 2 functions; check for #incolor/x
@@ -188,19 +188,63 @@
         , `M${x} ${y}h${size}v${height}h-${size}`
     );//,"",crisp ? `shape-rendering='crispEdges'` :"");//todo remove crisp for better compression
 
+    // define globals for variables used in destructuring "color" value inside stripes: and bars:
+    // makes for smaller code and global values can be re-used by other flagparser functions
+    let previous_color, repeat_color, repeat_x, repeat_y, repeat_size, repeat_width, repeat_height;
+
     let $F_stripes_arr = (
-        stripes
-        , size = 480 / stripes.length
-    ) => stripes.map(
-        (
-            color
-            , idx
-        ) => $S_stripe_Y_Size__color_length_x(
-            size * idx - 1
-            , size + 2
-            , color
-        )
-    ).join``;
+        stripes_array
+        , width
+        , offset = 0    // y position
+        , x
+        , repeat_height = 480 / stripes_array.length
+        , gap = 0
+    ) => stripes_array.map(
+        (color, idx) => (
+            // first sets variables
+            [repeat_color = previous_color
+                , repeat_x = x                        // if no y1 specified
+                , repeat_y = (repeat_height + gap) * idx + offset    // if no x1 specified in bars_array Value red>x1>y1
+                , repeat_size = repeat_height
+                , repeat_width = width
+            ] = color.split('>')//::
+            ,
+            // last returns the value
+            $S_stripe_Y_Size__color_length_x(
+                repeat_y
+                , repeat_size// + 2  old adjustment for overlapping stripes?
+                , (previous_color = repeat_color || previous_color)
+                , repeat_width
+                , repeat_x
+            )
+        )).join``;
+
+    let $B_bars_arr = (
+        bars_array                          // array of colord: red|green|blue  OR red>x1>y1|green|blue>x1 >x1>y1 specifications overrule calculations
+        , height                            // when undefined defaults to Flag height 480 in $H_bar_X_Size__color_height_y
+        , offset = 0                      // origin , the map function calcs the x location
+        , y                                 // when undefined defaults to 0 in $H_bar_X_Size__color_height_y
+        , repeat_width = 640 / bars_array.length    // auto calculate bar_width
+    ) => bars_array.map(
+        (color, idx) => (
+            // first sets variables
+            [repeat_color
+                , repeat_x = repeat_width * idx + offset    // if no x1 specified in bars_array Value red>x1>y1
+                , repeat_y = y                        // if no y1 specified
+                , repeat_size = repeat_width
+                , repeat_height = height
+            ] = color.split('>')
+            ,
+            // last returns the value
+            $H_bar_X_Size__color_height_y(
+                repeat_x
+                , repeat_size
+                , (previous_color = repeat_color || previous_color)
+                , repeat_height
+                , repeat_y
+            )
+
+        )).join``;
 
     let $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke = (
         content
@@ -302,35 +346,7 @@
         , detail: x => `<!--dtl:${x}dtl:-->`
 
         // Vertical bars
-        , bars: (
-            bars_array                          // array of colord: red|green|blue  OR red>x1>y1|green|blue>x1
-            // >x1>y1 specifications overrule calculations
-            , height                            // when undefined defaults to Flag height 480 in $H_bar_X_Size__color_height_y
-            , x_offset = 0                      // origin , the map function calcs the x location
-            , y                                 // when undefined defaults to 0 in $H_bar_X_Size__color_height_y
-            , bar_width = 640 / bars_array.length    // auto calculate bar_width
-        ) => bars_array.map(
-            (color, idx) => (
-                // first sets variables
-                [bar_color
-                    , bar_x = bar_width * idx + x_offset    // if no x1 specified in bars_array Value red>x1>y1
-                    , bar_y = y                        // if no y1 specified
-                    , bar_size = bar_width
-                    , bar_height = height
-                ] = color.split('>')//::
-
-                ,
-
-                // last returns the value
-                $H_bar_X_Size__color_height_y(
-                    bar_x
-                    , bar_size
-                    , bar_color
-                    , bar_height
-                    , bar_y
-                )
-
-            )).join``
+        , bars: $B_bars_arr
 
         , rotate: (
             times
@@ -414,11 +430,11 @@
         , outline: d => $p_path_Color_D__id_strokewidth_stroke_color_transform("none", d, 'outline')
 
         , striangle: (
-            bars
+            colors_array
             , trianglecolor
             , x = 290
             , extra = ""
-        ) => $F_stripes_arr(bars)
+        ) => $F_stripes_arr(colors_array)
         + extra
             + $T_triangle_X1_Y1_X2_Y2_X3_Y3_Color_strokewidth_stroke(-1, 0, x, 240, -1, 480, trianglecolor)
 
@@ -439,7 +455,7 @@
             + $L_line_width_color_x1_y1_x2_y2(160, strokecolor, -60, 480, 700, 0)
             + $L_line_width_color_x1_y1_x2_y2(120, linefill, -60, 480, 700, 0)
 
-        , pathstroke: (
+        , pathstroke: (//D_Fill__width_col_transform
             d
             , fill
             , w = 0
@@ -483,7 +499,7 @@
             // , strokewidth
             // , stroke
         )
-        , curve: (
+        , curve: (// _cx_cy_dx_dy_x1_y1__strokewidth_stroke_fill_id_(x3)_(y3)
             cx
             , cy
             , dx
@@ -514,10 +530,10 @@
         ) => flagparser(
             `<g transform='translate(${x} ${y})'><g transform='scale(${scaleX} ${scaleY}) rotate(${rotate})'><defs><pattern patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)' id='brick' width='42' height='44'><g fill='none' fill-rule='evenodd'><g fill='#000'>;pathstroke:M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22;</g></g></pattern></defs>;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;</g></g>`
         )
+
+        // more presets:
         // + horizontal lines:
         //line:1,#000,0,0,30,0;line:1,#000,0,-12,28,-12;
-
-
 
         //, sun: (repeat, x = 320, y = 240, scale = 1) => { }
     }
@@ -634,6 +650,24 @@
                     ][element.getAttribute("char")]
                 )
             )
+            , icon: (
+                iconname = element.getAttribute("icon")
+                , stroke = '#000'
+                , strokewidth = 1
+            ) => (
+                element.box = "0 0 24 24"
+                ,
+                // return value:
+                `<g stroke='${stroke}' stroke-width='${strokewidth}'>` + flagparser(
+                    // FEATHER ICONS
+                    {
+                        "activity": "<polyline points='22 12 18 12 15 21 9 3 6 12 2 12'/>",
+                        "airplay": "<path d='M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1'/><polygon points='12 15 17 21 7 21 12 15'/>",
+                        "alert-circle": "<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>",
+                    }[iconname] + `;</g>`
+                )
+            )
+
 
             // used in clip examples
             // <img is=flag-gd clip="bigstar" box="center"> 
@@ -865,6 +899,7 @@
             //fun rotate 3 partly cricles
             //+ "rotate:3,<use href='#v' transform='translate(-300 -220)'/>,320,240,.6;"
 
+
             + "<g id='lf'>;"
             // 3 banners in leaves and flag on templepillar
             + "path:#fff,M220 245l-1 2c0 1 2 9 6 11 3 2 17 5 24 7 3 1 6 2 9 5l-3-10c-2-3-5-6-8-6-6 0-14-1-20-3l-7-6zm11-21v-2h6l1-3c0-1 0-4 1-3l5 8c3 4 5 9 6 13 1 5-1 10-4 13 1-3-1-7-3-10a112 112 0 00-12-16zm4 68h-1c6 7 7 9 15 8 9-1 11-3 17-6 3-2 7-3 11-1 1 0 2 0 1-1l-4-4c-3-2-8-3-12-2-6 0-12 4-18 6h-9zm32-64c-1-2-2 2-7 6-3 1-4 6-4 9v5c-1 1-2 4-1 5l6 6c2 1 3-5 3-8 1-3 1-6 4-9l6-5-7-9z;"
@@ -874,7 +909,9 @@
             + "bar:160,10,hotpink,20,10;" // $H_bar_X_Size__color_height_y
             //::
             + "bars:red>5>20>5>20|green|blue,50,10,10,25;" // bars,x,y,width,height
+            + "stripes:#fff|||,9,180,280,20,5;" // stripes,width,offset,x,height,gap
             + "</g>;"
+            + "use:-640,0,-1 1,0,lf;"
 
             // Arabic text at top - 750 GZb
             //+ "path:#fff,M374 172c1-4 4 0 1 2-3 4-4 10-10 11-1 1-4 0-4-1-1 0 0-2 1-1h5c3-3 6-7 7-11zm-10 9l7-13c1-1 2 2 1 3-2 1-6 8-7 11l-1-1zm-54-24c-1-2 1-3 1-2l7 14c1 2 0 2-1 1l-3-4c-2 0-4 5-10 4l-1-7s1-1 1 1c0 1 0 5 2 5s6-3 7-5l-3-7zm53 8l1-2c3 3 4 12 5 18l-1 1c0-3-2-14-5-17zm-78-3c1-1 3-3 2-4l-1-1v2l-1 2v1zm-5 0c-1-1 1-3 2-1 0 2 5 8 6 10s0 3-1 1l-7-10zm-3 0l-1 2 1 1 1-2-1-1zm-5 10l-1 1 3-1c-1-1 3 0 2-2l-2-2-1 1 2 1h-2v2h-1zm-1-4s0 2 1 1l-1-1zm-5 8l1 1c1 0 3-2 2-3 0-1-2-2-3-1s2 1 2 2l-2 1zm4 9v1h3v-6l4 3c2 1 2-4 5-4 2 0 2-2 2-4l-4-4c-2-1-2 1-1 1l3 4-2 2-4-5v2l3 3-2 4-4-4h-2l1 6-2 1zm-3-5l1 2 1-2h-2zm28-24l2 2h-2v-2zm-5 11l1 1c3-2 7-4 8-8l2-3c1-1 3 2 4 0l3-1v-3h-1v2h-1v-1h-1c-1 1-1 3-2 1-1-1-2-3-2 0l-3 2c-1 0-1-3-3-2l-1 3c0 2 4 1 4 2l-8 7zm67 6v1h4v-1h-4zm2-5l-1 1 2 1c1-1-1-1-1-2zm-9 7s-1-2-1 1 5 2 7 1c1-1 0 4 2 5l4-3c3-3 4-8 7-12 1-1-1-2-1-1-2 4-5 12-8 14-3 1-2-2-2-4 0 0-1-2-3 0l-3 1c-1 0-2 0-2-2zm8-14a612 612 0 01-5 12l5-12zm-9-3v1h3v-1h-3zm-1 3l-1 1 1 1 3-1-2-1h-1zm-6 13c-1-1-1 1 1 1 3 1 7 0 8-4l2-8c1-2 2-1 1-4h-1l-4 11c-1 3-3 4-7 4zm-3-17c-2-1 0-4 1-3l4 7 1-5c1-1 2-1 2 1l-2 6c1 3 3 5 3 8h-1l-2-6-2 8c0 1-2 1-1-1l2-9-5-6zm-17 8l1 4 5-6h1v7l3-1 1-7h1v7c0 1 3 3 3 0v-6c-1-1 1-1 2 1v4c0 3-2 4-3 4l-3-1-3 1c-4 0-2-5-3-5l-4 5c-2 0-3-4-3-6 1-2 2-2 2-1zm9-7l2 1 3-1-1-2-1 2h-1c-1 1-1 0-1-1l-1 1zm2-5v0zm-6 2l1-2 1 1-1 2-1-1zm-5 0l-2-1c0-1 2-2 3-1 1 2 0 4-2 4s-5 3-5 3l9 1c1 0 1 1-1 1l-5 1-3 4-1-1 3-4h-3v-2l4-4 3-1zm-16 6c-1-1 1-2 2-1 3 2-4 10-7 13-1 1-2-1-1-1l7-8c0-1 1-2-1-3zm8-5v1h2c0-1 0-3-1-2l-1 1zm3-3l3-3h1l-3 3h-1zm-4 0l3-2v1l-2 2-1-1zm-12 10h-1l3-4 1 1-3 3zm-2 3l1 2c-1 0-2-1-1-2zm-9-9c-1-1 2-2 1 0 0 3 5 9 5 12s-1 5-3 6c-2 2-5 2-7 1l-1-4c0-1 2 3 4 3 3 0 6-2 6-4 0-4-5-10-5-14;"
@@ -996,17 +1033,13 @@
             //white bar
             + "bar:0,120;"
             //pattern , re-used 3 times
+            //SVG because there is a transform on it
             + "<path fill='#c8313e' id='s' d='"
 
-            //original detail, app 530 bytes
+            //!! original detail, app 530 bytes
             //+ "m565 0v163h-44v-163zm-562 285h79v-65h40v-79h56v-69h46v-72h139v72h45v69h56v79h40v65h61v101h-61v65h-40v79h-56v69h-45v74h-32v62h-75v-62h-32v-74h-46v-69h-56v-79h-40v-65h-79m0-352h79v90h-79m310 27h-41v61h-39v77h-38v95h38v77h39v60h41v-60h39v-77h39v-95h-39v-77h-39zm4 139v90h-49v-90zm-314 236h79v97h-79m562-88v137h-44v-137zm-108 152v68h48v70h60v92h-60v71h-48v68h-56v-68h-48v-71h-40v-92h40v-70h48v-68zm-454 138h79v-70h48v-68h55v68h48v70h40v92h-40v71h-48v68h-55v-68h-48v-71h-79m447-90h-41v87h41zm-271 0h-41v87h41zm16 1441v-47h-34v-71h-45v-43h-34v-69h-79v-160h79v46h34v67h45v80h64v-72h47v-53h34v-63h45v-67h33v-68h32v-70h43v-94h-57v-85h-62v-51h-104v74h60v67h-40v82h-47v72h-59v-72h-49v-82h-30v-67h-68v-127h79v-82h30v-63h28v-72h40v-71h39v-47h47v-71h57v71h47v47h40v71h39v72h32v62h32v54h52v397h-59v67h-17v70h-44v68h-27v50h-28v53h-48v52h-69v145m292-1213v137h-44v-137zm-562 26h79v97h-79m0 486h79v97h-79zm560 246v88h-42v-88zm-58 358v-55h-26v-43h-38v-129h38v52h40v76h44v98m-214 0v-64h42v64"//highdetail
 
-            //less spots, -49 savebytes
-            //+ "m572 0v163h-44v-163zm-562 285h79v-65h40v-79h56v-69h46v-72h139v72h45v69h56v79h40v65h61v101h-61v65h-40v79h-56v69h-45v74h-32v62h-75v-62h-32v-74h-46v-69h-56v-79h-40v-65h-79m310-235h-41v61h-39v77h-38v95h38v77h39v60h41v-60h39v-77h39v-95h-39v-77h-39zm4 139v90h-49v-90zm248 245v137h-44v-137zm-108 152v68h48v70h60v92h-60v71h-48v68h-56v-68h-48v-71h-40v-92h40v-70h48v-68zm-454 138h79v-70h48v-68h55v68h48v70h40v92h-40v71h-48v68h-55v-68h-48v-71h-79m447-90h-41v87h41zm-271 0h-41v87h41zm16 1441v-47h-34v-71h-45v-43h-34v-69h-79v-160h79v46h34v67h45v80h64v-72h47v-53h34v-63h45v-67h33v-68h32v-70h43v-94h-57v-85h-62v-51h-104v74h60v67h-40v82h-47v72h-59v-72h-49v-82h-30v-67h-68v-127h79v-82h30v-63h28v-72h40v-71h39v-47h47v-71h57v71h47v47h40v71h39v72h32v62h32v54h52v397h-59v67h-17v70h-44v68h-27v50h-28v53h-48v52h-69v145m292-1213v137h-44v-137zm-2 855v88h-42v-88zm-58 358v-55h-26v-43h-38v-129h38v52h40v76h44v98"
-            //lesser detail -120 bytes
-            //+ "m572 0v150h-22v-150zm-562 285h79v-65h40v-79h56v-69h46v-72h139v72h45v69h56v79h40v65h61v101h-61v65h-40v79h-56v69h-45v74h-32v62h-75v-62h-32v-74h-46v-69h-56v-79h-40v-65h-79m310-235h-41v61h-39v77h-38v95h38v77h39v60h41v-60h39v-77h39v-95h-39v-77h-39zm4 139v90h-49v-90zm248 260 2 100h-24v-100zm-108 137v68h48v70h60v92h-60v71h-48v68h-56v-68h-48v-71h-40v-92h40v-70h48v-68zm-454 138h79v-70h48v-68h55v68h48v70h40v92h-40v71h-48v68h-55v-68h-48v-71h-79m447-90h-41v87h41zm-271 0h-41v87h41zm16 1441-34-47v-71h-45v-43h-34v-69h-79v-160h79v46h34v67h45v80h64v-72h47v-53h34v-63h45v-67h33v-68h32v-70h43v-94h-57v-85l-62-51h-104v74h60v67l-40 82h-47v72h-59v-72h-49v-82h-30v-67h-68v-127h79v-82h30v-63h28v-72h40v-71h39v-47h47v-71h57v71h47v47h40v71h39v72h32v62h32v54h52v397h-59v67h-17v70h-44v68h-27v50h-28v53h-48v52l-69 145m296-1218-2 150h-24v-150zm-6 860v88h-42v-88zm-58 358v-55l-26-43h-38v-129h38v52h40v76h44v98"
-
-            //no pixelated lines -390pixels savebytes
+            //!! patchwork with NO pixelated lines -390pixels savebytes scale to 10% in InkScape
             + "m572 0v150h-22v-150zm-562 285 221-285h139l202 285v101l-234 349h-75l-253-349m310-235h-41l-77 138v95l77 137h41l78-137v-95zm4 139v90h-49v-90zm248 260 2 100h-24v-100zm-108 137 86 113-3 131-83 125h-56l-88-139v-92l88-138zm-414 113 87-113h55l88 138v92l-88 139h-55l-87-156m407-73h-41v87h41zm-271 0h-41v87h41zm16 1441c-64-130-128-260-192-390h79l143 193 234-393v-94l-66-134-157-2 57 152-84 143h-59l-147-221v-127l263-406h57l242 377v397l-292 505m296-1218-2 150h-24v-150zm-6 860v88h-42v-88zm-58 358-64-98v-129l122 226"
 
             + "' transform='scale(.106)'/>"
@@ -1019,10 +1052,15 @@
         //take leave and rotate
         bz: "country:Belize;detail:40;bgcolor:#ce1126;stripe:40,400,#003f87;circle:320,240,150,#fff;circle:320,240,120,#fff,10,green",//end cty
 
+        // colors with 4 bars: adds 5 GZb
         ca: "country:Canada;bgcolor:#f00;bar:160,320;pathstroke:M200 250l-13 5 63 57c4 15-2 19-6 27l68-9-2 71 15-1-4-70 69 8c-4-9-8-14-4-28l63-55-11-4c-9-7 3-34 5-52 0 0-36 13-39 7l-9-19-33 38c-4 1-6-1-6-4l15-79-24 14c-2 1-5 0-6-2l-23-49-25 51c-1 2-3 2-5 1l-23-14 14 79c-1 3-4 4-7 2l-32-38c-4 7-7 19-12 21-6 3-24-5-37-7 4 15 18 42 9 50,#f00",//end cty
 
-        //last pathstroke:is green tree leaves
-        cc: "country:Cocos Islands;detail:80;bgcolor:#008000;circle:130,140,80,#ffe000;pathstroke:M120 203h18c-7-7 2-60-1-60-1 22-6 41-17 60,#802000,2,#7b3100;circle:320,240,67,#ffe000;circle:341,240,55,#008000;pathstroke:M133 95c4 9-11 31-8 22-3-5-8-9-13-11-21 1 0 9-1 12-5 0-9-5-13-3-21 7 4 7 6 10 3 5-4 6-8 5-9-1-20 11-17 14 8-2 22-2 28-4 4-1 12-5 11 2-3 7-9 26 1 22 4-2 4-8 5-12-1-3 2-10 3-5-1 5-5 12 2 13 6 1 7-7 5-11 4-14 15 3 19 9 2 5 11 3 11-3-5-21-15-15 10-13 4-5-1-12-6-12-9 0-5-21-16-12-13 11-3-7 1-12-2-4-8-16-13-9-3 2-5 0-7-2,#008000;southerncross:#ffe000,370,-50,1.1",//end cty
+        cc: "country:Cocos Islands;detail:80;bgcolor:#008000;"
+            + "circle:130,140,80,#ffe000;pathstroke:M120 203h18c-7-7 2-60-1-60-1 22-6 41-17 60,#802000,2,#7b3100;circle:320,240,67,#ffe000;circle:341,240,55,#008000;"
+            // cc green tree leaves - savebytes
+            + "pathstroke:M133 95c4 9-11 31-8 22-3-5-8-9-13-11-21 1 0 9-1 12-5 0-9-5-13-3-21 7 4 7 6 10 3 5-4 6-8 5-9-1-20 11-17 14 8-2 22-2 28-4 4-1 12-5 11 2-3 7-9 26 1 22 4-2 4-8 5-12-1-3 2-10 3-5-1 5-5 12 2 13 6 1 7-7 5-11 4-14 15 3 19 9 2 5 11 3 11-3-5-21-15-15 10-13 4-5-1-12-6-12-9 0-5-21-16-12-13 11-3-7 1-12-2-4-8-16-13-9-3 2-5 0-7-2,#008000;"
+            + "southerncross:#ffe000,370,-50,1.1",//end cty
+
         cd: "country:Democratic Republic of Congo;bgcolor:#007fff;star:#f7d618,5,-5,8;line:110,#f7d618,-60,480,700,0;line:75,#ce1021,-60,480,700,0",//end cty
         cf: "country:Central African Republic;stripes:#003082|#fff|#289728|#ffce00;bar:260,120,#d21034;star:#ffce00,5,-5,4",//end cty
         cg: "country:Congo;bgcolor:#009543;triangle:0,480,640,480,640,-200,#fbde4a;triangle:200,480,640,480,640,0,#dc241f",//end cty
@@ -1080,13 +1118,16 @@
             + "crown:0;"
 
             // <!-- start left pillar -->
-            + "<g id='p'>;"
+            + "<g id='l'>;"
             // <!-- gold in pillar -->
             + "pathstroke:M124 223h21v-5h-21v5m2 4a1 1 0 0 1 1 0h16a1 1 0 0 1-1-1l1-2a2 2 0 0 1 0 0h-16a1 1 0 0 1-1 0l1 2a1 1 0 0 1-1 1m1 0h16l1 1h-18l1-1m0-4h16l1 1h-18l1-1m-1 85v1l-2 2h22a3 3 0 0 1-3-2v-1a1 1 0 0 1 0 0h-16a1 1 0 0 1-1 0m1-1h17l-1 1h-16l-1-1 1-1m-3 11h22v-6h-22v6,#f1bf00,.4,#000;"
             // <!-- waves --> // todo waves in other flags
             + "rect:120,318,30,9,#ccc;"
-            + "path:#0039f0,M149 322a7 7 0 01-4-.8 8 8 0 00-4-.7c-1 0-2.7.2-3.7.7-1 .6-2.3.9-3.8.9s-2.8-.4-3.7-.9a8 8 0 00-3.7-1 8 8 0 00-3.7.8c-1 .5-2.3.9-3.8.9v2.3c1 0 3-.3 4-1a10 10 0 017 0 7 7 0 003.7.9 8 8 0 004-.8c1-.5 2-1 4-1 2 0 2.8.3 3.8.8s2.2.8 3.7.8,w,.4,#000;"
-            + "<use href='#w' x='0' y='-5'/><use href='#w' x='0' y='5'/>;"
+            + "path:#0039f0,M149 322a7 7 0 01-4-.8 8 8 0 00-4-.7c-1 0-2.7.2-3.7.7-1 .6-2.3.9-3.8.9s-2.8-.4-3.7-.9a8 8 0 00-3.7-1 8 8 0 00-3.7.8c-1 .5-2.3.9-3.8.9v2.3c1 0 3-.3 4-1a10 10 0 017 0 7 7 0 003.7.9 8 8 0 004-.8c1-.5 2-1 4-1 2 0 2.8.3 3.8.8s2.2.8 3.7.8,w,.4,#000;" // #wave
+
+            //+ "use:0,-5,1,0,w;use:0,5,1,0,w;"
+            + "<use href='#w' x='0' y='-5'/><use href='#w' x='0' y='5'/>;" // use href 10 GZb shorter because GZ sees repeat pattern! <use href='#w' x='0' y='
+
             // <!-- white pillar -->
             + "pathstroke:M138 229v76m1.7-76v76m-13 0h16v-76h-16v77,#ccc,.4,#000;"
 
@@ -1098,10 +1139,10 @@
 
 
             // <!-- crown on pillar -->
-            + "<use transform='scale(.25)' href='#c' x='330' y='650'/>"
+            + "use:330,650,.25,0,c;"  //"<use transform='scale(.25)' href='#c' x='330' y='650'/>"
             + "</g>;"//end pillar
             // <!-- right pillar -->
-            + "<use transform='scale(-1 1)' href='#p' x='-413'/>;"
+            + "use:-413,0,-1 1,0,l;" //"<use transform='scale(-1 1)' href='#l' x='-413'/>;"
 
             + 'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};'
             + 'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};'
@@ -1130,7 +1171,7 @@
             //     <circle fill='none' stroke='gold' stroke-width='1.5' cx='223' cy='304' r='2' /> -->
             //         <circle fill='none' stroke='gold' stroke-width='1.5' cx='223' cy='316' r='2' />
             + "</g>"
-            + "<use transform='scale(-1 1)' href='#b' x='-460'/>;"
+            + "use:-460,0,-1 1,0,b;" //+ "<use transform='scale(-1 1)' href='#b' x='-460'/>;"
             //green circle in red shield
             + "circle:230,295,4,#058e6e;"// 6 GZ bytes
 
@@ -1157,7 +1198,7 @@
             // <!-- claws -->
             + "pathstroke:M217 227h2v-1l-1-1v1a2 2 0 01-1 1m-2 1l-1-1-2 1h2v1l1-1a7 7 0 000 0m-1 3h-1v1h2l-1-1m3 9h-2l-1 1h2l1-1m-1 3h-1l-1 2 1-1 1 1v-1-1m1 3v1l2 1-1-1 1-1h-2m16 1l2 2-1 3m-10 1l-1-1-1 1h2m-2 2l-1 1-1 1 1-1 1 1v-2m2 3v1l1 1v-1l1-1h-2m12 1h-1l-1 2 1-1h1v0-1m0 3v1l1 1v-1h1-1a16 16 0 01-1-1m3 1l1 1 1 1-1-1 1-1h-2,#db4446,.2,#000;"
             // < !--start pink lion crown -- >
-            + "<use transform='scale(.1) rotate(35)' href='#c' x='3010' y='280'/>;"
+            + "use:3010,280,.1,35,c;" // -10 GZb "<use transform='scale(.1) rotate(35)' href='#c' x='3010' y='280'/>;"
             //   <!-- start bottom shield flower -->
             + "circle:207,320,5,#ffd691,.4,#000;"
             + "pathstroke:M207 324a5 5 0 0 1 0-7 5 5 0 0 1 1 3 5 5 0 0 1-1 4,#aa151b,.4,#000;"
@@ -1167,6 +1208,7 @@
             //  SHIELD <!-- shield-center Oval -->
             + "<ellipse fill='#aa151b' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='15' ry='18'/>"
             + "<ellipse fill='#005bbf' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='11' ry='14'/>"
+
             //   <!-- 3 yellow lilys -->
             + ";path:#f1bf00,M201 261s-1 1-1 3a6 6 0 00.6 2c-.2-.5-1-1-1-1-1 0-1.4.6-1.4 1l.2.8.5.9c.1-.3.5-1 1-1s1 1 1 1a.9.9 0 010 1h-1v1h1l-1 1.5 1-.4.8.9.8-1 1 .4-.7-1h1v-1h-1.1a.9.9 0 010-.3 1 1 0 011-1c.4 0 .7.3 1 1l.4-1 .2-1a1 1 0 00-1-1c-1 0-1.2.3-1.4.9 0 0 .6-1.2.6-2.5s-1-3-1-3,f,.4,#000;"
             + "<use href='#f' x='10'/><use href='#f' x='5' y='9'/>;"
@@ -1476,8 +1518,7 @@
         //todo detailM // !todo detail with paths and colors
         pf: "country:French Polynesia;detail:60;stripes:#de2010|#fff|#fff|#de2010;circle:320,240,80,orange;path:blue,M240 240 a1 1 0 0 0 160 0",//end cty
 
-        //todo simplify bird
-        //savebytes
+        //todo simplify bird        //savebytes
         pg: "country:Papua New Guinea;bgcolor:#ce1126;triangle:0,0,640,480,0,480,#000;southerncross:#fff,20,-50,1.3;path:#fcd116,M387 119c-2-6-9-8-13-6h-27l16 6c4 12 18 14 18 14-31 2-39 7-54 35-4 14-15 13 5 13-12 9 4 4 11 3-7 6 13 0 15 0-7 9 12-2 16-3 9 7 7 6 9-4 11 3 9 3 11-7 13 18 18 36 42 40-7-17 10-4 18 0 2-8 13 5 26 5 0-6-9-16 0-9-1-11-13-20 0-16l-8-13c6-2 3-4 2-9 48 8 32 61-9 55 28 14 46 1 58-22 14 31-9 49-40 53 65 9 61-38 35-77-1-11-6-12 5-9-6-10-10-20-14-31h5c-3-7-25-22-14-22-5-7-35-17-20-22-15-10-45 14-39 0-7 0-5-1-5-7 6-7 6-5-2-9 2-9 9-14-2-8 2-13 5-12-7-9 4-6 4-11 4-18-46-2-21 77-42 77",//end cty
 
 
@@ -1494,7 +1535,7 @@
         //todo detailH curve
         pt: "country:Portugal;detail:900;bgcolor:#f00;bar:0,256,#060;"
             //widest yellow band underneath
-            + "curve:curve:0,20,200,100,155,190,20,#ff0;curve:0,20,200,100,150,195;curve:0,-20,200,100,157,184;"
+            + "curve:0,20,200,100,155,190,20,#ff0;curve:0,20,200,100,150,195;curve:0,-20,200,100,157,184;"
             //2 curves arche bottom
             + "curve:0,20,188,0,162,190,10,#ff0;curve:0,20,188,0,160,187;curve:0,20,188,0,160,193;"
             + "curve:0,20,220,0,145,250,10,#ff0;curve:0,20,220,0,147,247;curve:0,20,220,0,147,253;"
@@ -1651,7 +1692,19 @@
         sh: "country:Saint Helena;detail:40;gb",//end cty
 
         //savebytes
-        si: "country:Slovenia;detail:80;stripes:#fff|#005da4|#ed1c24;path:#ed1c24,M228 87c-3 32-3 65-11 96-7 21-26 37-46 44-7 6-17 7-25 2-18-8-35-20-44-38-10-18-9-40-12-60l-3-44a324 324 0 0 1 141 0;path:#005da4,M223 85c-4 58-7 84-11 97-9 22-24 34-54 45-31-11-45-23-55-45-4-13-7-39-11-97a201 201 0 0 1 131 0;path:#fff,M209 168l-26-28-11 10-14-24-15 22-14-6-23 26c-1 27 43 52 51 54 19-6 55-29 52-54;pathstroke:M118 199s30 6 43 0c7-3 32 2 32 2l3-5s-36-6-45-2c-9 5-33 0-33 0v5,none,3,#005da4;star:#ffdd00,305,200,.5;use:260,155,.5;use:345,155,.5",//end cty
+        si: "country:Slovenia;detail:80;stripes:#fff|#005da4|#ed1c24;"
+
+            //blue shield red outline 
+            + "pathstroke:M223 85c-3 31 4 66-10 94-11 22-31 49-56 49-25-1-44-28-55-50-14-28-8-61-10-93 42-15 89-15 131 0z,#005da4,5,#ed1c24;"
+            // hide red line at top of shield
+            + "curve:0,-14,127,0,94,84,6,#005da4;"// _cx_cy_dx_dy_x1_y1__strokewidth_stroke_fill_id_(x3)_(y3)
+            //white mountains
+            + "path:#fff,M209 168l-29-28-10 10-12-24-13 24-10-10-29 28c9 34 36 55 51 54 19-6 38-15 52-54;"
+            //blue river //todo re-use river wave symbol/def #wave from Spain
+            + "pathstroke:M118 198s30 6 43 0c7-3 32 2 32 2l3-5s-36-6-45-2c-9 5-33 0-33 0v5,none,3,#005da4;"
+
+            + "star:#ffdd00,305,200,.5;use:260,155,.5;use:345,155,.5"
+        ,//end cty
         sj: "country:Svalbard;flag:no",//end cty
 
         //savebytes with c/q paths
@@ -1754,7 +1807,8 @@
         un: "country:United Nations;bgcolor:#5b92e5;lun;circles:5,320,220,20,none,3,#fff;pathstroke:M320 220l100 0M320 220l70 70M320 220l0 100M320 220l-70 70M320 220l-100 0M320 220l-70-70M320 220l0-100M320 220l70-70,#fff,3,#fff;circle:320,220,18,#5b92e5",//end cty
         unia: "country:Pan Africa;stripes:#e31c23|#000|#00843e",//end cty
 
-        caricom: 'country:Caribean Community;stripes:#71d4ed|#124086;circle:320,240,160,#fcd116,25,#007a4d;text:{"str":"C","font":"Arial","size":210,"x":290,"y":290};text:{"str":"C","font":"Arial","size":210,"x":340,"y":345}',//end cty
+        // 92 GZb
+        //caricom: 'country:Caribean Community;stripes:#71d4ed|#124086;circle:320,240,160,#fcd116,25,#007a4d;text:{"str":"C","font":"Arial","size":210,"x":290,"y":290};text:{"str":"C","font":"Arial","size":210,"x":340,"y":345}',//end cty
 
         //in quotes!! prevent cross: replacement! ch: $c
         "redcross": "country:Red Cross;bgcolor:;cross:#f00,320,240,300,100",//end cty
@@ -1763,7 +1817,11 @@
             + "circle:320,240,160,#f00;circle:360,240,130,#fff"//red cross crescent
         ,//end cty
 
-        jollyroger: "country:Jolly Roger;bgcolor:#000;path:#fff,M372 253c-3 6-33 28-46 28s-46-23-49-28c-4-7-8-18-7-24 0-3 9-6 10-3 11 23 26 27 46 27 19 0 32 0 43-26 2-5 9-1 10 2 4 10 0 0 0 0s-2 17-7 24zm-46 77c25-11 64-27 90-31 8-16 47-48 39 1 22 15 13 41-28 18-21 2-58 17-76 25 17 8 50 28 64 36 86 7 48 34 27 36 0 11-36 33-45-16-10-10-60-40-73-43-17 7-57 31-73 45-5 35-23 32-41 12-34 0-46-36 28-37l62-33c-27-10-57-20-78-25-31 22-52 3-28-18-3-10 2-42 46-4 17 6 66 24 86 34zm0-148c-4 7-17 17-17 21-1 11 10 11 17 6 7 4 17 6 17-6-1-5-12-13-17-21zm35 41c-4 2-2 11-6 12-18 7-40 6-58 1-5-1-5-12-7-13-12-7-30-8-40-16-5-4-2-29-10-34-7-4-10-20-12-33-3-14-5-40 10-58 16-18 44-33 88-33s73 14 88 33c14 19 11 45 8 58-2 13-9 28-15 33s-4 31-6 34c-5 5-29 9-40 16zm-103-63c0 19 19 28 34 22 18-6 20-37 1-43-16-4-34 2-35 21zm114 23c21-2 27-34 9-43-14-7-36-1-38 18-2 23 14 27 29 25",//end cty
+        jollyroger: "country:Jolly Roger;bgcolor:#000;"
+            //jolly todo: bone ends rotate:7, hide 3 with black circles, eyes with black circles
+            // one path 411 GZb
+            + "path:#fff,M372 253c-3 6-33 28-46 28s-46-23-49-28c-4-7-8-18-7-24 0-3 9-6 10-3 11 23 26 27 46 27 19 0 32 0 43-26 2-5 9-1 10 2 4 10 0 0 0 0s-2 17-7 24zm-46 77c25-11 64-27 90-31 8-16 47-48 39 1 22 15 13 41-28 18-21 2-58 17-76 25 17 8 50 28 64 36 86 7 48 34 27 36 0 11-36 33-45-16-10-10-60-40-73-43-17 7-57 31-73 45-5 35-23 32-41 12-34 0-46-36 28-37l62-33c-27-10-57-20-78-25-31 22-52 3-28-18-3-10 2-42 46-4 17 6 66 24 86 34zm0-148c-4 7-17 17-17 21-1 11 10 11 17 6 7 4 17 6 17-6-1-5-12-13-17-21zm35 41c-4 2-2 11-6 12-18 7-40 6-58 1-5-1-5-12-7-13-12-7-30-8-40-16-5-4-2-29-10-34-7-4-10-20-12-33-3-14-5-40 10-58 16-18 44-33 88-33s73 14 88 33c14 19 11 45 8 58-2 13-9 28-15 33s-4 31-6 34c-5 5-29 9-40 16zm-103-63c0 19 19 28 34 22 18-6 20-37 1-43-16-4-34 2-35 21zm114 23c21-2 27-34 9-43-14-7-36-1-38 18-2 23 14 27 29 25"//highdetail
+        ,//end cty
 
         // xx: "flags:zw|zw|zw|zw|zw|zw|zw|zw|zw",
 
@@ -1788,28 +1846,26 @@
         lgbt: "country:LGBT Rainbow;stripes:#e70000|#ff8c00|#ffef00|#00811f|#0044ff|#760089",//end cty
         trans: "country:Transgender;stripes:#5bcefa|#f5a9b8|#fff|#f5a9b8|#5bcefa",//end cty
 
-        //savebytes? recreate with 4 rotating pieces
-        //284 bytes
+        //todo recreate with 4 rotating pieces, savebytes
+        //275 GZb
         nato: "country:NATO;bgcolor:#012169;path:#fff,m459 243v-6h140v6h-140zm-418 0v-6h140v6h-140zm276 136h6v58h-6v-58zm0-336h6v58h-6v-58zm125 196h-123l22-23-19-86c0-1 1-1 1 0l26 81 93 28zm-29-17c-6-38-37-70-77-77l3 8c33 7 60 34 67 68l6 2zm-93 139v-122l22 21 87-19c0 1 1 1 0 1l-82 26-28 93zm16-29c40-6 70-38 77-77l-7 3c-8 33-34 60-67 67l-3 8zm-138-93h122l-22 22 19 86c0 1-1 1-1 0l-26-81-93-28zm29 16c6 38 36 70 76 77l-3-8c-33-7-60-34-67-68l-6-2zm93-139v123l-22-22-88 18v-1l82-26 28-93zm-15 29c-40 6-71 38-77 77l8-3c7-33 34-60 67-67l3-8",//end cty
 
-        //todo detailH overlapping colors
-        //69 bytes
+        //Olympic 69 bytes
+        //missing detail: overlapping colors patches
         olympic: "country:Olympic;bgcolor:;circle:125,200,80,none,15,#0885c2;circle:315,200,80,none,15,#000;circle:500,200,80,none,15,#ed334e;circle:220,275,80,none,15,#fbb132;circle:405,275,80,none,15,#1c8b3c",//end cty
 
 
         // Reference signal and ics definition in presets
         signal: "signal",
+        icon: "icon",
         ics: "ics"
 
     };
 
     //let fmPropValue = (_this, name, defaultValue = false) => getComputedStyle(_this).getPropertyValue("--flagmeister" + name) || defaultValue;
 
-    if (window.trace) console.time('CreateElement');
     Object.keys(flags)
         .map(iso => {
-            //'ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki'.includes(iso) &&
-
             let createFlagElement = (baseClass, options) =>
                 customElements.define('flag-' + iso, class extends baseClass {
 
@@ -1818,9 +1874,18 @@
                         return flags[iso];
                     }
 
+                    static get observedAttributes() {
+                        return ['source', 'box', 'draw', 'clip', 'filter', 'char', 'selected', 'is']
+                    }
+                    attributeChangedCallback(name, oldValue, newValue) {
+                        console["warn"](name, oldValue, newValue);
+                        //if (name == 'selected') console.element(this, name, oldValue, newValue);
+                        //if (oldValue && oldValue !== newValue) this.load();
+                        if (oldValue !== newValue) this.load();
+                    }
+
                     constructor() {
                         super();
-                        if (window.trace) console.element(this);
 
                         // public attributes/properties getter/setter
                         // ALL ARE PROCESSED BY THE FLAGPARSER!!!
@@ -1828,7 +1893,7 @@
                             ['iso', iso]
                             , ['detail', false]   // disable detail by assigning a huge number of width-pixels
 
-                            , ['source', false]
+                            , ['source', false]     // from which URI source SVG detail flags are loaded
 
                             , ['box', '0 0 640 480']  // default viewBox='0 0 640 480'
 
@@ -1838,17 +1903,15 @@
 
                             , ['flags', flags]
                             //,['mask',""]
-                            , ['draw', ""]
-                            , ['filter', false]
+                            , ['draw', ""]  // draw SVG through flagparser() on the flag
+                            , ['filter', false] // use SVG filter
 
                         ].map(([attr, defaultvalue]) => {
                             Object.defineProperty(this, attr, {
                                 set(val) {
-                                    if (window.trace) console.element(this, 'background:lightcoral', attr, val);
                                     val ? this.setAttribute(attr, val) : this.removeAttribute(attr);
                                 },
                                 get() {
-                                    if (window.trace) console.element(this, attr);
                                     let val = this.getAttribute(attr)//todo numbers are stills strings here,but ~~string == 0
                                         || getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim()
                                         || defaultvalue;
@@ -1890,7 +1953,6 @@
                             + `<g ${filter ? `filter='url(#ff)'` : ""}><g clip-path='url(#clip)' transform='${this['transform']}'>${svg}${this.draw}</g></g></svg>`;
                     }
                     connectedCallback() {
-                        if (window.trace) console.element(this);
                         //this.iso = iso;
                         this.setAttribute('is', 'flag-' + iso); // force is attribute after using createElement 
                         // this.setAttribute('title',iso + ' :' + flag[0]);
@@ -1907,18 +1969,9 @@
                         this.removeAttribute('detail');
                         this.connectedCallback();
                     }
-                    static get observedAttributes() {
-                        return ['source', 'box', 'draw', 'clip', 'filter', 'char', 'selected']
-                    }
-                    attributeChangedCallback(name, oldValue, newValue) {
-                        //console["warn"](name, oldValue, newValue);
-                        if (name == 'selected') console.element(this, name, oldValue, newValue);
-                        if (oldValue && oldValue !== newValue) this.load();
-                    }
                     load(
                         load_svg = this.svg()
                     ) {
-                        if (window.trace) console.element(this, 22);
                         let fetchdata = async (uri) => {
                             //async/await is nice sugar, but 11 GZip bytes longer
                             this.detail = uri;              // prevent detailed flag from reloading again
@@ -2009,7 +2062,6 @@
         }//createCustomElement
 
         );//map iso flags
-    if (window.trace) console.timeLog('CreateElement');
 
     customElements.define('flagmeister-text', class extends HTMLElement {
         constructor() {
