@@ -907,18 +907,14 @@
             // red cover making 3 stripes in flag
             //+ "path:#d32011,M267 244l-5-5c-2-1-2-3-3-5h-1c-2 2-3 5-3 7v4l3 1c2 0 4 1 5 3l2 3 4 1-2-2v-7z;"
 
-
-            //experiment drawing 
+            //!experiment drawing 
             // + "line:10,blue,260,240,270,250;"
             // + "bar:160,10,hotpink,20,10;" // $H_bar_X_Size__color_height_y
             // //::
             // + "bars:red>5>20>5>20|green|blue,50,10,10,25;" // bars,x,y,width,height
             // + "stripes:#fff|||,9,180,280,20,5;" // stripes,width,offset,x,height,gap
 
-
             + "</g>;"
-
-
             + "use:-640,0,-1 1,0,lf;"
 
             // Arabic text at top - 750 GZb
