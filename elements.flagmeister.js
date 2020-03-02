@@ -655,18 +655,18 @@
                 , stroke = '#000'
                 , strokewidth = 1
             ) => (
-                element.box = "0 0 24 24"
-                ,
-                // return value:
-                `<g stroke='${stroke}' stroke-width='${strokewidth}'>` + flagparser(
-                    // FEATHER ICONS
-                    {
-                        "activity": "<polyline points='22 12 18 12 15 21 9 3 6 12 2 12'/>",
-                        "airplay": "<path d='M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1'/><polygon points='12 15 17 21 7 21 12 15'/>",
-                        "alert-circle": "<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>",
-                    }[iconname] + `;</g>`
+                    element.box = "0 0 24 24"
+                    ,
+                    // return value:
+                    `<g stroke='${stroke}' stroke-width='${strokewidth}'>` + flagparser(
+                        // FEATHER ICONS
+                        {
+                            "activity": "<polyline points='22 12 18 12 15 21 9 3 6 12 2 12'/>",
+                            "airplay": "<path d='M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1'/><polygon points='12 15 17 21 7 21 12 15'/>",
+                            "alert-circle": "<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>",
+                        }[iconname] + `;</g>`
+                    )
                 )
-            )
 
 
             // used in clip examples
@@ -896,6 +896,7 @@
             + "leaves:#fff,#bd6b00;"
             + "use:47,35,.87,0,v;"//x,y,scale,rotate,id
 
+            //todo
             //fun rotate 3 partly cricles
             //+ "rotate:3,<use href='#v' transform='translate(-300 -220)'/>,320,240,.6;"
 
@@ -905,12 +906,19 @@
             + "path:#fff,M220 245l-1 2c0 1 2 9 6 11 3 2 17 5 24 7 3 1 6 2 9 5l-3-10c-2-3-5-6-8-6-6 0-14-1-20-3l-7-6zm11-21v-2h6l1-3c0-1 0-4 1-3l5 8c3 4 5 9 6 13 1 5-1 10-4 13 1-3-1-7-3-10a112 112 0 00-12-16zm4 68h-1c6 7 7 9 15 8 9-1 11-3 17-6 3-2 7-3 11-1 1 0 2 0 1-1l-4-4c-3-2-8-3-12-2-6 0-12 4-18 6h-9zm32-64c-1-2-2 2-7 6-3 1-4 6-4 9v5c-1 1-2 4-1 5l6 6c2 1 3-5 3-8 1-3 1-6 4-9l6-5-7-9z;"
             // red cover making 3 stripes in flag
             //+ "path:#d32011,M267 244l-5-5c-2-1-2-3-3-5h-1c-2 2-3 5-3 7v4l3 1c2 0 4 1 5 3l2 3 4 1-2-2v-7z;"
-            + "line:10,blue,260,240,270,250;"
-            + "bar:160,10,hotpink,20,10;" // $H_bar_X_Size__color_height_y
-            //::
-            + "bars:red>5>20>5>20|green|blue,50,10,10,25;" // bars,x,y,width,height
-            + "stripes:#fff|||,9,180,280,20,5;" // stripes,width,offset,x,height,gap
+
+
+            //experiment drawing 
+            // + "line:10,blue,260,240,270,250;"
+            // + "bar:160,10,hotpink,20,10;" // $H_bar_X_Size__color_height_y
+            // //::
+            // + "bars:red>5>20>5>20|green|blue,50,10,10,25;" // bars,x,y,width,height
+            // + "stripes:#fff|||,9,180,280,20,5;" // stripes,width,offset,x,height,gap
+
+
             + "</g>;"
+
+
             + "use:-640,0,-1 1,0,lf;"
 
             // Arabic text at top - 750 GZb
