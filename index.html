@@ -1140,16 +1140,16 @@ light: ({
             <td><flag-bo source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-bo></td>
           </tr>
           <tr>
-            <td>flag-es - Spain</td>
-            <td><flag-es></flag-es></td>
-            <td><flag-es></flag-es></td>
-            <td><flag-es></flag-es></td>
-            <td><flag-es></flag-es></td>
-            <td><flag-es detail="9999"></flag-es></td>
-            <td><flag-es detail="1"></flag-es></td>
-            <td><flag-es source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-es></td>
-            <td><flag-es source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-es></td>
-            <td><flag-es source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-es></td>
+            <td>flag-ug - Ugunda</td>
+            <td><flag-ug></flag-ug></td>
+            <td><flag-ug></flag-ug></td>
+            <td><flag-ug></flag-ug></td>
+            <td><flag-ug></flag-ug></td>
+            <td><flag-ug detail="9999"></flag-ug></td>
+            <td><flag-ug detail="1"></flag-ug></td>
+            <td><flag-ug source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-ug></td>
+            <td><flag-ug source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-ug></td>
+            <td><flag-ug source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-ug></td>
           </tr>
           <tr>
             <td>flag-by - Belarus</td>
@@ -1210,7 +1210,7 @@ light: ({
             Most repos use the true size (not 640:480) flagsize (you can
             ofcourse force height with CSS)
           </li>
-          <li>The very popular Lipis repo has incorrect colors</li>
+          <li>The very popular Lipis repo almost always has flags with incorrect colors</li>
         </ul>
         <h3>detail and source parameters</h3>
         <p>
@@ -1220,14 +1220,14 @@ light: ({
 
         <b>Prevent detail loading</b> (unless flag img is over 9998 pixels wide)
         <textarea class="textarea_html">
-<flag-es detail=9999></flag-es></textarea
+<flag-ug detail=9999></flag-ug></textarea
         >
 
         <b>Load from Nilsson Repo</b>
         <textarea class="textarea_html">
-<flag-es 
+<flag-ug 
  detail=10 
- source=//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/ ></flag-es></textarea
+ source=//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/ ></flag-ug></textarea
         >
 
         <b>Load detail flags from Kent Repo</b> No detail specified, so only
@@ -1570,11 +1570,10 @@ light: ({
                         let FlagsInAnalysis = [
                           ...document.querySelectorAll('[id*="FlagAnalysis"]'),
                         ];
-                        FlagsInAnalysis.shift(); // remove FlagMeister flag
+                        FlagsInAnalysis.shift(); //! remove FlagMeister flag
                         let sortedFlagSize = FlagsInAnalysis.filter(
                           (x, idx) => x.detail && x.detail.includes(".svg")
                         ).sort((a, b) => size(a) - size(b));
-                        console.warn(FlagsInAnalysis);
                         let smallest = sortedFlagSize.shift();
                         let largest = sortedFlagSize.pop();
                         let headercolor = (x, color) =>
@@ -1736,4 +1735,4 @@ light: ({
     </script>
   </body>
 </html>
-Published: 0-20-12 15:34 
+Published: 0-20-12 15:53 
