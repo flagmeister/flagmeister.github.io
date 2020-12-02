@@ -10,7 +10,7 @@
     <meta name="Description" content="FlagMeister 300+ SVG flags in one Custom Element">
     <link id=favicon rel="shortcut icon" href="" width=32px>
     <title>FlagMeister</title>
-    <script src=elements.flagmeister.min.js></script>
+    <script src=elements.flagmeister.js></script>
     <script src=element.flagmeister-list.js></script>
     <script defer src="https://365csi.nl/meisterbanner.js"></script>
 
@@ -81,6 +81,9 @@
         h1 a,
         h2 a {
             text-shadow: .3px .3px 0 lightgrey;
+            --m:0.2em;
+            margin-block-start:var(--m);
+            margin-block-end:var(--m);
         }
 
         h3 a {
@@ -624,7 +627,7 @@
             <img is=flag-be draw="<circle cx='320' cy='240' r='180' fill='green'/>">
             <img is=flag-fr draw="c:320,240,180,green;line:120,gold,0,0,640,480;star:red,55,30,5">
             <img is=flag-nl data-not="Not Holland!" draw='attr:alt,80;attr:data-not,80,120'>
-            <img is=flag-eu draw="flag:gb,3,220,160">
+            <flag-eu draw="flag:gb,3,220,160"></flag-eu>
             <img is=flag-us country="USA"
                 draw='text:{"str":"USA","font":"Arial","fill":"gold","size":220,"width":5,"stroke":"black"}'>
         </div>
