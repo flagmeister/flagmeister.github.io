@@ -627,25 +627,6 @@
           ][element.getAttribute("char")]
         )
       ),
-      icon: (
-        iconname = element.getAttribute("icon"),
-        stroke = "#000",
-        strokewidth = 1
-      ) => (
-        (element.box = "0 0 24 24"),
-        // return value:
-        `<g stroke='${stroke}' stroke-width='${strokewidth}'>` +
-          flagparser(
-            // FEATHER ICONS
-            {
-              activity: "<polyline points='22 12 18 12 15 21 9 3 6 12 2 12'/>",
-              airplay:
-                "<path d='M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1'/><polygon points='12 15 17 21 7 21 12 15'/>",
-              "alert-circle":
-                "<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>",
-            }[iconname] + `;</g>`
-          )
-      ),
 
       // used in clip examples
       // <img is=flag-gd clip="bigstar" box="center">
@@ -1933,7 +1914,6 @@
 
     // Reference signal and ics definition in presets
     signal: "signal",
-    icon: "icon",
     ics: "ics",
   };
 
