@@ -680,65 +680,7 @@
       </div>
     </section>
 
-    <section id="focusDetailFlags">
-      <style>
-        #focusDetailFlags {
-          /* prevent loading detail */
-          --flagmeisterdetail: 99999;
-          --imgwidth: 30px;
-        }
 
-        #focusDetailFlags img {
-          display: none;
-          width: var(--imgwidth);
-        }
-
-        #focusDetailFlags [is*="flag-"][detail*=".svg"] {
-          display: initial;
-        }
-      </style>
-      <div id="focusDetailFlagsContainer"></div>
-      <script>
-        let injectDetailAnalyzer = () => {
-          let flags_with_detail = [
-            ...flags_with_detailList.querySelectorAll('[src*="dtl:"'),
-          ];
-          console.log(flags_with_detail.length, "dtl flags");
-          let detailsizes = [
-            ...new Set(
-              flags_with_detail.map((flag) => ~~flag.src.split`dtl:`[1])
-            ),
-          ]
-            .sort((a, b) => a - b)
-            .slice(0)
-            .reverse();
-          focusDetailFlagsContainer.innerHTML = detailsizes.map((size) => {
-            let id = `flagdetail` + size;
-            return (
-              `<div id=${id}><h3><button onclick="focusDetailClickReset(event,${size})">reset</button><button onclick="focusDetailClick(event,${size})"> > ${size} pixels</button></h3><style>#${id} img[src*="detail${size}detail"]{display:initial}</style>` +
-              `<flagmeister-list id=flagdetail${size}List></flagmeister-list>` +
-              `</div>`
-            );
-          }).join``;
-          let focusDetailClick = (event, size) => {
-            let div = document.querySelector(`#flagdetail${size}`);
-            div.style.setProperty("--flagmeisterdetail", size);
-            div.style.setProperty("--imgwidth", size + "px");
-          };
-          let focusDetailClickReset = (event, size) => {
-            let div = document.querySelector(`#flagdetail${size}`);
-            // div.style.setProperty('--flagmeisterdetail', size - 1)
-            div.style.setProperty("--imgwidth", size - 1 + "px");
-            let list = document.querySelectorAll(
-              `#flagdetail${size}List [is*="flag-"][detail*=".svg"]`
-            );
-            //console.log('reset', list.length);
-            for (flag of list) flag.reset();
-          };
-        };
-        //injectDetailAnalyzer();
-      </script>
-    </section>
 
     <section id="SVGGoodies">
       <flagmeister-text
@@ -1131,18 +1073,6 @@ light: ({
       </p>
       <div>
         <style>
-          [sourcevar="kent"] {
-            --flagmeistersource: ; //raw.githubusercontent.com/kent1D/svg-flags/master/flags/;
-          }
-
-          [sourcevar="nilson"] {
-            --flagmeistersource: ; //raw.githubusercontent.com/hjnilsson/country-flags/master/svg/;
-          }
-
-          [sourcevar="lipis"] {
-            --flagmeistersource: ; //raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/;
-          }
-
           #FlagMeisterDetailTable {
             background-color: darkslategray;
           }
@@ -1205,9 +1135,9 @@ light: ({
             <td><flag-bo></flag-bo></td>
             <td><flag-bo detail="9999"></flag-bo></td>
             <td><flag-bo detail="1"></flag-bo></td>
-            <td><flag-bo sourcevar="kent" detail="1"></flag-bo></td>
-            <td><flag-bo sourcevar="nilson" detail="1"></flag-bo></td>
-            <td><flag-bo sourcevar="lipis" detail="1"></flag-bo></td>
+            <td><flag-bo source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-bo></td>
+            <td><flag-bo source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-bo></td>
+            <td><flag-bo source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-bo></td>
           </tr>
           <tr>
             <td>flag-es - Spain</td>
@@ -1217,9 +1147,9 @@ light: ({
             <td><flag-es></flag-es></td>
             <td><flag-es detail="9999"></flag-es></td>
             <td><flag-es detail="1"></flag-es></td>
-            <td><flag-es sourcevar="kent" detail="1"></flag-es></td>
-            <td><flag-es sourcevar="nilson" detail="1"></flag-es></td>
-            <td><flag-es sourcevar="lipis" detail="1"></flag-es></td>
+            <td><flag-es source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-es></td>
+            <td><flag-es source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-es></td>
+            <td><flag-es source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-es></td>
           </tr>
           <tr>
             <td>flag-by - Belarus</td>
@@ -1229,9 +1159,9 @@ light: ({
             <td><flag-by></flag-by></td>
             <td><flag-by detail="9999"></flag-by></td>
             <td><flag-by detail="1"></flag-by></td>
-            <td><flag-by sourcevar="kent" detail="1"></flag-by></td>
-            <td><flag-by sourcevar="nilson" detail="1"></flag-by></td>
-            <td><flag-by sourcevar="lipis" detail="1"></flag-by></td>
+            <td><flag-by source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-by></td>
+            <td><flag-by source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-by></td>
+            <td><flag-by source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-by></td>
           </tr>
           <tr>
             <td>flag-kz - Kazachstan</td>
@@ -1241,9 +1171,9 @@ light: ({
             <td><flag-kz></flag-kz></td>
             <td><flag-kz detail="9999"></flag-kz></td>
             <td><flag-kz detail="1"></flag-kz></td>
-            <td><flag-kz sourcevar="kent" detail="1"></flag-kz></td>
-            <td><flag-kz sourcevar="nilson" detail="1"></flag-kz></td>
-            <td><flag-kz sourcevar="lipis" detail="1"></flag-kz></td>
+            <td><flag-kz source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-kz></td>
+            <td><flag-kz source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-kz></td>
+            <td><flag-kz source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-kz></td>
           </tr>
           <tr>
             <td>flag-rs - Serbia</td>
@@ -1253,21 +1183,9 @@ light: ({
             <td><flag-rs></flag-rs></td>
             <td><flag-rs detail="9999"></flag-rs></td>
             <td><flag-rs detail="1"></flag-rs></td>
-            <td><flag-rs sourcevar="kent" detail="1"></flag-rs></td>
-            <td><flag-rs sourcevar="nilson" detail="1"></flag-rs></td>
-            <td><flag-rs sourcevar="lipis" detail="1"></flag-rs></td>
-          </tr>
-          <tr>
-            <td>flag-hr - Croatia</td>
-            <td><flag-hr></flag-hr></td>
-            <td><flag-hr></flag-hr></td>
-            <td><flag-hr></flag-hr></td>
-            <td><flag-hr></flag-hr></td>
-            <td><flag-hr detail="9999"></flag-hr></td>
-            <td><flag-hr detail="1"></flag-hr></td>
-            <td><flag-hr sourcevar="kent" detail="1"></flag-hr></td>
-            <td><flag-hr sourcevar="nilson" detail="1"></flag-hr></td>
-            <td><flag-hr sourcevar="lipis" detail="1"></flag-hr></td>
+            <td><flag-rs source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-rs></td>
+            <td><flag-rs source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-rs></td>
+            <td><flag-rs source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-rs></td>
           </tr>
           <tr>
             <td>flag-bf - Burkina Faso</td>
@@ -1277,9 +1195,9 @@ light: ({
             <td><flag-bf></flag-bf></td>
             <td><flag-bf detail="9999"></flag-bf></td>
             <td><flag-bf detail="1"></flag-bf></td>
-            <td><flag-bf sourcevar="kent" detail="1"></flag-bf></td>
-            <td><flag-bf sourcevar="nilson" detail="1"></flag-bf></td>
-            <td><flag-bf sourcevar="lipis" detail="1"></flag-bf></td>
+            <td><flag-bf source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-bf></td>
+            <td><flag-bf source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-bf></td>
+            <td><flag-bf source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-bf></td>
           </tr>
         </table>
         <h3>Observations</h3>
@@ -1809,13 +1727,13 @@ light: ({
 
         [...document.querySelectorAll("section")].map((section) => {
           console.log(section);
-          if (!section.id.includes("rFlags")) {
+          if (!section.id.includes("Flags")) {
             //! uncomment to work with sections of HTML document
-            // section.style.display='none';
+            //section.style.display='none';
           }
         });
       };
     </script>
   </body>
 </html>
-Published: 0-20-12 15:14 
+Published: 0-20-12 15:34 
