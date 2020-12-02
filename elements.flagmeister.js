@@ -1968,7 +1968,7 @@
 
             constructor(flag) {
               flag = super();
-              
+
               // public attributes/properties getter/setter
               // ALL ARE PROCESSED BY THE FLAGPARSER!!!
               [
@@ -2070,6 +2070,8 @@
                 flag.img =
                   flag.querySelector("img") || //! existing img tag in lightDOM
                   flag.appendChild(document.createElement("img"));
+                flag.img.onload = flag.onload;
+                flag.img.onerror = flag.onerror;
               }
 
               // this.setAttribute('title',iso + ' :' + flag[0]);
