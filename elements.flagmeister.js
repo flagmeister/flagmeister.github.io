@@ -2127,6 +2127,7 @@
                 //console.log(iso, 'src=', this.src.length, 'bytes ', load_svg ? 'NO' : load_svg.slice(0, 20));
                 //Observe image resize,also called on first load! width is immediatly checked
                 flag.O = new ResizeObserver((entries) => {
+                  
                   //if detail defined and no '.svg' in detail and current width is wider then defined flag.detail
                   if (
                     flag.detail &&
