@@ -2144,7 +2144,7 @@
                       }
                       flag.load(_SOURCE);
                     } else {
-                      fetchdata("//restcountries.eu/rest/v2/alpha/" + iso);
+                      fetchdata("//restcountries.com/v2/alpha/" + iso);
                     }
                     // } else {
                     //console.log('No Observed Action');
