@@ -2071,23 +2071,27 @@
             }
             load(load_svg = this.svg()) {
               let fetchdata = async (uri) => {
-                //async/await is nice sugar, but 11 GZip bytes longer
-                this.detail = uri; // prevent detailed flag from reloading again
-                let response = await fetch(uri);
-                let response_data = await (stringIncludesSVG(response.url)
-                  ? response.text() // SVG file content
-                  : response.json()); // JSON from RestCountries API
+                try {
+                  //async/await is nice sugar, but 11 GZip bytes longer
+                  this.detail = uri; // prevent detailed flag from reloading again
+                  let response = await fetch(uri, {mode: 'no-cors'});
+                  let response_data = await (stringIncludesSVG(response.url)
+                    ? response.text() // SVG file content
+                    : response.json()); // JSON from RestCountries API
 
-                log("Loaded:", iso, uri); //cleanlog
+                  log("Loaded:", iso, uri); //cleanlog
 
-                if (typeof response_data === "string") load_img(response_data);
-                else {
-                  if (response_data.flag) {
-                    this.info = response_data; //store countryinfo
-                    fetchdata(response_data.flag);
-                  } else {
-                    //error
+                  if (typeof response_data === "string") load_img(response_data);
+                  else {
+                    if (response_data.flag) {
+                      this.info = response_data; //store countryinfo
+                      fetchdata(response_data.flag);
+                    } else {
+                      //error
+                    }
                   }
+                } catch (error) {
+                  
                 }
               };
               //console.log('load()',iso,load_svg ? 'svg' :'NO svg',load_svg.slice(0,20));
