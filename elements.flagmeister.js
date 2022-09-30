@@ -1939,8 +1939,9 @@
                 try {
                   //async/await is nice sugar, but 11 GZip bytes longer
                   this.detail = uri; // prevent detailed flag from reloading again
-                  let options = { mode: "no-cors" };
-                  options = {};
+                  let options = {};
+                  if (location.href.includes("no-cors"))
+                    options = { mode: "no-cors" };
                   let response = await fetch(uri, options);
                   let response_data = await (stringIncludesSVGextension(
                     response.url
@@ -1955,7 +1956,7 @@
                   else {
                     // it is a json response
                     // 2022 RestCountries now returns an Array of countries
-                    // if flag does not exist, throws an error 
+                    // if flag does not exist, throws an error
                     if (response_data[0].flags) {
                       this.info = response_data[0]; //store countryinfo
                       fetchdata(response_data[0].flags.svg);
@@ -1965,7 +1966,7 @@
                     }
                   }
                 } catch (error) {
-                  console.error(error,this);
+                  console.error(error, this);
                   //this.remove();
                 }
               };

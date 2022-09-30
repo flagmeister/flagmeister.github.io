@@ -1,27 +1,21 @@
+
+// Original 2018 WebComponent for index and documentation HTML pages 
+// could do with some refactoring to modern ES code
+// List all SVG flags with headers
+
 customElements.define(
   "flagmeister-list",
   class extends HTMLElement {
-    constructor() {
-      super();
-    }
     connectedCallback() {
       const GZsize = 32;
       const delay = 500; // execute after delay so header IMGs is available
-      const useAutonomous = true;
       setTimeout(() => {
         let signals = this.hasAttribute("signals");
         let img;
-        if (useAutonomous){
-            img = (iso, char = false) =>
-            `<flag-${iso} ${char ? "char=" + char : ""} style="" title="flag-${
-                iso + (char ? " char=" + char : "")
-            }"></flag-${iso}>`;
-        }else{
-            img = (iso, char = false) =>
-            `<img is=flag-${iso} ${char ? "char=" + char : ""} title="flag-${
-                iso + (char ? " char=" + char : "")
-            }">`;
-        }
+        img = (iso, char = false) =>
+          `<flag-${iso} ${char ? "char=" + char : ""} style="" title="flag-${
+            iso + (char ? " char=" + char : "")
+          }"></flag-${iso}>`;
         let isoNames = Object.keys(document.querySelector(`[is*=flag]`).flags);
         let header = (x) => `<h3>${x}</h3>`;
         this.innerHTML =
