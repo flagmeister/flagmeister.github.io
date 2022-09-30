@@ -1389,15 +1389,15 @@ light: ({
           delay="1000"
         ></flagmeister-list>
       </p>
-      <div>
-        <span id="FlagAnalyzerISO"></span>
-      </div>
-      <div id="FlagDetailAnalyzer">
+      <div id="FlagDetailAnalyzer" style="padding-bottom:10vh">
         <div id="FlagAnalyzerHeader" class="flaggrid">
           <h1>Loading FlagAnalyzer...</h1>
         </div>
         <div id="FlagAnalyzer" class="flaggrid">
           <!-- dispaying flags from all providers-->
+        </div>
+        <div>
+          <span id="FlagAnalyzerISO"></span>
         </div>
         <h2>Codestring for FlagMeister SVG parser:</h2>
         <div spacer id="FlagMeisterCodeString"></div>
@@ -1685,8 +1685,9 @@ light: ({
           };
           let resetAnalysisFlags = (iso) => {
             if (iso) {
-              FlagAnalyzer.innerHTML = "";
-              FlagAnalyzer.append(...providerFlags(iso));
+              //FlagAnalyzer.innerHTML = "";
+              //FlagAnalyzer.append(...providerFlags(iso));
+              FlagAnalyzer.replaceChildren(...providerFlags(iso));
               displayFlagInfo(iso);
             }
           };
@@ -1719,7 +1720,7 @@ light: ({
           );
           if (analyzeThisFlag) {
             resetAnalysisFlags(analyzeThisFlag);
-            FlagAnalyzer.scrollIntoView();
+            //FlagAnalyzer.scrollIntoView();
           }
         }
 
