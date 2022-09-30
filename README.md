@@ -3,7 +3,6 @@
 # 300+ SVG Flags in one Custom Element/Web Component
 
 ## https://flagmeister.github.io
-## https://flagmeister.github.io/documentation.html
 
 ```html
   <html>
@@ -30,7 +29,7 @@
 
 There is no single truth on SVG flags. All flag sites out in the wild have errors. The most popular one [flag-icons](https://flagicons.lipis.dev/) has many incorrect colors. Some are missing details in flags.
 
-* I first built a tool to analyze all SVG flags out there: [documentation.html#FlagMeisterAnalyzeFlags](https://flagmeister.github.io/documentation.html?flag=jollyroger#FlagMeisterAnalyzeFlags)
+* I first built a tool to analyse all SVG flags out there: [index.html#FlagMeisterAnalyzeFlags](https://flagmeister.github.io/index.html?flag=jollyroger)
 
 * copied all SVG flags into one file
 
