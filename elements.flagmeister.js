@@ -1949,7 +1949,7 @@
                     ? response.text() // SVG file content
                     : response.json()); // JSON from RestCountries API
 
-                  console.log("Loaded:", iso, uri); //cleanlog
+                  //console.log("Loaded:", iso, uri); //cleanlog
 
                   if (typeof response_data === "string")
                     load_img(response_data);
