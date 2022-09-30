@@ -1137,7 +1137,7 @@ light: ({
             <td><flag-bo detail="1"></flag-bo></td>
             <td><flag-bo source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-bo></td>
             <td><flag-bo source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-bo></td>
-            <td><flag-bo source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-bo></td>
+            <td><flag-bo source="//raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/" detail="1"></flag-bo></td>
           </tr>
           <tr>
             <td>flag-ug - Ugunda</td>
@@ -1149,7 +1149,7 @@ light: ({
             <td><flag-ug detail="1"></flag-ug></td>
             <td><flag-ug source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-ug></td>
             <td><flag-ug source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-ug></td>
-            <td><flag-ug source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-ug></td>
+            <td><flag-ug source="//raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/" detail="1"></flag-ug></td>
           </tr>
           <tr>
             <td>flag-by - Belarus</td>
@@ -1161,7 +1161,7 @@ light: ({
             <td><flag-by detail="1"></flag-by></td>
             <td><flag-by source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-by></td>
             <td><flag-by source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-by></td>
-            <td><flag-by source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-by></td>
+            <td><flag-by source="//raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/" detail="1"></flag-by></td>
           </tr>
           <tr>
             <td>flag-kz - Kazachstan</td>
@@ -1173,7 +1173,7 @@ light: ({
             <td><flag-kz detail="1"></flag-kz></td>
             <td><flag-kz source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-kz></td>
             <td><flag-kz source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-kz></td>
-            <td><flag-kz source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-kz></td>
+            <td><flag-kz source="//raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/" detail="1"></flag-kz></td>
           </tr>
           <tr>
             <td>flag-rs - Serbia</td>
@@ -1185,7 +1185,7 @@ light: ({
             <td><flag-rs detail="1"></flag-rs></td>
             <td><flag-rs source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-rs></td>
             <td><flag-rs source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-rs></td>
-            <td><flag-rs source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-rs></td>
+            <td><flag-rs source="//raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/" detail="1"></flag-rs></td>
           </tr>
           <tr>
             <td>flag-bf - Burkina Faso</td>
@@ -1197,7 +1197,7 @@ light: ({
             <td><flag-bf detail="1"></flag-bf></td>
             <td><flag-bf source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-bf></td>
             <td><flag-bf source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-bf></td>
-            <td><flag-bf source="//raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/" detail="1"></flag-bf></td>
+            <td><flag-bf source="//raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/" detail="1"></flag-bf></td>
           </tr>
         </table>
         <h3>Observations</h3>
@@ -1309,7 +1309,7 @@ light: ({
         </tr>
         <tr>
           <td>
-            <a href="http://flag-icon-css.lip.is">Lipis Flag-Icon-CSS</a
+            <a href="https://flagicons.lipis.dev">Lipis flag-icons</a
             ><br />Popular, But... most flags have wrong colors
           </td>
           <td>9161 / 5920 / 832</td>
@@ -1510,18 +1510,18 @@ light: ({
             },
             {
               name: "Lipis 4:3",
-              site: "http://flag-icon-css.lip.is/",
+              site: "https://flagicons.lipis.dev/",
               description:
                 "Most popular.. <br><span style=background:darkred;color:yellow> All colors are wrong!! </span>",
               source:
-                "https://raw.githubusercontent.com/lipis/flag-icon-css/master/flags/4x3/",
+                "https://raw.githubusercontent.com/lipis/flag-icons/master/flags/4x3/",
             },
             // {
             //     name: 'Lipis 1:1',
-            //     site: 'http://flag-icon-css.lip.is/',
+            //     site: 'http://flag-icons.lip.is/',
             //     description: 'Square shaped,<br>but brutally clipped',
             //     detail: 1,
-            //     source: 'https://raw.githubusercontent.com/lipis/flag-icon-css/master/flags/1x1/'
+            //     source: 'https://raw.githubusercontent.com/lipis/flag-icons/master/flags/1x1/'
             // }
           ];
           document.body.style.setProperty(
@@ -1667,15 +1667,21 @@ light: ({
           let FlagInfoMap = new Map();
 
           let displayFlagInfo = (iso, data = FlagInfoMap.get(iso)) => {
+            try{
             if (data)
               FlagAnalyzerISO.innerHTML =
-                `<h2>${iso} : ${data.name}</h2>` +
-                `<p><span class=infolabel>capital:</span> ${data.capital}` +
+              // 2022 RestCountries now returns many Objects/Arrays with info
+                `<h2>${iso} : ${data.name.common}</h2>` +
+                `<p><span class=infolabel>capital:</span> ${data.capital[0]}` +
                 ` <span class=infolabel>region:</span> ${data.region} - ${data.subregion}` +
                 ` <span class=infolabel>pop:</span> ${data.population}` +
                 ` <span class=infolabel>languages:</span> ${
-                  data.languages && data.languages.map((ln) => ln.name).join`, `
+                  //data.languages && data.languages.map((ln) => ln.name).join`, `
+                  data.languages && Object.values(data.languages).join`, `
                 }</p>`;
+              } catch (e) {
+                console.error(data)
+              }
           };
           let resetAnalysisFlags = (iso) => {
             if (iso) {
@@ -1725,10 +1731,9 @@ light: ({
           });
 
         [...document.querySelectorAll("section")].map((section) => {
-          console.log(section);
           if (!section.id.includes("Flags")) {
             //! uncomment to work with sections of HTML document
-            //section.style.display='none';
+            section.style.display='none';
           }
         });
       };
