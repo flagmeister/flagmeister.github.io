@@ -28,7 +28,7 @@
 
 ## Errors and missing flags
 
-There is no single truth on SVG flags. All flag sites out in the wild have errors. The most popular one [flag-icons](http://flagicons.lipis.dev/) has many incorrect colors. Some are missing details in flags.
+There is no single truth on SVG flags. All flag sites out in the wild have errors. The most popular one [flag-icons](https://flagicons.lipis.dev/) has many incorrect colors. Some are missing details in flags.
 
 * I first built a tool to analyze all SVG flags out there: [documentation.html#FlagMeisterAnalyzeFlags](https://flagmeister.github.io/documentation.html?flag=jollyroger#FlagMeisterAnalyzeFlags)
 
@@ -82,7 +82,7 @@ bgcolor:#e10011;path:#fff,m114 480l-146 1V0h180l94 48-99 48 99 48-99 48 99 48-99
 
 * Kent - https://github.com/kent1D/svg-flags
 
-* Nillson - http://hjnilsson.github.io/country-flags/
+* Nillson - https://hjnilsson.github.io/country-flags/
 
 * FlagKit - https://github.com/madebybowtie/FlagKit 
 
@@ -93,7 +93,7 @@ bgcolor:#e10011;path:#fff,m114 480l-146 1V0h180l94 48-99 48 99 48-99 48 99 48-99
 * Pure CSS flags - https://codepen.io/hagenburger/pen/wnkDo
 
 * Emoji flags 
-  * http://ellekasai.github.io/twemoji-awesome/
+  * https://ellekasai.github.io/twemoji-awesome/
   * US flag: https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f8.svg
   * JSON https://github.com/amio/emoji.json
 
@@ -101,7 +101,7 @@ bgcolor:#e10011;path:#fff,m114 480l-146 1V0h180l94 48-99 48 99 48-99 48 99 48-99
 
 ### Countries
 
-* World Countries in JSON format - http://stefangabos.github.io/world_countries/
+* World Countries in JSON format - https://stefangabos.github.io/world_countries/
 
 ### SVG
 
@@ -116,7 +116,7 @@ bgcolor:#e10011;path:#fff,m114 480l-146 1V0h180l94 48-99 48 99 48-99 48 99 48-99
 * SVG shapes - http://www.kelvinlawrence.net/svg/index.html
 * https://tympanus.net/codrops/2019/01/15/svg-filters-101/
 * http://www.svgbasics.com/filters2.html
-* Square lighting : http://jsfiddle.net/p015w43j/
+* Square lighting : https://jsfiddle.net/p015w43j/
 
 * https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Filter_effects
 
