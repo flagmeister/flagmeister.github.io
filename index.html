@@ -34,6 +34,11 @@
       --defaultmargin: 0.5em;
     }
 
+    img {
+      width: 100%;
+      /* 2024 - moved hardcoded .style.width = 100% to CSS*/
+    }
+
     p {
       margin-left: var(--theme_pre_size);
     }
@@ -1244,7 +1249,7 @@ light: ({
       </table>
       <h3>Observations</h3>
       <ul>
-        <li>
+        <li hidden>
           The countries API (used by default) does not have a detailed
           Bolivian flag
         </li>
