@@ -462,7 +462,7 @@
         stroke
       ),
 
-    southerncross: (color, x = 0, y = 0, scale = 1) =>
+    scross: (color, x = 0, y = 0, scale = 1) =>
       $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
         $S_Color_X_Y_Scale___Rotate0(color) +
           [
@@ -521,7 +521,7 @@
   // all SVG commands can be called by fullname or abbreviated letter
   // the minified file is patched in the built step to set these same letters
   // can't use : to split because the : is in the key: (in JS source code)
-  let abbreviations = "detail a,bgcolor b,circle c,diagonal d,circles e,flag f,doublecross g,stripes h,outline i,line l,southerncross m,bar n,rotate o,path p,pathstroke q,rect r,star s,stripe t,use u,bars v,striangle w,crossx x,country y,triangle z"
+  let abbreviations = "detail a,bgcolor b,circle c,diagonal d,circles e,flag f,doublecross g,stripes h,outline i,line l,scross m,bar n,rotate o,path p,pathstroke q,rect r,star s,stripe t,use u,bars v,striangle w,crossx x,country y,triangle z"
     .split`,`;
   abbreviations.map(
     (def) => (
@@ -1015,7 +1015,7 @@
       "circle:130,140,80,#ffe000;pathstroke:M120 203h18c-7-7 2-60-1-60-1 22-6 41-17 60,#802000,2,#7b3100;circle:320,240,67,#ffe000;circle:341,240,55,#008000;" +
       // cc green tree leaves - savebytes
       "pathstroke:M133 95c4 9-11 31-8 22-3-5-8-9-13-11-21 1 0 9-1 12-5 0-9-5-13-3-21 7 4 7 6 10 3 5-4 6-8 5-9-1-20 11-17 14 8-2 22-2 28-4 4-1 12-5 11 2-3 7-9 26 1 22 4-2 4-8 5-12-1-3 2-10 3-5-1 5-5 12 2 13 6 1 7-7 5-11 4-14 15 3 19 9 2 5 11 3 11-3-5-21-15-15 10-13 4-5-1-12-6-12-9 0-5-21-16-12-13 11-3-7 1-12-2-4-8-16-13-9-3 2-5 0-7-2,#008000;" +
-      "southerncross:#ffe000,370,-50,1.1", //end cty
+      "scross:#ffe000,370,-50,1.1", //end cty
 
     cd: "country:Democratic Republic of Congo;bgcolor:#007fff;star:#f7d618,5,-5,8;line:110,#f7d618,-60,480,700,0;line:75,#ce1021,-60,480,700,0", //end cty
     cf: "country:Central African Republic;stripes:#003082|#fff|#289728|#ffce00;bar:260,120,#d21034;star:#ffce00,5,-5,4", //end cty
@@ -1039,7 +1039,7 @@
     cw: "country:Curacao;bgcolor:#002680;stripe:320,60,#f9e90d;star:#fff,10,3,4;use:30,10,5", //end cty
 
     //todo path with green landscape and yellow bird
-    cx: "country:Christmas Island;detail:40;bgcolor:#1c8a42;triangle:0,0,640,480,0,480,#0021ad;circle:320,240,80,#ffc639;southerncross:#fff", //end cty
+    cx: "country:Christmas Island;detail:40;bgcolor:#1c8a42;triangle:0,0,640,480,0,480,#0021ad;circle:320,240,80,#ffc639;scross:#fff", //end cty
 
     cy: "country:Cyprus;detail:80;bgcolor:;#fff;path:#d47600,m519 76c-51 18-94 52-148 62-35 9-73 13-108 1-22-4-23 24-31 37-15 13-35-5-52 4l-48 32c-4 16 11 31 18 44 14 18 38 27 59 21 16 3 36 22 48 3 15-14 36-11 54-15 21-6 42-19 52-40 12-13 31-2 46-4 22-3 10-28-2-36-12-19 11-37 27-44a1770 1770 0 0 0 85-65;path:#435125,m308 399c-5-1-11-9-8-14 8-6 16 10 8 14zm-43-13c-9 3-9-15 0-13 8-1 11 16 1 13zm-23-5c-7-1 0-5 2-1h-1zm41-5c-8 3-18-4-19-12 4-6 12-2 15 3 2 3 2 7 4 9zm-28-3c-8 6-10-13-2-10 4 0 10 11 2 10zm-29-1c-8 7-15-12-4-12 6 0 14 11 4 12zm-20-10c-6-1 3-4 1-1zm46-1c-6-1 4-3 0 0zm-22-1c-7 3-17-1-19-9 7-7 14 5 19 9zm13-2c-8 4-18-4-16-12 8-4 14 6 16 12zm-52-5c-9 6-12-14-1-11 5 1 11 14 1 11zm24-8c-6-1 6-4 0 0zm-18-3c-8 3-17-7-14-15 9-1 11 9 14 15zm12 0c-8-1-15-9-15-17 9-3 13 8 14 15v1zm-30-1c-7 0 5-4 0 0zm-9-11c-7 8-15-12-4-10 4 1 8 6 4 10zm11-11c-8 3-2-15 1-6l-1 6zm-8 0c-10 2-18-8-18-17 4-7 14-1 16 5l2 12,a;<use transform='matrix(-1 0 0 1 594 0)' href='#a'/>", //end cty
     cz: "country:Czech Republic;striangle:#fff|#d7141a,#11457e,320", //end cty
@@ -1456,7 +1456,7 @@
     pf: "country:French Polynesia;detail:60;stripes:#de2010|#fff|#fff|#de2010;circle:320,240,80,orange;path:blue,M240 240 a1 1 0 0 0 160 0", //end cty
 
     //todo simplify bird        //savebytes
-    pg: "country:Papua New Guinea;bgcolor:#ce1126;triangle:0,0,640,480,0,480,#000;southerncross:#fff,20,-50,1.3;path:#fcd116,M387 119c-2-6-9-8-13-6h-27l16 6c4 12 18 14 18 14-31 2-39 7-54 35-4 14-15 13 5 13-12 9 4 4 11 3-7 6 13 0 15 0-7 9 12-2 16-3 9 7 7 6 9-4 11 3 9 3 11-7 13 18 18 36 42 40-7-17 10-4 18 0 2-8 13 5 26 5 0-6-9-16 0-9-1-11-13-20 0-16l-8-13c6-2 3-4 2-9 48 8 32 61-9 55 28 14 46 1 58-22 14 31-9 49-40 53 65 9 61-38 35-77-1-11-6-12 5-9-6-10-10-20-14-31h5c-3-7-25-22-14-22-5-7-35-17-20-22-15-10-45 14-39 0-7 0-5-1-5-7 6-7 6-5-2-9 2-9 9-14-2-8 2-13 5-12-7-9 4-6 4-11 4-18-46-2-21 77-42 77", //end cty
+    pg: "country:Papua New Guinea;bgcolor:#ce1126;triangle:0,0,640,480,0,480,#000;scross:#fff,20,-50,1.3;path:#fcd116,M387 119c-2-6-9-8-13-6h-27l16 6c4 12 18 14 18 14-31 2-39 7-54 35-4 14-15 13 5 13-12 9 4 4 11 3-7 6 13 0 15 0-7 9 12-2 16-3 9 7 7 6 9-4 11 3 9 3 11-7 13 18 18 36 42 40-7-17 10-4 18 0 2-8 13 5 26 5 0-6-9-16 0-9-1-11-13-20 0-16l-8-13c6-2 3-4 2-9 48 8 32 61-9 55 28 14 46 1 58-22 14 31-9 49-40 53 65 9 61-38 35-77-1-11-6-12 5-9-6-10-10-20-14-31h5c-3-7-25-22-14-22-5-7-35-17-20-22-15-10-45 14-39 0-7 0-5-1-5-7 6-7 6-5-2-9 2-9 9-14-2-8 2-13 5-12-7-9 4-6 4-11 4-18-46-2-21 77-42 77", //end cty
 
     //todo smaller offset triangle
     ph: "country:Philippines;striangle:#0038a8|#ce1126,#fff,400;rotate:8,<path fill='#fcd116' d='m-25 -40-22-32h-7l26 34c-1 1-1 1-2 2l-31-35h-9v8l36 31-2 3-35-26v7l33 21'/>,140;star:#fcd116,-10,18,2,-30;use:190,35,2,20;use:-10,190,2,-5;circle:140,240,50,#fcd116", //end cty
@@ -1668,8 +1668,8 @@
       "star:#f8c300,200,80,1.5;" +
       "use:170,90,1.5;use:230,90,1.5;use:150,115,1.5;use:250,115,1.5;use:140,150,1.5;use:260,150,1.5", //end cty
 
-    //todo abstract shapes, better southerncross
-    tk: "country:Tokelau;bgcolor:#00247d;path:#fed100,M108 355c134-90 266-195 401-259-39 96-11 201 67 254 7-2 34 9 12 8l-480-3zm-4 6c10 27 42 8 62 13l437 6c-4-24-32-15-48-14-152-3-311-3-451-5;southerncross:#fff,30,-99", //end cty
+    //todo abstract shapes, better scross
+    tk: "country:Tokelau;bgcolor:#00247d;path:#fed100,M108 355c134-90 266-195 401-259-39 96-11 201 67 254 7-2 34 9 12 8l-480-3zm-4 6c10 27 42 8 62 13l437 6c-4-24-32-15-48-14-152-3-311-3-451-5;scross:#fff,30,-99", //end cty
 
     tl: "country:Timor Leste;striangle:#dc241f|#dc241f,#ffc726,500;triangle:0,0,300,240,0,480,#000;star:#fff,-10,23,6,-25", //end cty
 
@@ -1708,7 +1708,7 @@
     vn: "country:Vietnam;bgcolor:#da251d;star:#ff0,15,0,12", //end cty
     vu: "country:Vanuatu;detail:80;stripes:#d21034|#009543;path:#000,M0 0l330 212h394v56H330L0 480V0;pathstroke:m-40 15L320 240h460h-460L-40 465,#000,20,#fdce12;circle:100,240,55,#000,20,#fdce12", //end cty
     wf: "country:Wallis and Futuna;flag:fr", //end cty
-    ws: "country:Samoa;bgcolor:#ce1126;rect:0,0,320,240,#002b7f;southerncross:#fff,50,-150,1", //end cty
+    ws: "country:Samoa;bgcolor:#ce1126;rect:0,0,320,240,#002b7f;scross:#fff,50,-150,1", //end cty
 
     //savebytes todo simplify path for country outline
     xk: "country:Republic of Kosovo;detail:80;bgcolor:#244aa5;star:#fff,70,40,2;use:100,30,2;use:130,20,2;use:160,20,2;use:190,30,2;use:220,40,2;path:#d0a650,M253 225c15 5 22-13 24-23 11-6 26-21 17-34-14-12 13-18 22-17 12 2 2 21 17 20 13 2 28 3 33 17 8 12 15 27 30 32 10 4 1 30 19 25 11 5 27 6 36 13-2 19-20 31-23 49-19-4 1 25-13 21-14-2-26 9-29 22-7 18-17-8-26-10-11-2-17 13-29 14-10 4-24 10-22 23 7 14-10 31-21 19-7-11 3-23-4-35-3-14-9-30-23-38-19 0-27-19-34-33-9-9-13-24-13-33-19 0-10-30 5-19 14 5 21-15 34-13", //end cty
@@ -1997,7 +1997,7 @@
                 //     //serialize SVG document back to svg string and wrap in our FlagMeister SVG structure
                 //     svg=this.svg((new XMLSerializer()).serializeToString(docSVG.children[0]));
                 // }
-                flag.img.style.width = "100%";
+                //flag.img.style.width = "100%";
                 flag.img.src =
                   "data:image/svg+xml," +
                   svg
