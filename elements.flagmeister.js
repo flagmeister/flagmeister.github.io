@@ -1061,7 +1061,7 @@
     ee: "country:Estonia;stripes:#0072ce||#fff", //end cty
 
     //todo detailH golden eagle on white bar
-    eg: "country:Egypt;detail:60;stripes:#ce1126|#fff| ", //end cty
+    eg: "country:Egypt;detail:60;stripes:#ce1126|#fff|#000", //end cty
 
     eh: "country:Western Sahara;striangle:|#fff|#107b00,#c4111b;circle:400,240,70,#c4111b;circle:420,240,69,#fff;star:#c4111b,90,40,4", //end cty
 
