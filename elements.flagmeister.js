@@ -260,8 +260,7 @@
       anchor = "middle", // start,end,middle
     }
   ) =>
-    `<text x='${x}' y='${y}' font-size='${size}' ${
-      fill ? `fill='${fill}'` : ""
+    `<text x='${x}' y='${y}' font-size='${size}' ${fill ? `fill='${fill}'` : ""
     } ${$stroke_W_Color(
       width,
       stroke
@@ -275,8 +274,7 @@
     strokewidth,
     stroke
   ) =>
-    `<circle cx='${x}' cy='${y}' r='${r}' ${
-      fill ? `fill='${fill}'` : ""
+    `<circle cx='${x}' cy='${y}' r='${r}' ${fill ? `fill='${fill}'` : ""
     } ${$stroke_W_Color(strokewidth, stroke)}/>`;
 
   let commands = {
@@ -331,19 +329,19 @@
         [...Array(~~times).keys()].map((n) =>
           max > n
             ? $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
-                SVG_part,
-                //flagparser(part.replace(/|/g, ','))
-                //todo proces as: flagparser(part)
-                //but part can NOT have commas in 'path:#fff,M100 0c10 10', so need to be escaped somehow
+              SVG_part,
+              //flagparser(part.replace(/|/g, ','))
+              //todo proces as: flagparser(part)
+              //but part can NOT have commas in 'path:#fff,M100 0c10 10', so need to be escaped somehow
 
-                center_x,
-                center_y,
-                startdegree + (n * 360) / times, // rotate
-                partscale
-                //, id
-                //, strokewidth
-                //, stroke
-              )
+              center_x,
+              center_y,
+              startdegree + (n * 360) / times, // rotate
+              partscale
+              //, id
+              //, strokewidth
+              //, stroke
+            )
             : ""
         ).join``, //Content
 
@@ -369,8 +367,7 @@
       ).join``,
 
     flag: (isoref, scale = 1, x = 0, y = 0) =>
-      `<g id='${isoref}' transform='translate(${x} ${y})'><g transform='scale(${
-        1 / scale
+      `<g id='${isoref}' transform='translate(${x} ${y})'><g transform='scale(${1 / scale
       })'>${flagparser(flags[isoref])}</g></g>`,
 
     // ! todo create patchwork flag
@@ -465,13 +462,13 @@
     scross: (color, x = 0, y = 0, scale = 1) =>
       $GTransform_Content_X_Y_Rot_Scale_Id_SW_Stroke(
         $S_Color_X_Y_Scale___Rotate0(color) +
-          [
-            [40, 70, 2],
-            [10, 110, 2],
-            [70, 100, 2],
-            [110, 275, 1],
-            [40, 160, 2],
-          ].map((stars) => $U_use_X_Y___scale1_rot0(...stars)),
+        [
+          [40, 70, 2],
+          [10, 110, 2],
+          [70, 100, 2],
+          [110, 275, 1],
+          [40, 160, 2],
+        ].map((stars) => $U_use_X_Y___scale1_rot0(...stars)),
         x,
         y,
         0,
@@ -561,47 +558,47 @@
         //make 640:480 a square flag with scale(.75 1)
         flagparser(
           "<g transform='scale(.75 1)'>;" +
-            {
-              a: "bars:#fff|#00f",
-              b: "bgcolor:#f00",
-              c: "stripes:#00f|#fff|red|#fff|#00f",
-              d: "stripes:#ff0|#00f|#00f|#00f|#ff0",
-              e: "stripes:#00f|#f00",
-              j: "stripes:#00f|#fff|#00f",
-              f: "bgcolor:#fff;path:#f00,M320 0l320 240l-320 240l-320-240z",
-              g: "bars:#ff0|#00f|#ff0|#00f|#ff0|#00f",
-              h: "bars:#fff|#f00",
-              i: "bgcolor:#ff0;circle:320,240,140,#000",
-              k: "bars:#ff0|#00f",
-              l: "bgcolor:#000;path:#ff0,m0 240V0h320v480h320V240z",
-              m: "crossx:#00f,#fff",
-              // white/blue checker : white background, blue id='s'
-              n: "bgcolor:#fff;path:#00f,m0 0h160v120h-160z,s;use:320;use:160,120;use:480,120;use:0,240;use:320,240;use:160,360;use:480,360",
-              o: "bgcolor:#ff0;path:#f00,m0 0h640v480z",
-              p: "bgcolor:#00f;rect:140,120,340,240,#fff",
-              q: "bgcolor:#ff0",
-              r: "bgcolor:#f00;doublecross:0,0,#ff0",
-              s: "bgcolor:#fff;rect:140,120,340,240,#00f",
-              t: "bars:#f00|#fff|#00f",
-              u: "bgcolor:;path:#f00,m0 240V0h320v480h320V240z",
-              v: "crossx:#fff,#f00",
-              w: "bgcolor:#00f;pathstroke:m160 140h320v200h-320z,#f00,100,#fff",
-              x: "bgcolor:;doublecross:0,0,#00f",
-              y: "bgcolor:#ff0;path:#f00,m10 520l700-520,s,80,#f00;use:-110,-110;use:-220,-220;use:110,110;use:220,220",
-              z: "bgcolor:#000;triangle:320,240,0,0,640,0,#ff0;triangle:320,240,640,480,640,0,#00f;triangle:320,240,640,480,0,480,#f00",
+          {
+            a: "bars:#fff|#00f",
+            b: "bgcolor:#f00",
+            c: "stripes:#00f|#fff|red|#fff|#00f",
+            d: "stripes:#ff0|#00f|#00f|#00f|#ff0",
+            e: "stripes:#00f|#f00",
+            j: "stripes:#00f|#fff|#00f",
+            f: "bgcolor:#fff;path:#f00,M320 0l320 240l-320 240l-320-240z",
+            g: "bars:#ff0|#00f|#ff0|#00f|#ff0|#00f",
+            h: "bars:#fff|#f00",
+            i: "bgcolor:#ff0;circle:320,240,140,#000",
+            k: "bars:#ff0|#00f",
+            l: "bgcolor:#000;path:#ff0,m0 240V0h320v480h320V240z",
+            m: "crossx:#00f,#fff",
+            // white/blue checker : white background, blue id='s'
+            n: "bgcolor:#fff;path:#00f,m0 0h160v120h-160z,s;use:320;use:160,120;use:480,120;use:0,240;use:320,240;use:160,360;use:480,360",
+            o: "bgcolor:#ff0;path:#f00,m0 0h640v480z",
+            p: "bgcolor:#00f;rect:140,120,340,240,#fff",
+            q: "bgcolor:#ff0",
+            r: "bgcolor:#f00;doublecross:0,0,#ff0",
+            s: "bgcolor:#fff;rect:140,120,340,240,#00f",
+            t: "bars:#f00|#fff|#00f",
+            u: "bgcolor:;path:#f00,m0 240V0h320v480h320V240z",
+            v: "crossx:#fff,#f00",
+            w: "bgcolor:#00f;pathstroke:m160 140h320v200h-320z,#f00,100,#fff",
+            x: "bgcolor:;doublecross:0,0,#00f",
+            y: "bgcolor:#ff0;path:#f00,m10 520l700-520,s,80,#f00;use:-110,-110;use:-220,-220;use:110,110;use:220,220",
+            z: "bgcolor:#000;triangle:320,240,0,0,640,0,#ff0;triangle:320,240,640,480,640,0,#00f;triangle:320,240,640,480,0,480,#f00",
 
-              0: "bgcolor:;cross:#00f,140,100,100;cross:#00f,500,100,100;cross:#00f,140,380,100;cross:#00f,500,380,100;cross:#00f,320,240,100",
-              1: "stripes:#f00|#ff0|#f00",
-              2: "stripes:#ff0|#f00|#ff0",
-              3: "stripes:#00f|#f00|#00f",
-              4: "crossx:#f00,#fff",
-              5: "crossx:#ff0,#00f",
-              6: "bgcolor:#fff;path:#00f,m0 480l640-480,s,100,#00f;use:-140,-140;use:140,140",
-              7: "bars:#f00|#fff|#f00",
-              8: "bars:#ff0|#00f|#ff0",
-              9: "bars:#00f|#fff|#00f",
-            }[element.getAttribute("char")] +
-            `;</g>`
+            0: "bgcolor:;cross:#00f,140,100,100;cross:#00f,500,100,100;cross:#00f,140,380,100;cross:#00f,500,380,100;cross:#00f,320,240,100",
+            1: "stripes:#f00|#ff0|#f00",
+            2: "stripes:#ff0|#f00|#ff0",
+            3: "stripes:#00f|#f00|#00f",
+            4: "crossx:#f00,#fff",
+            5: "crossx:#ff0,#00f",
+            6: "bgcolor:#fff;path:#00f,m0 480l640-480,s,100,#00f;use:-140,-140;use:140,140",
+            7: "bars:#f00|#fff|#f00",
+            8: "bars:#ff0|#00f|#ff0",
+            9: "bars:#00f|#fff|#00f",
+          }[element.getAttribute("char")] +
+          `;</g>`
         )
       ),
       ics: () => (
@@ -641,8 +638,7 @@
         $p_path_Color_D__id_strokewidth_stroke_color_transform(
           "#000",
           // heart centers on flag by default: 350
-          `m${
-            350 + ~~element.box.split` `[0]
+          `m${350 + ~~element.box.split` `[0]
           } 31a122 122 0 0 0-111 69 122 122 0 0 0-233 52c0 128 233 297 233 297s233-169 233-297a122 122 0 0 0-122-122`,
           attrs
         ),
@@ -675,10 +671,8 @@
         spot = "transparent",
         focus = 15,
       }) =>
-        `<filter id='ff'><feGaussianBlur in='SourceAlpha' stdDeviation='${blur}' result='f'></feGaussianBlur><feOffset dy='${offset}' dx='${offset}'></feOffset><feComposite in2='f' operator='arithmetic' k2='-1' k3='1' result='a'></feComposite><feFlood flood-color='${color1}'></feFlood><feComposite in2='a' operator='in'></feComposite><feComposite in2='SourceGraphic' result='b' operator='over'></feComposite><feGaussianBlur in='b' stdDeviation='${blur}'></feGaussianBlur><feOffset dy='${
-          -2 * offset
-        }' dx='${
-          -2 * offset
+        `<filter id='ff'><feGaussianBlur in='SourceAlpha' stdDeviation='${blur}' result='f'></feGaussianBlur><feOffset dy='${offset}' dx='${offset}'></feOffset><feComposite in2='f' operator='arithmetic' k2='-1' k3='1' result='a'></feComposite><feFlood flood-color='${color1}'></feFlood><feComposite in2='a' operator='in'></feComposite><feComposite in2='SourceGraphic' result='b' operator='over'></feComposite><feGaussianBlur in='b' stdDeviation='${blur}'></feGaussianBlur><feOffset dy='${-2 * offset
+        }' dx='${-2 * offset
         }'></feOffset><feComposite in2='b' operator='arithmetic' k2='-1' k3='1' result='c'></feComposite><feFlood flood-color='${color2}'></feFlood><feComposite in2='c' operator='in'></feComposite><feComposite in2='b' operator='over' result='d'></feComposite><feSpecularLighting result='e' in='d' specularExponent='${focus}' lighting-color='${spot}'><fePointLight x='${x}' y='${y}' z='${z}'/></feSpecularLighting><feComposite in2='e' in='d' operator='arithmetic' k1='0' k2='1' k3='1' k4='0'/></filter>`,
       //TEXT
 
@@ -712,46 +706,45 @@
       ) =>
         flagparser(
           `<g id='c' transform='translate(${x} ${y}) scale(${scale})'>;` +
-            // <!-- innerLiningColor (red=spain) in crown -->
-            `pathstroke:M206 175l16 2a32 32 0 0 0 15 2l10 2a27 27 0 0 1 7 5l-2 1v4l-4 5-2 2-5 4h-3l-1 2-32-4-32 4-1-2h-2l-5-4-2-2-4-4-1-4-1-2a28 28 0 0 1 7-4 26 26 0 0 1 10-3h7a30 30 0 0 0 8-2l15-2M177 213 c30 5 30 5 60 0c-30 -5 -30 -5 -60 0,${innerLiningColor},.3,#000;` +
-            // white pearlDefinition for <use href="#s"
-            `<circle id='s' cx='155' cy='186' r='${pearlSize}' fill='#fff'/>;` +
-            // <!-- left arches -->
-            `<g id='a' stroke='#000' stroke-width='.4'>;` +
-            // <!-- Gold curved rim -->//todo move into arches below
-            `pathstroke:M206 192s1 9-6 8l-4-2c-2 4-8 4-11 1-1 2-4 3-6 3l-3-1-3 3-4-1-6-6s7 6 10 5c2-1 2-5 2-5s2 4 4 4c3 0 5-9 5-9 0 3 4 7 6 7 3 0 5-6 5-6s3 5 5 5c3 0 6-3 5-6  ${crownRimBaseGold},#f1bf00,.4,#000;` +
-            // <!-- golden arches and flowers --> <!-- arches -->
-            `path:#f1bf00,M183 184l2 3v-1h1v4l-1 1-4-1-1-3h2l1-3m-2 8l-3-1v1l-3 2 4 1v1h1l2-1m4-2l-1-2 2-1 3-1v1l3 1-3 2 1 1h-3l-2-1m20-12v8h-2v-1l-2-4 2 1 2-4m-1 11l-1-1v-2l-5-2v1l1 1-4 2 4 1-1 1v1h1l5-2m-39 6l-1-1h-2l-2-3h-4c0-2 1-3 3-3l3 1v-1l2 2v2l3-2 1 1 4 1-3 2h1l1 1h-6M182 184c2 2 4-3 1-3-2-3-3-8 0-10 4-4 10-4 15-2 1 1 5 0 3-1-2-2-4-1-6-2-5 0-10 1-14 4-3 3-3 9 0 12v3m1-1c-4-2-5-9-2-12 0-1 3-3 2-1-3 3-2 9 1 12l-1 2m-22 2c-4-4-2-11 3-14 4-3 10-3 16-3 1-1 2 2 0 1-5 0-10 0-15 3-2 1-4 4-4 7s4 4 2 7c0 1-4 3-3 0l2-2m2-13c-4 2-7 8-4 12 2 2-1 6-2 3-2-4-1-11 4-13l1-1;` +
-            // <!-- red circles in flower -->
-            `circle:183,192,2,${rubyColor};circle:163,197,2,${rubyColor};` +
-            // <!-- diamond red jewel -->
-            `path:${rubyColor},M174 209l2-2 3.3.4-3 2-2-1;` +
-            // <!-- green jewels -->
-            `path:#058e6e,M187 207l2-2 3.3.4-3 2-2-1;` +
-            // <!-- red jewels -->
-            `circle:206,205,3,${rubyColor};` +
-            // <!-- white pearls circle #s -->
-            `use:1,4;use:0,-4;use:1,-8;use:3,-12;use:6,-15;use:10,-17;use:14,-18;use:19,-18;use:23,-18;` + //outer rim
-            `use:26,-2;use:24,-6;use:23,-10;use:24,-14;use:28,-20;use:32,-22;use:37,-22;use:42,-22;use:20,10;use:40,8;` + //inner rim
-            basePearls + //center
-            // <!-- end crown jewels -->
+          // <!-- innerLiningColor (red=spain) in crown -->
+          `pathstroke:M206 175l16 2a32 32 0 0 0 15 2l10 2a27 27 0 0 1 7 5l-2 1v4l-4 5-2 2-5 4h-3l-1 2-32-4-32 4-1-2h-2l-5-4-2-2-4-4-1-4-1-2a28 28 0 0 1 7-4 26 26 0 0 1 10-3h7a30 30 0 0 0 8-2l15-2M177 213 c30 5 30 5 60 0c-30 -5 -30 -5 -60 0,${innerLiningColor},.3,#000;` +
+          // white pearlDefinition for <use href="#s"
+          `<circle id='s' cx='155' cy='186' r='${pearlSize}' fill='#fff'/>;` +
+          // <!-- left arches -->
+          `<g id='a' stroke='#000' stroke-width='.4'>;` +
+          // <!-- Gold curved rim -->//todo move into arches below
+          `pathstroke:M206 192s1 9-6 8l-4-2c-2 4-8 4-11 1-1 2-4 3-6 3l-3-1-3 3-4-1-6-6s7 6 10 5c2-1 2-5 2-5s2 4 4 4c3 0 5-9 5-9 0 3 4 7 6 7 3 0 5-6 5-6s3 5 5 5c3 0 6-3 5-6  ${crownRimBaseGold},#f1bf00,.4,#000;` +
+          // <!-- golden arches and flowers --> <!-- arches -->
+          `path:#f1bf00,M183 184l2 3v-1h1v4l-1 1-4-1-1-3h2l1-3m-2 8l-3-1v1l-3 2 4 1v1h1l2-1m4-2l-1-2 2-1 3-1v1l3 1-3 2 1 1h-3l-2-1m20-12v8h-2v-1l-2-4 2 1 2-4m-1 11l-1-1v-2l-5-2v1l1 1-4 2 4 1-1 1v1h1l5-2m-39 6l-1-1h-2l-2-3h-4c0-2 1-3 3-3l3 1v-1l2 2v2l3-2 1 1 4 1-3 2h1l1 1h-6M182 184c2 2 4-3 1-3-2-3-3-8 0-10 4-4 10-4 15-2 1 1 5 0 3-1-2-2-4-1-6-2-5 0-10 1-14 4-3 3-3 9 0 12v3m1-1c-4-2-5-9-2-12 0-1 3-3 2-1-3 3-2 9 1 12l-1 2m-22 2c-4-4-2-11 3-14 4-3 10-3 16-3 1-1 2 2 0 1-5 0-10 0-15 3-2 1-4 4-4 7s4 4 2 7c0 1-4 3-3 0l2-2m2-13c-4 2-7 8-4 12 2 2-1 6-2 3-2-4-1-11 4-13l1-1;` +
+          // <!-- red circles in flower -->
+          `circle:183,192,2,${rubyColor};circle:163,197,2,${rubyColor};` +
+          // <!-- diamond red jewel -->
+          `path:${rubyColor},M174 209l2-2 3.3.4-3 2-2-1;` +
+          // <!-- green jewels -->
+          `path:#058e6e,M187 207l2-2 3.3.4-3 2-2-1;` +
+          // <!-- red jewels -->
+          `circle:206,205,3,${rubyColor};` +
+          // <!-- white pearls circle #s -->
+          `use:1,4;use:0,-4;use:1,-8;use:3,-12;use:6,-15;use:10,-17;use:14,-18;use:19,-18;use:23,-18;` + //outer rim
+          `use:26,-2;use:24,-6;use:23,-10;use:24,-14;use:28,-20;use:32,-22;use:37,-22;use:42,-22;use:20,10;use:40,8;` + //inner rim
+          basePearls + //center
+          // <!-- end crown jewels -->
 
-            // <!-- blue circle --> <!-- yellow cross -->
-            `circle:206,161,5,#005bbf;path:#f1bf00,M205 151v2h-2v2h2v4h-4v2h10v-2h-4v-4h2v-2h-2v-2z;` +
-            // <!-- gold center arch -->
-            `pathstroke:m209.5 166 1.5 13 -5 5 -5-5 1.5-13,#f1bf00,.4,#000;` +
-            // <!-- center white jewels -->
-            `use:-17.5,-70,1.5;` +
-            `</g>` + // end left crown
-            // <!-- right arches -->
-            `<use transform='scale(-1 1)' href='#a' x='-412'/>` +
-            `</g>;` //<!-- end big crown -->
+          // <!-- blue circle --> <!-- yellow cross -->
+          `circle:206,161,5,#005bbf;path:#f1bf00,M205 151v2h-2v2h2v4h-4v2h10v-2h-4v-4h2v-2h-2v-2z;` +
+          // <!-- gold center arch -->
+          `pathstroke:m209.5 166 1.5 13 -5 5 -5-5 1.5-13,#f1bf00,.4,#000;` +
+          // <!-- center white jewels -->
+          `use:-17.5,-70,1.5;` +
+          `</g>` + // end left crown
+          // <!-- right arches -->
+          `<use transform='scale(-1 1)' href='#a' x='-412'/>` +
+          `</g>;` //<!-- end big crown -->
         ),
 
       gb: (bgcolor = "#00247d", scale = 2) =>
         flagparser(
-          `bgcolor:${bgcolor};<defs><clipPath id='c'>;rect:0,0,640,480;</clipPath></defs><g transform='scale(${
-            1 / scale
+          `bgcolor:${bgcolor};<defs><clipPath id='c'>;rect:0,0,640,480;</clipPath></defs><g transform='scale(${1 / scale
           })' clip-path='url(#c)'>;rect:0,0,640,480,#00247d;pathstroke:M0 0l640 480m-640 0l640 -480,,90,#fff;pathstroke:M-20-5L320 255M660-30L320 230M660 485L320 235M-20 510L320 250,,40,#cf142b;doublecross:0,0,#fff,#cf142b,99,60;</g>`
         ),
 
@@ -759,62 +752,61 @@
       // how:make path relative (no capitals in path)
       us: (scale = 0.85) =>
         flagparser(
-          `stripes:#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234;rect:0,0,${
-            360 * scale
+          `stripes:#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234|#fff|#b22234;rect:0,0,${360 * scale
           },257,#3c3b6e;<g transform='scale(${scale} 1)'>;` +
-            // all stars
-            "path:#fff," +
-            "m30 11 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
-            "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11" +
-            ";</g>"
+          // all stars
+          "path:#fff," +
+          "m30 11 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m-275 26 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11z" +
+          "m61 0 3 10h11l-9 7 3 10-9-6-9 6 3-10-9-7h11" +
+          ";</g>"
         ),
     }; //presets
 
@@ -834,16 +826,16 @@
           if (typeof preset === "function")
             return Array.isArray(args)
               ? preset.call(
-                  element,
-                  ...args.map((s) =>
-                    s === "0"
-                      ? 0
-                      : Number(s) ||
-                        (s.includes("|")
-                          ? s.split`|` // split array values
-                          : s)
-                  )
-                ) // flagparser array param??
+                element,
+                ...args.map((s) =>
+                  s === "0"
+                    ? 0
+                    : Number(s) ||
+                    (s.includes("|")
+                      ? s.split`|` // split array values
+                      : s)
+                )
+              ) // flagparser array param??
               : preset.call(element, args);
           // pass remaining string as parameters
           else return preset;
@@ -1776,7 +1768,8 @@
     //missing detail: overlapping colors patches
     olympic:
       "country:Olympic;bgcolor:;circle:125,200,80,none,15,#0885c2;circle:315,200,80,none,15,#000;circle:500,200,80,none,15,#ed334e;circle:220,275,80,none,15,#fbb132;circle:405,275,80,none,15,#1c8b3c", //end cty
-
+    // added 2024 for Paris 2024 olympics
+    ain: "country:Individual Neutral Athlete;bgcolor:#00afa8;circle:320,240,150,#fff;circle:320,240,100,#fff,8,#00afa8;<text x='37%' y='57%' fill='#00afa8' font-family='arial' font-size='100'>AIN</text>",
     // Reference signal and ics definition in presets
     signal: "signal",
     ics: "ics",
@@ -1884,20 +1877,16 @@
               //, log = console.log(svg, commands)
             ) {
               return (
-                `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${
-                  this.box
-                }'><defs><clipPath id='clip'>${
-                  clip === "0" ? "" : clip
+                `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${this.box
+                }'><defs><clipPath id='clip'>${clip === "0" ? "" : clip
                 }</clipPath></defs>` +
                 (filter || "") +
                 //additional filter can be wrapped in extra <g>
                 //+ `<filter id='f1'><feGaussianBlur stdDeviation='0'></feGaussianBlur></filter>`
 
                 // extra group so filter is also applied to clip-path itself
-                `<g ${
-                  filter ? `filter='url(#ff)'` : ""
-                }><g clip-path='url(#clip)' transform='${
-                  this["transform"]
+                `<g ${filter ? `filter='url(#ff)'` : ""
+                }><g clip-path='url(#clip)' transform='${this["transform"]
                 }'>${svg}${this.draw}</g></g></svg>`
               );
             }
@@ -2075,14 +2064,12 @@
           `<style>[word='${word}']{display:flex;justify-content:flex-start}[word='${word}'] img{width:auto;height:${height};filter:var(--flagmeistertextfilter,drop-shadow(1px 1px 0 grey) drop-shadow(-1px -1px 0 #fff) drop-shadow(4px 4px 2px #000))</style>` +
           [...word].map(
             (str, idx) =>
-              `<flag-${
-                isos[idx] || isos[0]
+              `<flag-${isos[idx] || isos[0]
               } detail=9999 letter=${str} clip='text:${JSON.stringify({
                 str: str == "_" ? " " : str, // change _ to space
                 y: word.match(/[gjqyQ]/) ? 355 : 420,
                 ...JSON.parse(flag.getAttribute("text")), // user overrules settings
-              })}' filter=light box='150 0 340 480'></flag-${
-                isos[idx] || isos[0]
+              })}' filter=light box='150 0 340 480'></flag-${isos[idx] || isos[0]
               }>`
           ).join``;
       } // connectedCallback
