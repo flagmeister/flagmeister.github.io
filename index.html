@@ -1745,7 +1745,7 @@ light: ({
         let replaceHTML = (sel, x) =>
           [...document.querySelectorAll(sel)].map((el) => (el.innerHTML = x));
         replaceHTML(".flagmeister_flagcount", flags.length);
-        replaceHTML(".flagmeister_size", 29);
+        replaceHTML(".flagmeister_size", 30);
         [...document.querySelectorAll("textarea")].map(
           (o) => (o.style.height = o.scrollHeight + "px")
         );
@@ -1775,6 +1775,13 @@ light: ({
       });
     };
   </script>
+<section id="filesize">
+  <script src="//file-size.github.io/element.js"></script>
+  <h1>Flagmeister minified GZIP Filesize is <i>small</i></h1>
+  <p>And could be placed as <b>inline code</b> inside the &lt;head> of your HTML page</p>
+  <file-size gz src="https://flagmeister.github.io/elements.flagmeister.min.js"></file-size>
+</section>
+
 </body>
 
 </html>

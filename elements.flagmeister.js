@@ -12,7 +12,6 @@
   //------------------------------------------------------------
 
   // TODO:
-  // Publish to CDNJS - https://github.com/cdnjs/cdnjs/blob/master/CONTRIBUTING.md
   // flags with less detail:argentina (face in sun),angola details in knife
   // replace #000 in stripes,bars with 0 (illegal color) - saves 35 Bytes
 
@@ -20,7 +19,7 @@
   // lazy load delay
 
   // replace "M  with "m
-  // replace [0] and [1] with destructering
+  // replace [0] and [1] with destructuring
   // todo use index number reference to use previous color
 
   // usetransform:(transform,id)=><use transform='${transform}' href='${id}'/>
@@ -598,7 +597,7 @@
             8: "bars:#ff0|#00f|#ff0",
             9: "bars:#00f|#fff|#00f",
           }[element.getAttribute("char")] +
-          `;</g>`
+          ";</g>"
         )
       ),
       ics: () => (
@@ -644,7 +643,7 @@
         ),
 
       //todo: still used??
-      overlay: `<use href='#overlay'/>`,
+      overlay: "<use href='#overlay'/>",
 
       border: (width, color) =>
         `<use href='#outline' ${$stroke_W_Color(width, color)}/>`,
@@ -1085,8 +1084,12 @@
       "</g>;" + //end pillar
       // <!-- right pillar -->
       "use:-413,0,-1 1,0,l;" + //"<use transform='scale(-1 1)' href='#l' x='-413'/>;"
-      'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};' +
-      'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};' +
+
+      //'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};' +
+      //'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};' +
+      `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'PLVS','x':137};` +
+      `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'ULTRA','x':278};` +
+
       //   <!-- big shield outline -->
       //+ "pathstroke:M207 330.6a82 82 0 01-35.5-8 23 23 0 01-13-20v-32h96v32a23 23 0 01-13 20 81 81 0 01-35 8,#ccc,.5,#000;"
       "shield:#ccc,66,158,217,.5,#000;" +
@@ -1803,7 +1806,6 @@
             attributeChangedCallback(name, oldValue, newValue) {
               if (this.img && oldValue !== newValue) this.load();
             }
-
             constructor(flag) {
               flag = super();
 
@@ -1893,10 +1895,10 @@
             connectedCallback() {
               let flag = this;
               //this.iso = iso;
-              log(
-                `%c created <flag-${iso}>`,
-                `background:lightgreen;color:black`
-              );
+              // log(
+              //   `%c created <flag-${iso}>`,
+              //   `background:lightgreen;color:black`
+              // );
               flag.setAttribute("is", "flag-" + iso); // force is attribute after using createElement
 
               flag.img = flag; //! Customized Built-In
@@ -1950,7 +1952,7 @@
                       this.info = response_data[0]; //store countryinfo
                       fetchdata(response_data[0].flags.svg);
                     } else {
-                      console.error("No flag found for", iso, response_data);
+                      console.error("No flag", iso, response_data);
                       //error
                     }
                   }
@@ -2020,14 +2022,14 @@
                   }
                 }); // END ResizeObserver
                 if (flag.detail && flag.detail != "9999") {
-                  log(
-                    "Attach Observer:",
-                    iso,
-                    flag.nodeName,
-                    flag.detail,
-                    flag.clientWidth,
-                    flag.source
-                  );
+                  // log(
+                  //   "Attach Observer:",
+                  //   iso,
+                  //   flag.nodeName,
+                  //   flag.detail,
+                  //   flag.clientWidth,
+                  //   flag.source
+                  // );
                   flag.O.observe(flag.img); //! Observe the IMG, NOT <flag-nl>
                 }
               };
@@ -2045,10 +2047,8 @@
     } //createCustomElement
   ); //map iso flags
 
-  window.console.log(
-    `FlagMeister created ${flagsmap.length} <flag-[iso]> elements`
-  );
-  window.console.log(`FlagMeister created <flagmeister-text>`);
+  // window.console.log(`FlagMeister created ${flagsmap.length} <flag-[iso]> elements`);
+  // window.console.log(`FlagMeister created <flagmeister-text>`);
 
   customElements.define(
     "flagmeister-text",
