@@ -71,7 +71,7 @@
     w,
     h,
     color = "none",
-    strokewidth, //todo! all usages for now are 2,BLACK
+    strokewidth, //todo all usages for now are 2,BLACK
     stroke = "#000",
     attr = "" // rx="10" ry="10"
   ) =>
@@ -247,7 +247,7 @@
   let $T_text_str_size520_x320_y430_fill_width_stroke_font_weight_anchor = (
     //Object keys are important here, match usage in textstring JSON object
     {
-      str = "fm",
+      str = "text",
       size = 520,
       x = 320,
       y = 430,
@@ -256,7 +256,7 @@
       stroke,
       font = "courier", //'Bookman Old Style'
       weight = "bold",
-      anchor = "middle", // start,end,middle
+      anchor = "middle", // start,end,middle // Minify more: anchor never used hardcode middle
     }
   ) =>
     `<text x='${x}' y='${y}' font-size='${size}' ${fill ? `fill='${fill}'` : ""
@@ -502,7 +502,7 @@
     // base version is spanish castle
     castle: (x = 168, y = 255, scaleX = 1, scaleY = 1, rotate = 0) =>
       flagparser(
-        `<g transform='translate(${x} ${y})'><g transform='scale(${scaleX} ${scaleY}) rotate(${rotate})'><defs><pattern patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)' id='brick' width='42' height='44'><g fill='none' fill-rule='evenodd'><g fill='#000'>;pathstroke:M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22;</g></g></pattern></defs>;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#brick),.4,#000;</g></g>`
+        `<g transform='translate(${x} ${y})'><g transform='scale(${scaleX} ${scaleY}) rotate(${rotate})'><defs><pattern patternUnits='userSpaceOnUse' patternTransform='scale(.2 .2)' id='castle' width='42' height='44'><g fill='none' fill-rule='evenodd'><g fill='#000'>;pathstroke:M0 0h42v44H0V0m1 1h40v20H1V1M0 23h20v20H0V23m22 0h20v20H22;</g></g></pattern></defs>;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,#f1bf00,.4,#000;pathstroke:M0 0h2v-12h-2v-8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v-8h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v8h4v-4h-2v-4 h2v2h1v-2h2v2h1v-2h2v4h-2v4h4v8h-2 v12h3v8 h-31v-8,url(#castle),.4,#000;</g></g>`
       ),
 
     // more presets:
@@ -1085,10 +1085,10 @@
       // <!-- right pillar -->
       "use:-413,0,-1 1,0,l;" + //"<use transform='scale(-1 1)' href='#l' x='-413'/>;"
 
-      //'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};' +
-      //'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};' +
-      `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'PLVS','x':137};` +
-      `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'ULTRA','x':278};` +
+      'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};' +
+      'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};' +
+      // `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'PLVS','x':137};` +
+      // `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'ULTRA','x':278};` +
 
       //   <!-- big shield outline -->
       //+ "pathstroke:M207 330.6a82 82 0 01-35.5-8 23 23 0 01-13-20v-32h96v32a23 23 0 01-13 20 81 81 0 01-35 8,#ccc,.5,#000;"
@@ -1901,10 +1901,10 @@
               // );
               flag.setAttribute("is", "flag-" + iso); // force is attribute after using createElement
 
-              flag.img = flag; //! Customized Built-In
+              flag.img = flag; // Customized Built-In
               if (baseClass == HTMLElement) {
                 flag.img =
-                  flag.querySelector("img") || //! existing img tag in lightDOM
+                  flag.querySelector("img") || // existing img tag in lightDOM
                   flag.appendChild(document.createElement("img"));
                 flag.img.onload = flag.onload;
                 flag.img.onerror = flag.onerror;
@@ -1915,7 +1915,7 @@
                 !flag.detail && //if no detail specified,
                 flags[iso].includes("detail:") //and flag has detail: specification
               ) {
-                flag.detail = flags[iso].split`detail:`[1].split`;`[0]; //! extract default pixels
+                flag.detail = flags[iso].split`detail:`[1].split`;`[0]; // extract default pixels
               }
 
               flag.load(); // always load/set our FlagMeister svg first
@@ -2005,7 +2005,7 @@
                     entries[0].contentRect.width >= flag.detail
                   ) {
                     flag.O.disconnect(flag); //unobserve(this);//!?? difference .disconnect(this)
-                    flag.detail = ".svg"; //! prevent failed restcountries fetch from running again
+                    flag.detail = ".svg"; // prevent failed restcountries fetch from running again
 
                     // save some bytes assign and test in one call
                     // eslint-disable-next-line no-cond-assign
@@ -2030,14 +2030,14 @@
                   //   flag.clientWidth,
                   //   flag.source
                   // );
-                  flag.O.observe(flag.img); //! Observe the IMG, NOT <flag-nl>
+                  flag.O.observe(flag.img); // Observe the IMG, NOT <flag-nl>
                 }
               };
               if (stringIncludesSVGextension(load_svg)) fetchdata(load_svg);
               else load_img(load_svg);
             } //load
           },
-          options //! customElement define options
+          options // customElement define options
         );
       //created Custom Element
 
@@ -2075,4 +2075,9 @@
       } // connectedCallback
     }
   ); // define flagmeister-text
+  customElements.define("svg-flag", class extends HTMLElement {
+    connectedCallback() {
+      this.replaceWith(document.createElement("flag-" + this.getAttribute("is")))
+    }
+  })
 })();
