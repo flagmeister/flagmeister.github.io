@@ -552,17 +552,22 @@
     <div class="docgrid">
       <div>
         <label for="codeexample" hidden>Code Example:</label>
-        <textarea id="codeexample" class="textarea_html" style="width: 360px; height: 209px">
+        <textarea id="codeexample" class="textarea_html" style="width: 380px; height: 209px">
 <flag-nl></flag-nl>
-<flag-zw></flag-zw>
+<flag-zw></flag-zw> *
 <flag-ke></flag-ke>
 <flag-kr></flag-kr>
 
-<flag-es></flag-es>
-<flag-aq></flag-aq>
-<flag-nz></flag-nz>
-<flag-jollyroger></flag-jollyroger>
+OR
+
+<svg-flag is="es"></svg-flag>
+<svg-flag is="aq"></svg-flag>
+<svg-flag is="nz"></svg-flag>
+<svg-flag is="jollyroger"></svg-flag>
+
 </textarea>
+<br><br>
+* details automatically loaded from RestCountries API
       </div>
       <!-- can't lazy load these IMGs?  -->
       <div id="flags8">
@@ -589,10 +594,11 @@
         <flag-zw id="f2"></flag-zw>
         <flag-ke id="f3"></flag-ke>
         <flag-kr id="f4"></flag-kr>
-        <flag-es id="f5"></flag-es>
-        <flag-aq id="f6"></flag-aq>
-        <flag-nz id="f7"></flag-nz>
-        <flag-jollyroger id="f8"></flag-jollyroger>
+<svg-flag id="f5" is="es"></svg-flag>
+<svg-flag id="f6" is="aq"></svg-flag>
+<svg-flag id="f7" is="nz"></svg-flag>
+<svg-flag id="f8" is="jollyroger"></svg-flag>
+
       </div>
     </div>
     <div>
@@ -1078,8 +1084,7 @@ light: ({
             <flag-bo></flag-bo>
           </td>
           <td>
-            <flag-bo></flag-bo>
-          </td>
+            <flag-bo></flag-bo> </td>
           <td>
             <flag-bo detail="9999"></flag-bo>
           </td>
@@ -1101,8 +1106,7 @@ light: ({
           <td>
             <flag-ug></flag-ug>
           </td>
-          <td>
-            <flag-ug></flag-ug>
+          <td> <flag-ug></flag-ug>
           </td>
           <td>
             <flag-ug></flag-ug>
@@ -1148,8 +1152,8 @@ light: ({
           </td>
           <td>
             <flag-by source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-by>
-          </td>
-          <td>
+            </td>
+            <td>
             <flag-by source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-by>
           </td>
           <td>
