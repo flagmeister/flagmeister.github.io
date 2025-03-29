@@ -436,7 +436,7 @@
       $p_path_Color_D__id_strokewidth_stroke_color_transform(
         fill,
         d,
-        "p",
+        "p", // id
         w,
         col,
         transform
@@ -512,19 +512,22 @@
     //, sun: (repeat, x = 320, y = 240, scale = 1) => { }
   };
 
-  let stringIncludesSVGextension = (x) => x.includes(".svg");
+  let stringIncludesSVGextension = x => x.includes(".svg");
 
+  // DISABLED in 2024
   // all SVG commands can be called by fullname or abbreviated letter
   // the minified file is patched in the built step to set these same letters
   // can't use : to split because the : is in the key: (in JS source code)
-  let abbreviations = "detail a,bgcolor b,circle c,diagonal d,circles e,flag f,doublecross g,stripes h,outline i,line l,scross m,bar n,rotate o,path p,pathstroke q,rect r,star s,stripe t,use u,bars v,striangle w,crossx x,country y,triangle z"
-    .split`,`;
-  abbreviations.map(
-    (def) => (
-      (def = def.split` `),
-      (commands[def[0]] = commands[def[0]] || commands[def[1]])
-    )
-  );
+  // "detail a,bgcolor b,circle c,diagonal d,circles e,flag f,doublecross g,stripes h,outline i,line l,scross m,bar n,rotate o,path p,pathstroke q,rect r,star s,stripe t,use u,bars v,striangle w,crossx x,country y,triangle z"
+  //   .split`,`
+  //   .map(
+  //     (def) => (
+  //       ([commandname, letter] = def.split` `),
+  //       console.log(commandname,letter),
+  //       (commands[commandname] = commands[commandname] || commands[letter])
+  //     )
+  //   );
+
 
   let flagparser = (fp_input, element) => {
     //if (fp_input) {
@@ -821,13 +824,13 @@
             args = fmCommand.includes(':{"')
               ? JSON.parse(fmCommand.substr(presetkey.length + 1))
               : args.split`,`;
-          else args = presetkey === "text" || presetkey === "light" ? {} : [];
-          if (typeof preset === "function")
+          else args = presetkey == "text" || presetkey == "light" ? {} : [];
+          if (typeof preset == "function")
             return Array.isArray(args)
               ? preset.call(
                 element,
                 ...args.map((s) =>
-                  s === "0"
+                  s == "0"
                     ? 0
                     : Number(s) ||
                     (s.includes("|")
@@ -994,6 +997,7 @@
       ";use:0,-480,1 -1;" + //bottom left
       ";use:-120,0,-1 1;" + //top right
       ";use:-120,-480,-1 -1", //bottom righ //end cty
+
     //todo>0 detail when more abstract circle/rotation
     //take leave and rotate
     bz: "country:Belize;detail:40;bgcolor:#ce1126;stripe:40,400,#003f87;circle:320,240,150,#fff;circle:320,240,120,#fff,10,green", //end cty
@@ -1076,8 +1080,8 @@
       // <!-- red banner -->
       // + "pathstroke:M158 258a50 50 0 00-23-2c-9 1.6-16.5 5-16 8v.2l-3.5-8c-.6-3 7-7.5 17.6-9a43 43 0 019-.7c6.6 0 12.4.8 16 2v9.4M127 267c-4-.3-7-1.4-7.6-3-.3-1.5 1.2-3 4-4.5 1.2.1 2.5.3 3.8.3v7M142 261.5c2.7.4 4.7 1 6 2l.1.2c.5 1-2 3-6 5.4v-7.5M117 282c-.4-1 4-3.6 10-6l8-3c8-3.7 14.4-8 13.6-9.4v-.2c.4.4 1 8 1 8 1 1-5 5.5-12.4 9.1-2.5 1-7.6 3-10 4-4.4 1.4-8.7 4-8 5l-1.5-7.7M122 286.7c-2 1-3.7 2.5-3.4 3 0 .6.8 1 2 1.6 1.5 1.1 2.5 3 1.7 4a5.5 5.5 0 00-.1-9,#aa151b,.4,#000;"
       "pathstroke:m158 258c-7-2-26-7-39 6v0l-3-8c-1-3 7-7 18-9 15-2 21 0 25 1v9m-31 9c-4 0-7-1-8-3 0-1-4-8 7-4m15 2c3 0 5 1 6 2l0 0c1 1-2 3-6 5v-7m-25 20c0-1 5-4 10-6 0 0 11-3 22-12l1 8c1 1-8 6-12 9-12 3-19 8-18 9l-1-8m4 5c-2 1-4 3-3 3 0 1 5 1 4 7 3-2 3-8 0-10,#aa151b,.4,#000;" +
-      // <!-- yellow text -->
-      // + "path:#f1bf00,M125.8 254c1.9-.6 3.1-1.5 2.5-3-.4-1-1.4-1-2.8-.6l-2.6 1 2.3 5.8.8-.3.8-.3-1-2.5m-1.2-2.7l.7-.3c.5-.2 1.2.1 1.4.8.2.5.2 1-.5 1.5a4.4 4.4 0 01-.6.3l-1-2.3m7.3-2.5l-.9.3h-.8l1.3 6.1 4.3-.8-.2-.4v-.4l-2.5.6-1.2-5.3m8.4 5.2c.8-2.2 1.7-4.3 2.7-6.4a5.3 5.3 0 01-1 0 54.8 54.8 0 01-1.8 4.6l-2.4-4.3-1 .1h-1a131.4 131.4 0 013.5 6h1m8.8-4.7l.4-.9a3.4 3.4 0 00-1.7-.6c-1.7-.1-2.7.6-2.8 1.7-.2 2.1 3.2 2 3 3.4 0 .6-.7.9-1.4.8-.8 0-1.4-.5-1.4-1.2h-.3a7.3 7.3 0 01-.4 1.1 4 4 0 001.8.6c1.7.2 3-.5 3.2-1.7.2-2-3.3-2.1-3.1-3.4 0-.5.4-.8 1.3-.7.7 0 1 .4 1.2.9h.2;"
+      // <!-- yellow text PLVS -->
+      //"path:#f1bf00,M125.8 254c1.9-.6 3.1-1.5 2.5-3-.4-1-1.4-1-2.8-.6l-2.6 1 2.3 5.8.8-.3.8-.3-1-2.5m-1.2-2.7l.7-.3c.5-.2 1.2.1 1.4.8.2.5.2 1-.5 1.5a4.4 4.4 0 01-.6.3l-1-2.3m7.3-2.5l-.9.3h-.8l1.3 6.1 4.3-.8-.2-.4v-.4l-2.5.6-1.2-5.3m8.4 5.2c.8-2.2 1.7-4.3 2.7-6.4a5.3 5.3 0 01-1 0 54.8 54.8 0 01-1.8 4.6l-2.4-4.3-1 .1h-1a131.4 131.4 0 013.5 6h1m8.8-4.7l.4-.9a3.4 3.4 0 00-1.7-.6c-1.7-.1-2.7.6-2.8 1.7-.2 2.1 3.2 2 3 3.4 0 .6-.7.9-1.4.8-.8 0-1.4-.5-1.4-1.2h-.3a7.3 7.3 0 01-.4 1.1 4 4 0 001.8.6c1.7.2 3-.5 3.2-1.7.2-2-3.3-2.1-3.1-3.4 0-.5.4-.8 1.3-.7.7 0 1 .4 1.2.9h.2;" +
 
       // <!-- crown on pillar -->
       "use:330,650,.25,0,c;" + //"<use transform='scale(.25)' href='#c' x='330' y='650'/>"
@@ -1085,10 +1089,9 @@
       // <!-- right pillar -->
       "use:-413,0,-1 1,0,l;" + //"<use transform='scale(-1 1)' href='#l' x='-413'/>;"
 
-      'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};' +
-      'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};' +
-      // `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'PLVS','x':137};` +
-      // `text:{'fill':'#f1bf00','font':'Arial','size':6,'y':254,'str':'ULTRA','x':278};` +
+      // removedtext
+      // 'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"PLVS","x":137};' +
+      // 'text:{"fill":"#f1bf00","font":"Arial","size":6,"y":254,"str":"ULTRA","x":278};' +
 
       //   <!-- big shield outline -->
       //+ "pathstroke:M207 330.6a82 82 0 01-35.5-8 23 23 0 01-13-20v-32h96v32a23 23 0 01-13 20 81 81 0 01-35 8,#ccc,.5,#000;"
@@ -1100,7 +1103,8 @@
       "pathstroke:m169 322 5 2v-53h-5v52m-11-20a24 24 0 0 0 6 15v-47h-6v33m21 22a27 27 0 0 0 6 0v-55h-6v56m11-2a19 19 0 0 0 6-3v-51h-6v55m11-9c2-2 5-7 5-12l1-34h-6v47,#f1bf00,.4,#000;" +
       // <!-- SHIELD start bottom-right red shield -->
       "shield:#aa151b,33,207,269,.5,#000;" +
-      "<g id='b'>;" +
+
+      "<g id='shield'>;" +
       // pattern left half of yellow squares in red shield
       "pathstroke:m215 277h5v-2h5v4h-5v-2m5 0h5m-15 0v6h-2v5h4v-5h-2m0 5v6m0 3v3h-2v5h4v-5h-2m1-5h3v-2h5v4h-5v-2m5 0h5m1-18v6h-2v5h2v15h-2v5h2v10m-15-41 15 18m-15 17 15-17,none,1.5,#f1bf00;" +
       "circle:214,276,3,#f1bf00;circle:230,276,3,#f1bf00;circle:216,311,3,#f1bf00;circle:230,318,3,#f1bf00;" +
@@ -1109,10 +1113,13 @@
       // < !-- < circle fill='none' stroke='gold' stroke- width='1.5' cx = '223' cy = '286' r = '2' />
       //     <circle fill='none' stroke='gold' stroke-width='1.5' cx='223' cy='304' r='2' /> -->
       //         <circle fill='none' stroke='gold' stroke-width='1.5' cx='223' cy='316' r='2' />
-      "</g>" +
-      "use:-460,0,-1 1,0,b;" + //+ "<use transform='scale(-1 1)' href='#b' x='-460'/>;"
+      "</g>;" +
+      "use:-460,0,-1 1,0,shield;" +
+
       //green circle in red shield
       "circle:230,295,4,#058e6e;" + // 6 GZ bytes
+
+
       // <!-- SHIELD  top-left shield: yellow castle (overlaps bottom-left sheild)-->
       "rect:158,217,48,54,#aa151b;" +
       //   <!-- my castle -->
@@ -1143,7 +1150,9 @@
       "<ellipse fill='#005bbf' stroke='#000' stroke-width='.6' cx='206.5' cy='270' rx='11' ry='14'/>" +
       //   <!-- 3 yellow lilys -->
       ";path:#f1bf00,M201 261s-1 1-1 3a6 6 0 00.6 2c-.2-.5-1-1-1-1-1 0-1.4.6-1.4 1l.2.8.5.9c.1-.3.5-1 1-1s1 1 1 1a.9.9 0 010 1h-1v1h1l-1 1.5 1-.4.8.9.8-1 1 .4-.7-1h1v-1h-1.1a.9.9 0 010-.3 1 1 0 011-1c.4 0 .7.3 1 1l.4-1 .2-1a1 1 0 00-1-1c-1 0-1.2.3-1.4.9 0 0 .6-1.2.6-2.5s-1-3-1-3,f,.4,#000;" +
-      "<use href='#f' x='10'/><use href='#f' x='5' y='9'/>;", //end cty spain
+      "<use href='#f' x='10'/><use href='#f' x='5' y='9'/>;"
+    //end cty spain
+    ,
     et: "country:Ethiopia;stripes:#078930|#fcdd09|#da121a;circle:320,240,130,#0f47af;rotate:5,<line stroke-width='4' stroke='#fcdd09' x1='50' y1='15' x2='100' y2='30'/>,320,240;pathstroke:m321 146-56 172 145-105h-180l145 106z,#0f47af,8,#fcdd09", //end cty
     fi: "country:Finland;bgcolor:;doublecross:-80,0,#002f6c,#002f6c,120", //end cty
 
@@ -1582,12 +1591,12 @@
       "line:24,#fff,420,495,480,495;" +
       "line:12,#fff,475,425,475,572;" +
       // 3 in shield
-      "pathstroke:M465 440c-44-4-16 18-14 10 0-2-4-6-4-2-8-2 4-10 10 0-4 10-8 4 0 16-6 10-18 2-10-2 0 4 6 2 4 0-4-10-28 12 14 10,#fff,.5,black;" +
-      "pathstroke:M465 518c-44-4-16 18-14 10 0-2-4-6-4-2-8-2 4-10 10 0-4 10-8 4 0 16-6 10-18 2-10-2 0 4 6 2 4 0-4-10-28 12 14 10,#fff,.5,black;" +
+      "pathstroke:M465 440c-44-4-16 18-14 10 0-2-4-6-4-2-8-2 4-10 10 0-4 10-8 4 0 16-6 10-18 2-10-2 0 4 6 2 4 0-4-10-28 12 14 10,#fff,.5,#000;" +
+      "pathstroke:M465 518c-44-4-16 18-14 10 0-2-4-6-4-2-8-2 4-10 10 0-4 10-8 4 0 16-6 10-18 2-10-2 0 4 6 2 4 0-4-10-28 12 14 10,#fff,.5,#000;" +
       "</g>;" + // Eagle id='e'
       "<use href='#e' transform='matrix(-1 0 0 1 495 0)'/>;", //end cty usedef
     //+ "shield:#c6363c,42,218,210,1,#000;cross:#fff,249,246,70,14;"
-    //+ "pathstroke:M235 218c-22-2-8 9-7 5 0-1-2-3-2-1-4-1 2-5 5 0-2 5-4 2 0 8-3 5-9 1-5-1 0 2 3 1 2 0-2-5-14 6 7 5,white,.5,black;"
+    //+ "pathstroke:M235 218c-22-2-8 9-7 5 0-1-2-3-2-1-4-1 2-5 5 0-2 5-4 2 0 8-3 5-9 1-5-1 0 2 3 1 2 0-2-5-14 6 7 5,white,.5,#000;"
 
     ru: "country:Russia;stripes:#fff|#0039a6|#d52b1e", //end cty
     rw: "country:Rwanda;stripes:#00a1de|#00a1de|#e5be01|#20603d;rotate:24,<path fill='#fad201' d='m0 5l-80-5l80-5'/>, 515, 125;circle:515,125,25,#fad201,3,#00a1de", //end cty
@@ -1804,7 +1813,7 @@
               ];
             }
             attributeChangedCallback(name, oldValue, newValue) {
-              if (this.img && oldValue !== newValue) this.load();
+              if (this.img && oldValue != newValue) this.load();
             }
             constructor(flag) {
               flag = super();
@@ -1858,12 +1867,12 @@
                     // if (1) console.log((() => {
                     //     let hasCSSproperty = getComputedStyle(this).getPropertyValue('--flagmeister' + attr).trim();
                     //     let hasAttr = flag.getAttribute(attr);
-                    //     return `% c ${iso} get:${attr} ${hasCSSproperty ? 'CSSprop' : ""} ${hasAttr ? 'Attribute:' + hasAttr : ""} ${val === defaultvalue ? 'default:' + defaultvalue : ""}=${val} `
+                    //     return `% c ${iso} get:${attr} ${hasCSSproperty ? 'CSSprop' : ""} ${hasAttr ? 'Attribute:' + hasAttr : ""} ${val == defaultvalue ? 'default:' + defaultvalue : ""}=${val} `
                     // })(), 'color:red')
 
                     //if (attr == 'clip') window["console"].log(val);
 
-                    return val && val.length === 1 ? val[0] : val;
+                    return val && val.length == 1 ? val[0] : val;
                   }, // property GETTER
                   //enumerable:1,  // default:false
                   //configurable:1   // default:false
@@ -1880,7 +1889,7 @@
             ) {
               return (
                 `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${this.box
-                }'><defs><clipPath id='clip'>${clip === "0" ? "" : clip
+                }'><defs><clipPath id='clip'>${clip == "0" ? "" : clip
                 }</clipPath></defs>` +
                 (filter || "") +
                 //additional filter can be wrapped in extra <g>
@@ -1942,7 +1951,7 @@
 
                   //console.log("Loaded:", iso, uri); //cleanlog
 
-                  if (typeof response_data === "string")
+                  if (typeof response_data == "string")
                     load_img(response_data);
                   else {
                     // it is a json response
@@ -2077,7 +2086,12 @@
   ); // define flagmeister-text
   customElements.define("svg-flag", class extends HTMLElement {
     connectedCallback() {
-      this.replaceWith(document.createElement("flag-" + this.getAttribute("is")))
+      let flag = document.createElement("flag-" + this.getAttribute("is"));
+      this.hasAttribute("detail") && flag.setAttribute("detail", this.getAttribute("detail"));
+      this.append(flag);
+      let img = this.querySelector("img");
+      if (this.hasAttribute("replaceWith")) this.replaceWith(img);
+      else flag.replaceWith(img);
     }
   })
 })();
