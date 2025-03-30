@@ -2089,8 +2089,10 @@
         connectedCallback() {
           let flag = this.appendChild(document.createElement("flag-" + this.getAttribute("is")));
           let img = flag.querySelector("img");
+          img.setAttribute("is", this.getAttribute("is"));
+          img.classList.add("svg-flag");
           if (this.hasAttribute("detail")) flag.setAttribute("detail", this.getAttribute("detail"));
-          if (this.hasAttribute("replaceWith")) this.replaceWith(flag);
+          if (this.hasAttribute("replaceWith")) this.replaceWith(img);
           else flag.replaceWith(img);
         }
       }
