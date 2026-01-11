@@ -1053,7 +1053,7 @@
       //todo detailH banners and eagle and spears
       ec: "country:Ecuador;detail:60;stripes:#fd0|#fd0|#034ea2|#ed1c24", //end cty
 
-      ee: "country:Estonia;stripes:#0072ce||#fff", //end cty
+      ee: "country:Estonia;stripes:#0072ce|#000|#fff", //end cty
 
       //todo detailH golden eagle on white bar
       eg: "country:Egypt;detail:60;stripes:#ce1126|#fff|#000", //end cty
