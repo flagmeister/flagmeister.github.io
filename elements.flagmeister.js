@@ -1642,7 +1642,7 @@
       sv: "country:El_Salvador;detail:60;stripes:#0f47af|#fff|#0f47af;circle:320,240,70,#fff,5,#fc0;path:#ffcc00,M320 190l50 80h-100", //end cty
 
       sx: "country:Sint Maarten;detail:60;striangle:#dc1016|#002688,#fff,300", //end cty
-      sy: "country:Syria;stripes:#ce1126|#fff|#000;star:#007a3d,30,40,4;use:108,40,4", //end cty
+      sy: "country:Syria;stripes:#007a36|#fff|#000;star:#ce1126,18,28,5;use:53,28,5;use:88,28,5", //end cty
 
       //todo detailH sz shield
       sz: "country:Swaziland;detail:40;stripes:#3e5eb9|#b10c0c|#b10c0c|#3e5eb9;stripe:88,34,#ffd900;stripe:360,34,#ffd900", //end cty
