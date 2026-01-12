@@ -10,15 +10,15 @@
         <script src='elements.flagmeister.min.js'></script>
     </head>
     <body>
-      <img is=flag-nl>
-      <img is=flag-zw>
-      <img is=flag-ke>
-      <img is=flag-kr>
+      <svg-flag is="nl"><!--Netherlands--></svg-flag>
+      <svg-flag is="zw"><!--Zwaziland--></svg-flag>
+      <svg-flag is="ke"><!--Kenia--></svg-flag>
+      <svg-flag is="kr"><!--Soutrh Korea--></svg-flag>
 
-      <img is=flag-es>
-      <img is=flag-aq>
-      <img is=flag-nz>
-      <img is=flag-jollyroger>
+      <svg-flag is="es"><!--Spain--></svg-flag>
+      <svg-flag is="aq"><!--Antarctic--></svg-flag>
+      <svg-flag is="nz"><!--New Zealand--></svg-flag>
+      <svg-flag is="jollyroger"></svg-flag>
     </body>
   </html>
 ```
