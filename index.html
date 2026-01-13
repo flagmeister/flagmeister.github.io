@@ -546,14 +546,15 @@
       <span class="highlightText">No</span> Dependencies!&nbsp;&nbsp;<a
         href="https://github.com/flagmeister/flagmeister.github.io">available on GitHub</a>
     </h3>
-    <h1>
-      All <span class="highlightText">HTML</span> required to display SVG
-      flags is:
-    </h1>
-    <div class="docgrid">
-      <div>
-        <label for="codeexample" hidden>Code Example:</label>
-        <textarea id="codeexample" class="textarea_html" style="width: 380px; height: 209px">
+<section style="background: #023002">
+      <h1>
+        All <span class="highlightText">HTML</span> required to display SVG
+        flags is:
+      </h1>
+      <div class="docgrid">
+        <div>
+          <label for="codeexample" hidden>Code Example:</label>
+          <textarea id="codeexample" class="textarea_html" style="width: 380px; height: 209px">
 <flag-nl></flag-nl>
 <flag-zw></flag-zw> *
 <flag-ke></flag-ke>
@@ -567,41 +568,41 @@ OR
 <svg-flag is="jollyroger"></svg-flag>
 
 </textarea>
-        <br><br>
-        * details automatically loaded from RestCountries API
-      </div>
-      <!-- can't lazy load these IMGs?  -->
-      <div id="flags8">
-        <style>
-          #flags8 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            background: grey;
-          }
+          <br><br>
+          * details automatically loaded from RestCountries API
+          </div>
+          <!-- can't lazy load these IMGs?  -->
+          <div id="flags8">
+            <style>
+              #flags8 {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
 
-          #flags8 img {
-            display: inline-block;
-            width: 100% !important;
-            height: 100%;
-          }
+            #flags8 img {
+              display: inline-block;
+              width: 100% !important;
+              height: 100%;
+            }
 
-          #flags8 [is] {
-            display: inline-block;
-            width: 400%;
-          }
-        </style>
-        <flag-nl id="f1"></flag-nl>
-        <flag-zw id="f2"></flag-zw>
-        <flag-ke id="f3"></flag-ke>
-        <flag-kr id="f4"></flag-kr>
-        <svg-flag id="f5" is="es"></svg-flag>
-        <svg-flag id="f6" is="aq"></svg-flag>
-        <svg-flag id="f7" is="nz"></svg-flag>
-        <svg-flag id="f8" is="jollyroger"></svg-flag>
+            #flags8 [is] {
+              display: inline-block;
+              width: 400%;
+            }
+          </style>
+          <flag-nl id="f1"></flag-nl>
+          <flag-zw id="f2"></flag-zw>
+          <flag-ke id="f3"></flag-ke>
+          <flag-kr id="f4"></flag-kr>
+          <svg-flag id="f5" is="es"></svg-flag>
+          <svg-flag id="f6" is="aq"></svg-flag>
+          <svg-flag id="f7" is="nz"></svg-flag>
+          <svg-flag id="f8" is="jollyroger"></svg-flag>
 
-      </div>
-    </div>
+        </div>
+        </div>
+    </section>
     <br>
     <br>
     <h2><a href="https://www.flagsaustralia.com.au/Newcountryflags.html">Recent flag updates:</a></h2>
@@ -618,7 +619,6 @@ OR
           display: block;
           width: 70%;
         }
-
       </style>
       <flag-update is="ee">Estonia - color fix</flag-update>
       <flag-update is="sy">Syria-extra star</flag-update>
