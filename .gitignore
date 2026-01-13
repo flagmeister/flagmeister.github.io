@@ -4,3 +4,4 @@ node_modules/*
 index-testflags.html
 package-lock.json
 package.json
+elements.flagmeister copy.js

@@ -1314,17 +1314,17 @@
       //   ";</g>" +
       //   "<use transform='matrix(1 0 0 1 640 0)' href='#s'/>", //end cty
       kg:
-        "country:Kyrgyzstan;bgcolor:#e8112d;" +
-        "rotate:40,<path fill='#ffef00' d='m-7 108a1 1 90 1114 0l-7 65z'/>;" +
+        "country:Kyrgyzstan;bgcolor:#e30a17;" +
+        "rotate:40,<path fill='#ffd700' d='m-7 108a1 1 90 1114 0l-7 65z'/>;" +
         // "<circle cx=320 cy=235 fill=none stroke=blue ></circle> "+
-        ";circle:320,240,100,#ffef00,10 " +
-        ";circle:320,240,90,#e8112d,10" +
-        ";circle:320,240,80,#ffef00,10" +
+        ";circle:320,240,100,#ffd700,10 " +
+        ";circle:320,240,90,#e30a17,10" +
+        ";circle:320,240,80,#ffd700,10" +
         ";<g id='s'>" +
-        ";pathstroke:M250 190Q360 240 360 315,none,6,#e8112d" +
-        ";pathstroke:M260 180Q370 240 380 300,none,6,#e8112d" +
-        ";pathstroke:M270 170Q380 240 395 280,none,6,#e8112d" +
-        ";pathstroke:M280 162Q390 240 405 260,none,6,#e8112d" +
+        ";pathstroke:M250 190Q360 240 360 315,none,6,#e30a17" +
+        ";pathstroke:M260 180Q370 240 380 300,none,6,#e30a17" +
+        ";pathstroke:M270 170Q380 240 395 280,none,6,#e30a17" +
+        ";pathstroke:M280 162Q390 240 405 260,none,6,#e30a17" +
         ";</g>"
         + "<use transform='matrix(-1 0 0 1 640 0)' href='#s'/>"
       , //end cty
