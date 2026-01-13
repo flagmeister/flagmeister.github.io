@@ -1194,7 +1194,11 @@
       gy: "country:Guyana;striangle:#009e49|#009e49,#fff,600;triangle:0,20,560,240,0,460,#fcdd09;triangle:-16,0,300,240,-16,480,#ce1126,16,#000", //end cty
       //starrotate onestar copy
       hk: "country:Hong Kong;bgcolor:#de2408;rotate:5,<path fill='#fff' d='M0 0s-52-22-44-80c7-28 20-46.6 43-57 11-3 22-5 33-6-3 3-5 6-7 9-2 6-1 12 3 18 4 7 7 14 7 24a37 37 0 0 1-15 34c-7 5-14 7-21 13-5 5-8 9-9 18-0 16 4 18 9 27'/><path stroke='#de2408' d='M0 0c-20-18-18-62-3-77'/><path fill='#de2408' d='M0-105l3 9h9l-7.4 5.4 2.8 8.7-7.4-5.4-7.4 5.4 2.8-8.7-7.4-5.4h9.2'/>", //end cty
-      hn: "country:Honduras;stripes:#0073cf|#fff|#0073cf;star:#0073cf,145,100,2;use:85,80,2;use:85,120,2;use:205,80,2;use:205,120,2", //end cty
+
+      // 2023 lighter  blue is now offcial color
+      hn: "country:Honduras;stripes:#00bce4|#fff|#00bce4"
+        + ";star:#00bce4,145,100,2"
+        + ";use:85,80,2;use:85,120,2;use:205,80,2;use:205,120,2", //end cty
 
       //feb 2020: detail crown & checkboard pattern
       hr:
@@ -1299,12 +1303,31 @@
         "circle:320,240,14,#fff", //end cty
 
       //starrotate
+      // kg:
+      //   "country:Kyrgyzstan;bgcolor:#e8112d;" +
+      //   "rotate:40,<path fill='#ffef00' d='M60 60c13-16 41 0 66-12-28 1-43-13-64-11 22-14 41'/>;" +
+      //   "circle:320,240,95,#e8112d;circle:320,235,80,#ffef00" +
+      //   ";<g id='s'>" +
+      //   ";pathstroke:M260 180Q360 220 360 310,none,7,#e8112d" +
+      //   ";pathstroke:M270 170Q370 220 380 300,none,7,#e8112d;" +
+      //   "pathstroke:M280 160Q380 220 395 280,none,7,#e8112d" +
+      //   ";</g>" +
+      //   "<use transform='matrix(1 0 0 1 640 0)' href='#s'/>", //end cty
       kg:
         "country:Kyrgyzstan;bgcolor:#e8112d;" +
-        "rotate:40,<path fill='#ffef00' d='M60 60c13-16 41 0 66-12-28 1-43-13-64-11 22-14 41'/>;" +
-        "circle:320,240,95,#e8112d;circle:320,235,80,#ffef00" +
-        ";<g id='s'>;pathstroke:M260 180Q360 220 360 310,none,7,#e8112d;pathstroke:M270 170Q370 220 380 300,none,7,#e8112d;pathstroke:M280 160Q380 220 395 280,none,7,#e8112d;</g>" +
-        "<use transform='matrix(-1 0 0 1 640 0)' href='#s'/>", //end cty
+        "rotate:40,<path fill='#ffef00' d='m-7 108a1 1 90 1114 0l-7 65z'/>;" +
+        // "<circle cx=320 cy=235 fill=none stroke=blue ></circle> "+
+        ";circle:320,240,100,#ffef00,10 " +
+        ";circle:320,240,90,#e8112d,10" +
+        ";circle:320,240,80,#ffef00,10" +
+        ";<g id='s'>" +
+        ";pathstroke:M250 190Q360 240 360 315,none,6,#e8112d" +
+        ";pathstroke:M260 180Q370 240 380 300,none,6,#e8112d" +
+        ";pathstroke:M270 170Q380 240 395 280,none,6,#e8112d" +
+        ";pathstroke:M280 162Q390 240 405 260,none,6,#e8112d" +
+        ";</g>"
+        + "<use transform='matrix(-1 0 0 1 640 0)' href='#s'/>"
+      , //end cty
 
       // !! todo better abstract temple
       kh: "country:Cambodia;detail:40;stripes:#032ea1|#e00025|#e00025|#032ea1;rect:150,310,400,20,#fff,2,#000;rect:200,224,280,20,#fff,2,#000", //end cty
@@ -1361,7 +1384,7 @@
         //+ "<use transform='rotate(180 423 240)' href='#s'/>"
 
         //yellow lion
-        "pathstroke:m379 280c2 5-2 3 0 0zm86-1c-6 11 7 20 12 30 10 14-12 24-17 29 9 5 23 6 31-1 10-15 6-36-6-49-5-5-12-8-20-9zm-150-34c4 0 10 0 3 2l-3-2zm158-94c-24 1-53 21-22 46 19 11 44 8 70 3 12 9-1 26-13 23-47 0-58 10-105 8 31-3 39-14 30-24-12-7 5-4 3-34-1-11-12-16-21-14-12-1-33 15-61 10-12 0-9 16-1 19 8 2 21 1 24 13v1c-3-2-18-8-23-7-7 3 18 9 21 9-6 5-19-8-25 0-5 15 22 6 23 19-4 11-20 15-22 28-2 8-2 18 2 26l-21-29c-4-4-11 25-1 29 21 33 29 10 29 9l6 4c10 2 19 10 20 20 4 12-6 19-16 20-13 8 8 15 15 11 14-4 31-20 33-62 10 14 16 8 24 3 28-21 58 7 73 34 2 10-20 17-8 25 12 4 41-29 21-61 5-12 12-24 6-37-16-16 17-35-7-49-16-7-32 3-48-1-9-1-42-11-21-29 20-6 34 2 37 10 10 5 23 0 31 10 6 9 21-3 10-8-10 0-18-3-25-10-11-9-23-15-38-15zm-140-12c-34 20-24 88-21 104-5-4-10-7-9 2 2 5 6 7 11 8-6 4-2 23-1 28 1 4-17 16-2 29 3 4 10 4 13-1 3-4 2-10-2-13-4-4-2-11 1-15 1-4 2-24-4-28 5-1 10-3 12-8-10-40-5-66-2-86l4-20,#ffb700,2,#000", //end cty
+        "pathstroke:M333 139l-4 20c-3 20-8 46 2 86-2 5-7 7-12 8 6 4 5 24 4 28-3 4-5 11-1 15 4 3 5 9 2 13-3 5-10 5-13 1-15-13 3-25 2-29-1-5-5-24 1-28-5-1-9-3-11-8-1-9 4-6 9-2-3-16-13-84 21-104m140 12c15 0 27 6 38 15 7 7 15 10 25 10 11 5-4 17-10 8-8-10-21-5-31-10-3-8-17-16-37-10-21 18 12 28 21 29 16 4 32-6 48 1 24 14-9 33 7 49 6 13-1 25-6 37 20 32-9 65-21 61-12-8 10-15 8-25-15-27-45-55-73-34-8 5-14 11-24-3-2 42-19 58-33 62-7 4-28-3-15-11 10-1 20-8 16-20-1-10-10-18-20-20l-6-4c0 1-8 24-29-9-10-4-3-33 1-29l21 29c-4-8-4-18-2-26 2-13 18-17 22-28-1-13-28-4-23-19 6-8 19 5 25 0-3 0-28-6-21-9 5-1 20 5 23 7v-1c-3-12-16-11-24-13-8-3-11-19 1-19 28 5 49-11 61-10 9-2 20 3 21 14 2 30-15 27-3 34 9 10 1 21-30 24 47 2 58-8 105-8 12 3 25-14 13-23-26 5-51 8-70-3-31-25-2-45 22-46ZM315 245l3 2c7-2 1-2-3-2Zm150 34c8 1 15 4 20 9 12 13 16 34 6 49-8 7-22 6-31 1 5-5 27-15 17-29-5-10-18-19-12-30Zm-86 1c-2 3 2 5 0 0Z,#ffb700,2,#000", //end cty
 
       lr: "country:Liberia;stripes:#bf0a30|#fff|#bf0a30|#fff|#bf0a30|#fff|#bf0a30|#fff|#bf0a30|#fff|#bf0a30;rect:0,0,217,217,#002868;star:#fff,6,-2,6", //end cty
 
@@ -1397,7 +1420,10 @@
       //todo detailM
       mp: "country:North Mariana Islands;detail:60;bgcolor:#0071bc;circle:320,240,180,none,40,#fff;rect:280,100,80,350,#8c8a8c,2,#000;star:#fff,24,7,9", //end cty
 
-      mq: "country:Martinique;flag:fr", //end cty
+      // mq: "country:Martinique;flag:fr", //end cty     
+      // since 2023 their own flag
+      mq: "country:Martinique;striangle:#00a650|#231f1e,#ef1923,320", //end cty
+
       mr: "country:Mauritania;bgcolor:#006233;stripe:410,70,#c8102e;circle:320,220,150,#ffd700;circle:320,180,145,#006233;star:#ffd700,52,10,5;stripe:0,70,#c8102e", //end cty
 
       //todo add abstract shield
@@ -1635,7 +1661,7 @@
       sn: "country:Senegal;bars:#00853f|#fdef42|#e31b23;star:#00853f,42,18,6", //end cty
       so: "country:Somalia;bgcolor:#4189dd;star:#fff,28,8,8", //end cty
       sr: "country:Suriname;bgcolor:#377e3f;stripe:96,288,#fff;stripe:140,200,#b40a2d;star:#ecc81d,28,11,8", //end cty
-      ss: "country:South Sudan;stripes:#000|#fff|#078930;stripe:175,125,#da121a;triangle:0,0,320,240,0,480,#0f47af;star:#fce100,10,30,5", //end cty
+      ss: "country:South Sudan;stripes:#000|#fff|#018a2c;stripe:175,125,#db0a13;triangle:0,0,320,240,0,480,#00b6f2;star:#fcde02,6,20,6 ", //end cty
       st: "country:Sao Tome;striangle:#12ad2b|#ffce00|#ffce00|#12ad2b,#d21034,230;star:#000,58,28,5;use:92,28,5", //end cty
 
       //todo add green leaves in detailM

@@ -532,6 +532,7 @@
 </head>
 
 <body class="greencloth">
+
   <section id="sectionHeader">
     <div id="injectFlagMeisterBanner">
       <!-- <flagmeister-text iso="ba,bi,us,ax,gb,ke,is,tr,nl,zw,ki" word="FlagMeister">
@@ -566,8 +567,8 @@ OR
 <svg-flag is="jollyroger"></svg-flag>
 
 </textarea>
-<br><br>
-* details automatically loaded from RestCountries API
+        <br><br>
+        * details automatically loaded from RestCountries API
       </div>
       <!-- can't lazy load these IMGs?  -->
       <div id="flags8">
@@ -594,27 +595,55 @@ OR
         <flag-zw id="f2"></flag-zw>
         <flag-ke id="f3"></flag-ke>
         <flag-kr id="f4"></flag-kr>
-<svg-flag id="f5" is="es"></svg-flag>
-<svg-flag id="f6" is="aq"></svg-flag>
-<svg-flag id="f7" is="nz"></svg-flag>
-<svg-flag id="f8" is="jollyroger"></svg-flag>
+        <svg-flag id="f5" is="es"></svg-flag>
+        <svg-flag id="f6" is="aq"></svg-flag>
+        <svg-flag id="f7" is="nz"></svg-flag>
+        <svg-flag id="f8" is="jollyroger"></svg-flag>
 
       </div>
     </div>
     <br>
     <br>
-    <h2>Recent flag updates:</h2>
-    <b>ee - Estonia, sy - Syria</b>
+    <h2><a href="https://www.flagsaustralia.com.au/Newcountryflags.html">Recent flag updates:</a></h2>
     <div id="updatedflags" style="background:rgb(2, 48, 2);padding:1em">
       <style>
-        #updatedflags>svg-flag {
+        flag-update {
           display: inline-block;
-          width: 120px;
+          width: 220px;
           vertical-align: top;
+          font-size: 70%;
         }
+
+        flag-update svg-flag {
+          display: block;
+          width: 70%;
+        }
+
       </style>
-      <svg-flag is="ee"></svg-flag>
-      <svg-flag is="sy"></svg-flag>
+      <flag-update is="ee">Estonia - color fix</flag-update>
+      <flag-update is="sy">Syria-extra star</flag-update>
+      <flag-update is="ss">South Sudan-light blue now official color</flag-update>
+      <flag-update is="mq">Martinique- new official flag (was France flag)</flag-update>
+      <flag-update is="hn">Honduras-new official light blue color</flag-update>
+      <flag-update is="kg">Kyrgyzstan-new design changes</flag-update>
+      <flag-update is="gl">Greenland-Just so you know what this independent country flag looks like</flag-update>
+      <script>
+        customElements.define("flag-update", class extends HTMLElement {
+          connectedCallback() {
+            setTimeout(() => {
+              const is = this.getAttribute("is");
+              const note = this.innerHTML.replace("-", "<br>");
+              this.innerHTML =
+                `<div style="display:flex;gap:1px;"> 
+                  <div style="flex:1;margin:0;padding:0;width:250px;">
+                  <svg-flag is="${is}"></svg-flag>
+                  </div>
+                  <div style="flex:1;">${is} - ${note}</div>
+                </div>`;
+            }, 10);
+          }
+        })
+      </script>
     </div>
     <div>
       <br>
@@ -639,9 +668,9 @@ OR
         standard in Safari.
         <br />
         In 2020 FlagMeister switched to slightly more verbose, but 100%
-                supported <b>'Autonomous' Elements</b>:
-                <span class="highlightText">&lt;svg-flag is="nl">&lt/svg-flag></span>
-                or
+        supported <b>'Autonomous' Elements</b>:
+        <span class="highlightText">&lt;svg-flag is="nl">&lt/svg-flag></span>
+        or
         <span class="highlightText">&lt;flag-nl>&lt/flag-nl></span>
       </p>
     </div>
@@ -1102,7 +1131,8 @@ light: ({
             <flag-bo></flag-bo>
           </td>
           <td>
-            <flag-bo></flag-bo> </td>
+            <flag-bo></flag-bo>
+          </td>
           <td>
             <flag-bo detail="9999"></flag-bo>
           </td>
@@ -1170,8 +1200,8 @@ light: ({
           </td>
           <td>
             <flag-by source="//raw.githubusercontent.com/kent1D/svg-flags/master/flags/" detail="1"></flag-by>
-            </td>
-            <td>
+          </td>
+          <td>
             <flag-by source="//raw.githubusercontent.com/hjnilsson/country-flags/master/svg/" detail="1"></flag-by>
           </td>
           <td>
@@ -1797,12 +1827,12 @@ light: ({
       });
     };
   </script>
-<section id="filesize">
-  <script src="//file-size.github.io/element.js"></script>
-  <h1>Flagmeister minified GZIP Filesize is <i>small</i></h1>
-  <p>And could be placed as <b>inline code</b> inside the &lt;head> of your HTML page</p>
-  <file-size gz src="https://flagmeister.github.io/elements.flagmeister.min.js"></file-size>
-</section>
+  <section id="filesize">
+    <script src="//file-size.github.io/element.js"></script>
+    <h1>Flagmeister minified GZIP Filesize is <i>small</i></h1>
+    <p>And could be placed as <b>inline code</b> inside the &lt;head> of your HTML page</p>
+    <file-size gz src="https://flagmeister.github.io/elements.flagmeister.min.js"></file-size>
+  </section>
 
 </body>
 

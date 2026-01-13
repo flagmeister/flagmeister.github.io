@@ -1,1 +1,6 @@
+.gitignore
+.vscode/*
+node_modules/*
 index-testflags.html
+package-lock.json
+package.json
