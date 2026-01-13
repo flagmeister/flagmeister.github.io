@@ -5,3 +5,5 @@ index-testflags.html
 package-lock.json
 package.json
 elements.flagmeister copy.js
+testflag.svg
+.gitignore

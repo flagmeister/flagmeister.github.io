@@ -987,12 +987,12 @@
         "bar:0,120;" +
         //pattern , re-used 3 times
         //SVG because there is a transform on it
-        "<path fill='#c8313e' id='s' d='" +
+        "<path fill='#c8313e' id='s' rendering='crispedges' d='" +
         //!! original detail, app 530 bytes
         //+ "m565 0v163h-44v-163zm-562 285h79v-65h40v-79h56v-69h46v-72h139v72h45v69h56v79h40v65h61v101h-61v65h-40v79h-56v69h-45v74h-32v62h-75v-62h-32v-74h-46v-69h-56v-79h-40v-65h-79m0-352h79v90h-79m310 27h-41v61h-39v77h-38v95h38v77h39v60h41v-60h39v-77h39v-95h-39v-77h-39zm4 139v90h-49v-90zm-314 236h79v97h-79m562-88v137h-44v-137zm-108 152v68h48v70h60v92h-60v71h-48v68h-56v-68h-48v-71h-40v-92h40v-70h48v-68zm-454 138h79v-70h48v-68h55v68h48v70h40v92h-40v71h-48v68h-55v-68h-48v-71h-79m447-90h-41v87h41zm-271 0h-41v87h41zm16 1441v-47h-34v-71h-45v-43h-34v-69h-79v-160h79v46h34v67h45v80h64v-72h47v-53h34v-63h45v-67h33v-68h32v-70h43v-94h-57v-85h-62v-51h-104v74h60v67h-40v82h-47v72h-59v-72h-49v-82h-30v-67h-68v-127h79v-82h30v-63h28v-72h40v-71h39v-47h47v-71h57v71h47v47h40v71h39v72h32v62h32v54h52v397h-59v67h-17v70h-44v68h-27v50h-28v53h-48v52h-69v145m292-1213v137h-44v-137zm-562 26h79v97h-79m0 486h79v97h-79zm560 246v88h-42v-88zm-58 358v-55h-26v-43h-38v-129h38v52h40v76h44v98m-214 0v-64h42v64"//highdetail
 
         //!! patchwork with NO pixelated lines -390pixels savebytes scale to 10% in InkScape
-        "m572 0v150h-22v-150zm-562 285 221-285h139l202 285v101l-234 349h-75l-253-349m310-235h-41l-77 138v95l77 137h41l78-137v-95zm4 139v90h-49v-90zm248 260 2 100h-24v-100zm-108 137 86 113-3 131-83 125h-56l-88-139v-92l88-138zm-414 113 87-113h55l88 138v92l-88 139h-55l-87-156m407-73h-41v87h41zm-271 0h-41v87h41zm16 1441c-64-130-128-260-192-390h79l143 193 234-393v-94l-66-134-157-2 57 152-84 143h-59l-147-221v-127l263-406h57l242 377v397l-292 505m296-1218-2 150h-24v-150zm-6 860v88h-42v-88zm-58 358-64-98v-129l122 226" +
+        "M570 2267 448 2041v129l64 98m16-358v88h42v-88Zm22-860v150h24l2-150ZM280 2268l292-505V1366L330 989H273L10 1395v127l147 221h59l84-143-57-152 157 2 66 134v94L232 2071 89 1878H10c64 130 128 260 192 390M186 914H145V827h41Zm271 0H416V827h41ZM50 900l87 156h55l88-139V825L192 687H137L50 800M408 687 320 825v92l88 139h56l83-125 3-131-86-113ZM550 550V650h24l-2-100ZM275 290v90h49V290Zm123-1v95L320 521H279L202 384V289l77-138h41ZM10 386 263 735h75L572 386V285L370 0H231L10 285M550 0V150h22V0Z" +
         "' transform='scale(.106)'/>" +
         ";use:0,-480,1 -1;" + //bottom left
         ";use:-120,0,-1 1;" + //top right
@@ -1023,8 +1023,8 @@
       cl: "country:Chile;bgcolor:;bar:0,240,#0039a6;stripe:240,240,#d52b1e;star:#fff,8,0,6", //end cty
       cm: "country:Cameroon;bars:#007a5e|#ce1126|#fcd116;star:#fcd116,42,18,6", //end cty
       cn: "country:China;bgcolor:#de2910;star:#ffde00,5,2,6;use:140,30,2,30;use:120,75,2;use:120,35,2;use:100,-50,2,30", //end cty
-      co: "country:Colombia;stripes:#fcd116|#fcd116|#003893|#ce1126", //end cty
-      cr: "country:Costa Rica;stripes:#002b7f|#fff|#ce1126|#ce1126|#fff|#002b7f", //end cty
+      co: "country:Colombia;bgcolor:#fcd116;stripes:#fcd116|#fcd116|#003893|#ce1126", //end cty
+      cr: "country:Costa Rica;bgcolor:#ce1126;stripes:#002b7f|#fff|#ce1126|#ce1126|#fff|#002b7f", //end cty
       cu: "country:Cuba;striangle:#002a8f|#fff|#002a8f|#fff|#002a8f,#cf142b,400;star:#fff,10,22,5.5", //end cty
 
       cv:
@@ -1051,7 +1051,7 @@
       dz: "country:Algeria;bgcolor:#006233;bar:320,320;pathstroke:M424 180a120 120 0 1 0 0 120 96 96 0 1 1 0-120m4 60l-108-35 67 92V183l-67 92,#d21034", //end cty
 
       //todo detailH banners and eagle and spears
-      ec: "country:Ecuador;detail:60;stripes:#fd0|#fd0|#034ea2|#ed1c24", //end cty
+      ec: "country:Ecuador;detail:60;bgcolor:#fd0;stripes:#fd0|#fd0|#034ea2|#ed1c24", //end cty 
 
       ee: "country:Estonia;stripes:#0072ce|#000|#fff", //end cty
 
@@ -1063,8 +1063,9 @@
       //todo detailM gold leaves with yellow ellipse :#ffc726
       er: "country:Eritrea;detail:60;striangle:#12ad2b|#4189dd,#ea0437,640", //end cty
 
+      // 2026 draw extra |#ffc400| middle stripe to cover issue with line anti-aliasing
       es:
-        "country:Spain;detail:900;stripes:#c60b1e|#ffc400|#ffc400|#c60b1e;" +
+        "country:Spain;detail:900;stripes:|#ffc400|;stripes:#c60b1e|#ffc400|#ffc400|#c60b1e;" +
         "crown:0;" +
         // <!-- start left pillar -->
         "<g id='l'>;" +
@@ -1679,7 +1680,7 @@
       td: "country:Chad;bars:#002664|#fecb00|#c60c30", //end cty
       tf: "country:French Southern Territories;bgcolor:#002395;path:#fff,M0 0h292.8v196.8H0;path:#002395,M0 0h96v192H0;path:#ed2939,M192 0h96v192h-96;path:#fff,M426 219.6l15 25h44V330l-33-52-44 71h22l23-41 47 84 47-84 23 41h22L546 278 513 330v-47h20l15-23H513v-15h44l15-25H426zm52 105h-48v17h48zm91 0h-48v17h48;star:#fff,185,115,2;use:285,115,2;use:210,175,2;use:265,175,2;use:238,195,2", //end cty
       tg: "country:Togo;stripes:#006a4e|#ffce00|#006a4e|#ffce00|#006a4e;rect:0,0,288,288,#d21034;star:#fff,9,0,7", //end cty
-      th: "country:Thailand;stripes:#a51931|#f4f5f8|#2d2a4a|#2d2a4a|#f4f5f8|#a51931", //end cty
+      th: "country:Thailand;stripes:|#2d2a4a|;stripes:#a51931|#f4f5f8|#2d2a4a|#2d2a4a|#f4f5f8|#a51931", //end cty
       tj:
         "country:Tajikistan;stripes:#cc0000|#fff|#fff|#006600;" +
         "path:#f8c300,M301 234a9 9 0 0 1 16 4v34h6v-34a9 9 0 0 1 16-4 20 20 0 1 0-38 0;" +
@@ -1908,8 +1909,8 @@
                 //, log = console.log(svg, commands)
               ) {
                 return (
-                  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${this.box
-                  }'><defs><clipPath id='clip'>${clip == "0" ? "" : clip
+                  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${this.box}'>`
+                  + `<defs><clipPath id='clip'>${clip == "0" ? "" : clip
                   }</clipPath></defs>` +
                   (filter || "") +
                   //additional filter can be wrapped in extra <g>
